@@ -1415,6 +1415,11 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
+"@yuuza/webfx@^1.9.6":
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/@yuuza/webfx/-/webfx-1.9.6.tgz#f8ef8c7aae50bd72eb8e93cca36eb1184b580d9d"
+  integrity sha512-cfo6yZdvBocLWoVefs1wsA1Hhb35Gj4AJJEXAO+VIQyX7r8X1slo3cGH71mKh+oXiyBD5Bl6Q+TPxlyXe4cGNg==
+
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
