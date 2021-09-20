@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import { AppRegistry } from 'react-native';
-import Index from './src/pages/Index';
+import MainContainer from './src/containers/MainContainer';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { name as appName } from './app.json';
 
@@ -19,7 +19,7 @@ const theme = {
 export default function Main() {
   return (
     <PaperProvider theme={theme}>
-      <Index />
+      <MainContainer />
     </PaperProvider>
   );
 }
