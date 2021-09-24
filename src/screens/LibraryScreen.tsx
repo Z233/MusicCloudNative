@@ -2,9 +2,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import MyAppbar from '../components/MyAppbar';
 
-const PlaylistsPage = () => (
+const LibraryScreen = () => (
   <View style={{ flex: 1 }}>
-    <MyAppbar title="Playlists" />
     <View
       style={{
         backgroundColor: '#F4F4F4',
@@ -12,9 +11,9 @@ const PlaylistsPage = () => (
         paddingVertical: 24,
         flex: 1,
       }}>
-      <Text style={{ fontSize: 20, fontWeight: '700' }}>Playlists WIP.</Text>
+      <Text style={{ fontSize: 20, fontWeight: '700' }}>Library WIP.</Text>
     </View>
   </View>
 );
 
-export default PlaylistsPage;
+export default LibraryScreen;

@@ -1,23 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { IconButton, TouchableRipple } from 'react-native-paper';
-import MyAppbar from '../components/MyAppbar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styles from './HomeScreen.styles'
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const HomePage = () => (
-  <View style={{ flex: 1 }}>
-    <MyAppbar title="MusicCloud" />
+const HomeScreen = () => (
+  <ScrollView style={styles.container}>
     <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
       <Text
         style={{
           fontSize: 20,
           fontWeight: '700',
-          paddingHorizontal: 16,
-          paddingTop: 24,
+          marginBottom: 16
         }}>
         Hello Fronz.
       </Text>
@@ -27,33 +25,38 @@ const HomePage = () => (
           fontSize: 16,
           color: '#FF6557',
           fontWeight: '700',
-          paddingHorizontal: 16,
+          marginVertical: 16
         }}>
         最近播放
       </Text>
       <RecentTracks />
     </View>
-  </View>
+  </ScrollView>
 );
 
 const RecentPlaylists = () => {
   return (
     <View
       style={{
-        margin: 8,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignContent: 'flex-start',
       }}>
-      <PlaylistButton bg={testpic} icon="history" text="最近播放" />
-      <PlaylistButton bg={testpic} text="播放列表1" />
-      <PlaylistButton bg={testpic} icon="cloud" text="音乐库" />
+      {/* <PlaylistButton bg={testpic} icon="history" text="最近播放" /> */}
+      {Array(3).fill(null).map((_, index) => (
+        <PlaylistButton bg={testpic} text="播放列表1" index={index} />
+      ))}
+      {/* <PlaylistButton bg={testpic} icon="cloud" text="音乐库" /> */}
     </View>
   );
 };
 
-const PlaylistButton = (props: { bg: any; icon?: string; text: string }) => (
-  <View style={{ width: '50%', height: 64, padding: 8 }}>
+const PlaylistButton = (props: { bg: any; icon?: string; text: string; index: number }) => (
+  <View style={{ width: '50%',
+                 paddingRight: props.index % 2 ? 0 : 4,
+                 paddingLeft: props.index % 2 ? 4 : 0,
+                 marginBottom: 8
+              }}>
     <View
       style={{
         height: 48,
@@ -98,24 +101,12 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string }) => (
   </View>
 );
 
-const RecentTracks = () => (
-  <View>
-    <BigItem
-      title="動く、動く"
-      subtitle="水瀬いのり / 久保ユリカ"
-      pic={testpic}
-    />
-    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} />
-  </View>
-);
-
 const BigItem = (props: { title: string; subtitle: string; pic: string }) => (
   <View
     style={{
-      marginTop: 16,
-      marginHorizontal: 16,
       borderRadius: 16,
       overflow: 'hidden',
+      marginBottom: 8
     }}>
     <TouchableRipple onPress={() => {}} rippleColor="rgba(0, 0, 0, .2)">
       <View style={{ flexDirection: 'row' }}>
@@ -142,4 +133,27 @@ const BigItem = (props: { title: string; subtitle: string; pic: string }) => (
   </View>
 );
 
-export default HomePage;
+const testRecentTracks = Array(10)
+  .fill(null)
+  .map((_, i) => (
+    <BigItem
+      key={i}
+      title="動く、動く"
+      subtitle="水瀬いのり / 久保ユリカ"
+      pic={testpic}
+    />
+  ));
+
+const RecentTracks = () => (
+  <View>
+    {testRecentTracks}
+    {/* <BigItem
+      title="動く、動く"
+      subtitle="水瀬いのり / 久保ユリカ"
+      pic={testpic}
+    />
+    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} /> */}
+  </View>
+);
+
+export default HomeScreen;

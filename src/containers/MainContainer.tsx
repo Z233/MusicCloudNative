@@ -1,19 +1,14 @@
-import React from "react"
-import { StatusBar, Text, View } from "react-native"
-import { BottomNavigation } from "react-native-paper"
-import HomePage from "../pages/HomePage"
-import LibraryPage from "../pages/LibraryPage"
-import PlaylistsPage from "../pages/PlaylistsPage"
-
+import React from 'react';
+import { BottomNavigation } from 'react-native-paper';
+import HomeScreen from '../screens/Home';
+import LibraryScreen from '../screens/LibraryScreen';
+import PlaylistsScreen from '../screens/PlaylistsScreen';
 
 const MainContainer = () => {
   return (
     <BottomNav />
-    // <View>
-
-    // </View>
-  )
-}
+  );
+};
 
 export default MainContainer;
 
@@ -26,17 +21,20 @@ const BottomNav = () => {
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    home: () => <HomePage />,
-    playlists: () => <PlaylistsPage />,
-    library: () => <LibraryPage />,
+    home: () => <HomeScreen />,
+    playlists: () => <PlaylistsScreen />,
+    library: () => <LibraryScreen />,
   });
   return (
     <BottomNavigation
       activeColor="white"
       inactiveColor="rgba(255, 255, 255, 0.74)"
       navigationState={{ index, routes }}
-      onIndexChange={x => {console.info('nav', x); setIndex(x);}}
+      onIndexChange={x => {
+        console.info('nav', x);
+        setIndex(x);
+      }}
       renderScene={renderScene}
     />
   );
-}
+};
