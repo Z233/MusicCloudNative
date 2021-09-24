@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { IconButton, TouchableRipple } from 'react-native-paper';
@@ -146,13 +145,12 @@ const testRecentTracks = Array(10)
 
 const RecentTracks = () => (
   <View>
-    {testRecentTracks}
-    {/* <BigItem
+    <BigItem
       title="動く、動く"
       subtitle="水瀬いのり / 久保ユリカ"
       pic={testpic}
     />
-    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} /> */}
+    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} />
   </View>
 );
 

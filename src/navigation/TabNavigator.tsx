@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import routes from "./Routes";
 import _ from 'lodash'
 import { useTheme } from "react-native-paper";
+import PlayingBar from "../components/PlayingBar";
 
 
 const Tab = createMaterialBottomTabNavigator()

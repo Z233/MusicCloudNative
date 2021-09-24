@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import MyAppbar from '../components/MyAppbar';
 
 const LibraryScreen = () => (
   <View style={{ flex: 1 }}>

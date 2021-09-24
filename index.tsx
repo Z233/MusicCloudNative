@@ -7,6 +7,7 @@ import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
+import PlayingBar from './src/components/PlayingBar';
 
 const theme = {
   ...DefaultTheme,
@@ -21,6 +22,7 @@ const MusicCloud = () => (
   <PaperProvider theme={theme}>
     <NavigationContainer>
       <StackNavigator />
+      <PlayingBar />
     </NavigationContainer>
   </PaperProvider>
 )
