@@ -41,11 +41,9 @@ const RecentPlaylists = () => {
         flexWrap: 'wrap',
         alignContent: 'flex-start',
       }}>
-      {/* <PlaylistButton bg={testpic} icon="history" text="最近播放" /> */}
-      {Array(3).fill(null).map((_, index) => (
-        <PlaylistButton bg={testpic} text="播放列表1" index={index} />
-      ))}
-      {/* <PlaylistButton bg={testpic} icon="cloud" text="音乐库" /> */}
+      <PlaylistButton bg={testpic} icon="history" text="最近播放" index={0} />
+      <PlaylistButton bg={testpic} text="播放列表1" index={1} />
+      <PlaylistButton bg={testpic} icon="cloud" text="音乐库" index={2} />
     </View>
   );
 };

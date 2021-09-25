@@ -17,14 +17,16 @@ const TabNavigator = () => {
   
   return (
     <Tab.Navigator
+      shifting={true}
       activeColor="rgba(255, 255, 255, 1)"
       inactiveColor="rgba(255, 255, 255, 0.74)"
       barStyle={{
         backgroundColor: theme.colors.primary,
       }}
     >
-      {_.map(routes, route => (
+      {_.map(routes, (route, index) => (
         <Tab.Screen 
+          key={index}
           name={route.name}
           component={route.component}
           options={{
