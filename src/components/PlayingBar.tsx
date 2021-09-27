@@ -73,9 +73,11 @@ const styles = StyleSheet.create({
   },
   progressWrapper: {
     paddingHorizontal: 16,
+    marginHorizontal: 16,
     position: 'absolute',
     bottom: 0,
-    marginLeft: 16,
+    left: 0,
+    right: 0,
   },
   progress: {
     borderRadius: 4
