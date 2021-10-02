@@ -8,6 +8,19 @@ import MiIcon from 'react-native-vector-icons/MaterialIcons';
 //@ts-expect-error
 import bar from './bar.png';
 
+const PlayingScreen = () => {
+  return (
+    <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
+      <FakeStatusBar />
+      <Header />
+      <View style={{ backgroundColor: '#FFFFFF', flex: 1, borderTopLeftRadius: 32, borderTopRightRadius: 32 }}>
+        <Picture />
+        <Control />
+      </View>
+    </View>
+  );
+};
+
 const FakeStatusBar = () => (
   <>
     <StatusBar barStyle="light-content" />
@@ -24,20 +37,6 @@ const Header = () => {
       }} />
       <Text style={{ fontSize: 20, color: '#FFFFFF' }}>正在播放</Text>
       <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" />
-    </View>
-  );
-};
-
-// #FF6557
-const PlayingScreen = () => {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
-      <FakeStatusBar />
-      <Header />
-      <View style={{ backgroundColor: '#FFFFFF', flex: 1, borderTopLeftRadius: 32, borderTopRightRadius: 32 }}>
-        <Picture />
-        <Control />
-      </View>
     </View>
   );
 };

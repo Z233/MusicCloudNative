@@ -15,15 +15,12 @@ interface Props {
 }
 
 const PlaylistItem = ({ title, owner, cover, onPress }: Props) => (
-  <TouchableRipple
-    onPress={() => onPress(title, owner, cover)}
-    rippleColor="rgba(0, 0, 0, .2)">
     <BigItem
       title={title}
       subtitle={owner}
       pic={cover}
+      onPress={() => onPress(title, owner, cover)}
     />
-  </TouchableRipple>
 )
 
 export default PlaylistItem

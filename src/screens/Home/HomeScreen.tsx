@@ -1,8 +1,9 @@
-import React from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import React, { Children } from 'react';
+import { Image, ScrollView, Text, View, ViewStyle } from 'react-native';
 import { IconButton, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BigItem } from '../../components/BigItem';
+import { ColumnsLayout } from '../../components/ColumnsLayout';
 import styles from './HomeScreen.styles'
 
 const testpic =
@@ -30,73 +31,63 @@ const HomeScreen = () => (
         最近播放
       </Text>
       <RecentTracks />
-      <View style={{height: 180}}></View>
+      <View style={{ height: 180 }}></View>
     </View>
   </ScrollView>
 );
 
 const RecentPlaylists = () => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignContent: 'flex-start',
-      }}>
-      <PlaylistButton bg={testpic} icon="history" text="最近播放" index={0} />
-      <PlaylistButton bg={testpic} text="播放列表1" index={1} />
-      <PlaylistButton bg={testpic} icon="cloud" text="音乐库" index={2} />
-    </View>
+    <ColumnsLayout columns={2}>
+      <PlaylistButton bg={testpic} icon="history" text="最近播放" />
+      <PlaylistButton bg={testpic} text="播放列表1" />
+      <PlaylistButton bg={testpic} icon="cloud" text="音乐库" />
+    </ColumnsLayout>
   );
 };
 
-const PlaylistButton = (props: { bg: any; icon?: string; text: string; index: number }) => (
-  <View style={{ width: '50%',
-                 paddingRight: props.index % 2 ? 0 : 4,
-                 paddingLeft: props.index % 2 ? 4 : 0,
-                 marginBottom: 8
-              }}>
-    <View
-      style={{
-        height: 48,
-        borderRadius: 8,
-        backgroundColor: 'white',
-        overflow: 'hidden',
-      }}>
-      <Image
-        style={{ width: 48, height: 48, position: 'absolute' }}
-        source={{ uri: props.bg }}
-      />
-      {props.icon ? (
-        <View
-          style={{
-            width: 48,
-            height: 48,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Icon name={props.icon} size={24} color="white" />
-        </View>
-      ) : null}
+const PlaylistButton = (props: { bg: any; icon?: string; text: string; }) => (
+  <View
+    style={{
+      height: 48,
+      borderRadius: 8,
+      backgroundColor: 'white',
+      overflow: 'hidden',
+      marginBottom: 8,
+    }}>
+    <Image
+      style={{ width: 48, height: 48, position: 'absolute' }}
+      source={{ uri: props.bg }}
+    />
+    {props.icon ? (
       <View
         style={{
-          paddingLeft: 48,
-          height: '100%',
-          position: 'absolute',
+          width: 48,
+          height: 48,
+          backgroundColor: 'rgba(0,0,0,0.4)',
           justifyContent: 'center',
+          alignItems: 'center',
         }}>
-        <Text style={{ marginLeft: 8, fontSize: 14, color: 'black' }}>
-          {props.text}
-        </Text>
+        <Icon name={props.icon} size={24} color="white" />
       </View>
-      <TouchableRipple
-        style={{ position: 'absolute', height: '100%', width: '100%' }}
-        onPress={() => {}}
-        rippleColor="rgba(0, 0, 0, .2)">
-        <View />
-      </TouchableRipple>
+    ) : null}
+    <View
+      style={{
+        paddingLeft: 48,
+        height: '100%',
+        position: 'absolute',
+        justifyContent: 'center',
+      }}>
+      <Text style={{ marginLeft: 8, fontSize: 14, color: 'black' }}>
+        {props.text}
+      </Text>
     </View>
+    <TouchableRipple
+      style={{ position: 'absolute', height: '100%', width: '100%' }}
+      onPress={() => { }}
+      rippleColor="rgba(0, 0, 0, .2)">
+      <View />
+    </TouchableRipple>
   </View>
 );
 
