@@ -1,13 +1,14 @@
 import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import HomeScreen from "../screens/Home";
 import LibraryScreen from "../screens/LibraryScreen";
 import PlaylistsScreen from "../screens/PlaylistsScreen";
 import TabNavigator from "./TabNavigator";
 import routes from "./Routes";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const Stack = createStackNavigator()
 
@@ -20,15 +21,14 @@ const StackNavigator = () => {
           const title = options.headerTitle !== undefined
             ? options.headerTitle
             : options.title !== undefined
-            ? options.title
-            : route.name
+              ? options.title
+              : route.name
 
           return (
-            <Appbar.Header>
-              <Appbar.Content color="white" title={title} />
-              <Appbar.Action icon="magnify" color="white" onPress={() => { }} />
-              <StatusBar backgroundColor="#ff6557" />
-            </Appbar.Header>
+            <View style={{ height: 56, flexDirection: 'row', justifyContent: 'space-between', elevation: 1 }}>
+              <Icon style={{ marginLeft: 16, marginVertical: 16 }} name="menu" size={24} color="black" />
+              <Icon style={{ marginRight: 16, marginVertical: 16 }} name="search" size={24} color="black" />
+            </View>
           )
         }
       }}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { IconButton, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { BigItem } from '../../components/BigItem';
 import styles from './HomeScreen.styles'
 
 const testpic =
@@ -29,6 +30,7 @@ const HomeScreen = () => (
         最近播放
       </Text>
       <RecentTracks />
+      <View style={{height: 180}}></View>
     </View>
   </ScrollView>
 );
@@ -98,38 +100,6 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string; index: nu
   </View>
 );
 
-const BigItem = (props: { title: string; subtitle: string; pic: string }) => (
-  <View
-    style={{
-      borderRadius: 16,
-      overflow: 'hidden',
-      marginBottom: 8
-    }}>
-    <TouchableRipple onPress={() => {}} rippleColor="rgba(0, 0, 0, .2)">
-      <View style={{ flexDirection: 'row' }}>
-        <Image
-          style={{ height: 68, width: 68, borderRadius: 16 }}
-          source={{ uri: props.pic }}
-        />
-        <View style={{ marginLeft: 24, flex: 1 }}>
-          <Text style={{ fontSize: 16, marginTop: 8 }}>{props.title}</Text>
-          <Text
-            style={{ fontSize: 16, marginTop: 8, color: 'rgba(0,0,0,.24)' }}>
-            {props.subtitle}
-          </Text>
-        </View>
-        <IconButton
-          icon="dots-vertical"
-          size={24}
-          color="rgba(0,0,0,.46)"
-          style={{ alignSelf: 'center', margin: 0 }}
-          onPress={() => {}}
-        />
-      </View>
-    </TouchableRipple>
-  </View>
-);
-
 const testRecentTracks = Array(10)
   .fill(null)
   .map((_, i) => (
@@ -143,12 +113,13 @@ const testRecentTracks = Array(10)
 
 const RecentTracks = () => (
   <View>
-    <BigItem
+    {testRecentTracks}
+    {/* <BigItem
       title="動く、動く"
       subtitle="水瀬いのり / 久保ユリカ"
       pic={testpic}
     />
-    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} />
+    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} /> */}
   </View>
 );
 
