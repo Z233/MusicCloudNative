@@ -28,7 +28,7 @@ const config = {
 const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="WithTab"
       screenOptions={{
         header: ({ navigation, options, route }) => {
           const title = options.headerTitle !== undefined
@@ -50,7 +50,7 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="Home"
+        name="WithTab"
         component={TabNavigator}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route)

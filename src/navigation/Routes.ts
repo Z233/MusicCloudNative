@@ -2,6 +2,7 @@ import React from "react"
 import HomeScreen from "../screens/Home"
 import LibraryScreen from "../screens/LibraryScreen"
 import PlaylistsScreen from "../screens/PlaylistsScreen"
+import StackPlaylists from "./StackPlaylists"
 
 const routes = {
   'home': {
@@ -12,7 +13,7 @@ const routes = {
   'playlists': {
     name: '播放列表',
     icon: 'history',
-    component: PlaylistsScreen
+    component: StackPlaylists
   },
   'library': {
     name: '音乐库',
