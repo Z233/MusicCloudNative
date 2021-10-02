@@ -37,8 +37,11 @@ const StackNavigator = () => {
               ? options.title
               : route.name
 
+          if (route.name == 'Playing') return null;
+          const statusHeight = StatusBar.currentHeight!
           return (
-            <View style={{ height: 56, flexDirection: 'row', justifyContent: 'space-between', elevation: 1 }}>
+            <View style={{ paddingTop: statusHeight , height: statusHeight! + 56, flexDirection: 'row', justifyContent: 'space-between', elevation: 1 }}>
+              <StatusBar translucent={true} backgroundColor={'transparent'} barStyle='dark-content' />
               <Icon style={{ marginLeft: 16, marginVertical: 16 }} name="menu" size={24} color="black" />
               <Icon style={{ marginRight: 16, marginVertical: 16 }} name="search" size={24} color="black" />
             </View>
