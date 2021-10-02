@@ -1,5 +1,5 @@
 import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-import { createStackNavigator } from "@react-navigation/stack";
+import { CardStyleInterpolators, createStackNavigator, TransitionSpecs } from "@react-navigation/stack";
 import React from "react";
 import { StatusBar, View } from "react-native";
 import { Appbar } from "react-native-paper";
@@ -9,8 +9,21 @@ import PlaylistsScreen from "../screens/PlaylistsScreen";
 import TabNavigator from "./TabNavigator";
 import routes from "./Routes";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import PlayingScreen from "../screens/PlayingScreen";
 
 const Stack = createStackNavigator()
+
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 
 const StackNavigator = () => {
   return (
@@ -39,6 +52,14 @@ const StackNavigator = () => {
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route)
           return { headerTitle: routeName }
+        }}
+      />
+      <Stack.Screen
+        name="Playing"
+        component={PlayingScreen}
+        options={{
+          title: 'Playing',
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
         }}
       />
     </Stack.Navigator>

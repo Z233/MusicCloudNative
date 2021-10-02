@@ -1,36 +1,47 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, View, Text } from "react-native";
+import { Dimensions, Image, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Colors, IconButton, ProgressBar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const PlayingBar = () => {
+interface Props {
+  onPress: Function
+}
+
+
+const PlayingBar = ({ onPress }: Props) => {
+  
   const theme = useTheme()
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <View style={styles.trackContainer}>
-          <Image style={styles.albumCover} source={{ uri: testpic }} />
-          <View style={styles.trackInfo}>
-            <Text style={styles.trackTitle}>Sincerely</Text>
-            <Text style={styles.trackArtist}>TRUE</Text>
+    <TouchableWithoutFeedback
+      onPress={() => onPress()}>
+      <View
+        style={styles.container}
+      >
+        <View style={styles.wrapper}>
+          <View style={styles.trackContainer}>
+            <Image style={styles.albumCover} source={{ uri: testpic }} />
+            <View style={styles.trackInfo}>
+              <Text style={styles.trackTitle}>Sincerely</Text>
+              <Text style={styles.trackArtist}>TRUE</Text>
+            </View>
+          </View>
+          <View style={styles.operationContainer}>
+            <Icon name="pause" size={32}></Icon>
+            {/* <IconButton icon="pause" size={20} /> */}
           </View>
         </View>
-        <View style={styles.operationContainer}>
-          <Icon name="pause" size={32}></Icon>
-          {/* <IconButton icon="pause" size={20} /> */}
+        <View style={styles.progressWrapper}>
+          <ProgressBar
+            style={styles.progress}
+            color={theme.colors.primary}
+            progress={0.5}
+          />
         </View>
       </View>
-      <View style={styles.progressWrapper}>
-        <ProgressBar 
-          style={styles.progress}
-          color={theme.colors.primary}
-          progress={0.5}
-        />
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 
 }

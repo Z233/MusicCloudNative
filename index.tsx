@@ -22,7 +22,6 @@ const MusicCloud = () => (
   <PaperProvider theme={theme}>
     <NavigationContainer>
       <StackNavigator />
-      <PlayingBar />
     </NavigationContainer>
   </PaperProvider>
 )
