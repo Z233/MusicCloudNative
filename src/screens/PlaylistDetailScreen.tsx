@@ -7,7 +7,7 @@ interface Props {
   
 }
 
-const PlaylistScreen = () => {
+const PlaylistDetailScreen = () => {
   const { params } = useRoute() as { params: { title: string, owner: string, cover: string } }
   
   return (
@@ -28,4 +28,11 @@ const PlaylistScreen = () => {
   )
 }
 
-export default PlaylistScreen;
+const FakeStatusBar = () => (
+  <>
+    <StatusBar barStyle="light-content" />
+    <View style={{ height: StatusBar.currentHeight }}></View>
+  </>
+)
+
+export default PlaylistDetailScreen;

@@ -2,7 +2,7 @@ import { CommonActions, useNavigation } from '@react-navigation/core'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { onPressPlaylistItem } from '../components/PlaylistItem'
-import PlaylistScreen from '../screens/PlaylistScreen'
+import PlaylistDetailScreen from '../screens/PlaylistDetailScreen'
 import PlaylistsScreen from '../screens/PlaylistsScreen'
 
 const Stack = createStackNavigator()
@@ -36,7 +36,7 @@ const StackPlaylists = () => {
       </Stack.Screen>
       <Stack.Screen
         name="Playlist"
-        component={PlaylistScreen}
+        component={PlaylistDetailScreen}
       />
     </Stack.Navigator>
   )

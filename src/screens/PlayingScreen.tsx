@@ -1,5 +1,5 @@
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StatusBar, Text, View, Image } from 'react-native';
 import { IconButton, TouchableRipple } from 'react-native-paper';
