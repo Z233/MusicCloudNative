@@ -1,11 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { IconButton, TouchableRipple } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BigItem } from '../components/BigItem';
 import { Layout } from '../styles';
 import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem'
 import { ColumnsLayout } from '../components/ColumnsLayout';
+import { RippleOverlay } from '../components/RippleOverlay';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem
@@ -87,12 +88,7 @@ const PlaylistButton = (props: { icon: string; text: string }) => (
         {props.text}
       </Text>
     </View>
-    <TouchableRipple
-      style={{ position: 'absolute', height: '100%', width: '100%' }}
-      onPress={() => { }}
-      rippleColor="rgba(0, 0, 0, .2)">
-      <View />
-    </TouchableRipple>
+    <RippleOverlay onPress={() => {}} />
   </View>
 );
 

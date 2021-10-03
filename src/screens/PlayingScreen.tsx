@@ -2,9 +2,10 @@
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StatusBar, Text, View, Image } from 'react-native';
-import { IconButton, TouchableRipple } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MiIcon from 'react-native-vector-icons/MaterialIcons';
+import { RippleOverlay } from '../components/RippleOverlay';
 //@ts-expect-error
 import bar from './bar.png';
 
@@ -50,12 +51,7 @@ const Control = () => (
       <IconButton icon="skip-previous" size={32} onPress={() => { }} />
       <View style={{ backgroundColor: '#FF6557', width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
         <Icon name="pause" size={32} color='#FFFFFF' />
-        <TouchableRipple
-          style={{ position: 'absolute', height: '100%', width: '100%' }}
-          onPress={() => { }}
-          rippleColor="rgba(0, 0, 0, .2)">
-          <View />
-        </TouchableRipple>
+        <RippleOverlay onPress={() => {}} />
       </View>
       <IconButton icon="skip-next" size={32} onPress={() => { }} />
       <IconButton icon="cached" size={32} onPress={() => { }} />

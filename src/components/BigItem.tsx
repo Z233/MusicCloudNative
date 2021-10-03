@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, Text } from "react-native";
-import { TouchableRipple, IconButton } from "react-native-paper";
+import { IconButton } from "react-native-paper";
+import { RippleOverlay } from "./RippleOverlay";
 
 
 export const BigItem = (props: { title: string; subtitle: string; pic: string; onPress?: () => void; onMorePress?: () => void }) => (
@@ -30,8 +31,6 @@ export const BigItem = (props: { title: string; subtitle: string; pic: string; o
         onPress={props.onMorePress}
       />
     </View>
-    <TouchableRipple onPress={props.onPress} rippleColor="rgba(0, 0, 0, .2)" style={{ position: 'absolute', width: '100%', height: '100%' }}>
-      <View></View>
-    </TouchableRipple>
+    <RippleOverlay onPress={props.onPress} />
   </View>
 );

@@ -1,6 +1,5 @@
 import React, { Children } from 'react';
 import { Image, ScrollView, Text, View, ViewStyle } from 'react-native';
-import { IconButton, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BigItem } from '../../components/BigItem';
 import { ColumnsLayout } from '../../components/ColumnsLayout';
@@ -82,12 +81,7 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string; }) => (
         {props.text}
       </Text>
     </View>
-    <TouchableRipple
-      style={{ position: 'absolute', height: '100%', width: '100%' }}
-      onPress={() => { }}
-      rippleColor="rgba(0, 0, 0, .2)">
-      <View />
-    </TouchableRipple>
+    <RippleOverlay onPress={() => {}} />
   </View>
 );
 
