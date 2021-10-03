@@ -5,9 +5,11 @@ import { IconButton, useTheme } from 'react-native-paper';
 
 interface Props {
   title: string;
+  backDirection?: 'left' | 'down';
+  dots?: () => void;
 }
 
-const SecondaryHeader = ({ title }: Props) => {
+const SecondaryHeader = ({ title, backDirection, dots }: Props) => {
   const theme = useTheme();
   const navigation = useNavigation();
   return (
@@ -28,7 +30,7 @@ const SecondaryHeader = ({ title }: Props) => {
           backgroundColor: theme.colors.primary,
         }}>
         <IconButton
-          icon="chevron-down"
+          icon={backDirection == 'down' ? 'chevron-down' : 'chevron-left'}
           size={32}
           color="#FFFFFF"
           onPress={() => {
@@ -36,7 +38,11 @@ const SecondaryHeader = ({ title }: Props) => {
           }}
         />
         <Text style={{ fontSize: 20, color: '#FFFFFF' }}>{title}</Text>
-        <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" />
+        {
+          dots ?
+            <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" onPress={dots} />
+            : <View style={{ width: 32, height: 32, margin: 14 }} />
+        }
       </View>
     </>
   );

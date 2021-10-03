@@ -45,7 +45,7 @@ const StackNavigator = () => {
         options={{
           title: 'Playing',
           header: () => (
-            <SecondaryHeader title='正在播放' />
+            <SecondaryHeader title='正在播放' backDirection='down' dots={() => { }} />
           ),
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         }}

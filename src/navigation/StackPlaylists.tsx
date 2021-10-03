@@ -11,10 +11,8 @@ const Stack = createStackNavigator();
 
 const StackPlaylists = () => {
   const navigation = useNavigation();
-  const [curPlaylistTitle, setCurPlaylistTitle] = useState('');
 
   const onPressPlaylist: onPressPlaylistItem = (title, owner, cover) => {
-    setCurPlaylistTitle(title);
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Playlist',
@@ -38,7 +36,7 @@ const StackPlaylists = () => {
       </Stack.Screen>
       <Stack.Screen
         options={{
-          header: () => <SecondaryHeader title={curPlaylistTitle} />,
+          header: (props) => <SecondaryHeader title="" />,
         }}
         name="Playlist"
         component={PlaylistDetailScreen}
