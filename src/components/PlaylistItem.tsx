@@ -1,6 +1,4 @@
 import React from "react";
-import { TouchableHighlight } from "react-native-gesture-handler";
-import { TouchableRipple } from "react-native-paper";
 import { BigItem } from "./BigItem";
 
 interface Props {

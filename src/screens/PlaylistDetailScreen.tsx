@@ -1,7 +1,7 @@
 
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 
 interface Props {
   
@@ -12,6 +12,7 @@ const PlaylistDetailScreen = () => {
   
   return (
     <View style={{ flex: 1 }}>
+      <FakeStatusBar />
       <View
         style={{
           backgroundColor: '#F4F4F4',
