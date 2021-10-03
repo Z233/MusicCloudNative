@@ -11,8 +11,6 @@ import bar from './bar.png';
 const PlayingScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
-      <FakeStatusBar />
-      <Header />
       <View style={{ backgroundColor: '#FFFFFF', flex: 1, borderTopLeftRadius: 32, borderTopRightRadius: 32 }}>
         <Picture />
         <Control />
@@ -21,25 +19,7 @@ const PlayingScreen = () => {
   );
 };
 
-const FakeStatusBar = () => (
-  <>
-    <StatusBar barStyle="light-content" />
-    <View style={{ height: StatusBar.currentHeight }}></View>
-  </>
-)
 
-const Header = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={{ height: 56, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <IconButton icon="chevron-down" size={32} color="#FFFFFF" onPress={() => {
-        navigation.goBack();
-      }} />
-      <Text style={{ fontSize: 20, color: '#FFFFFF' }}>正在播放</Text>
-      <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" />
-    </View>
-  );
-};
 
 const Picture = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

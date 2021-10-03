@@ -10,6 +10,7 @@ import TabNavigator from "./TabNavigator";
 import routes from "./Routes";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import PlayingScreen from "../screens/PlayingScreen";
+import SecondaryHeader from "../components/SecondaryHeader";
 
 const Stack = createStackNavigator()
 
@@ -29,15 +30,12 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="WithTab"
-      screenOptions={{
+    >
+      <Stack.Screen
+        name="WithTab"
+        component={TabNavigator}
+        options={{
         header: ({ navigation, options, route }) => {
-          const title = options.headerTitle !== undefined
-            ? options.headerTitle
-            : options.title !== undefined
-              ? options.title
-              : route.name
-
-          if (route.name == 'Playing') return null;
           const statusHeight = StatusBar.currentHeight!
           return (
             <View style={{ paddingTop: statusHeight , height: statusHeight! + 56, flexDirection: 'row', justifyContent: 'space-between', elevation: 1 }}>
@@ -47,14 +45,6 @@ const StackNavigator = () => {
             </View>
           )
         }
-      }}
-    >
-      <Stack.Screen
-        name="WithTab"
-        component={TabNavigator}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route)
-          return { headerTitle: routeName }
         }}
       />
       <Stack.Screen
@@ -62,7 +52,10 @@ const StackNavigator = () => {
         component={PlayingScreen}
         options={{
           title: 'Playing',
-          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+          header: () => (
+            <SecondaryHeader />
+          ),
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
       />
     </Stack.Navigator>
