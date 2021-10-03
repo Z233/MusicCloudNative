@@ -3,7 +3,11 @@ import React from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 
-const SecondaryHeader = () => {
+interface Props {
+  title: string;
+}
+
+const SecondaryHeader = ({ title }: Props) => {
   const theme = useTheme();
   const navigation = useNavigation();
   return (
@@ -31,7 +35,7 @@ const SecondaryHeader = () => {
             navigation.goBack();
           }}
         />
-        <Text style={{ fontSize: 20, color: '#FFFFFF' }}>正在播放</Text>
+        <Text style={{ fontSize: 20, color: '#FFFFFF' }}>{title}</Text>
         <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" />
       </View>
     </>

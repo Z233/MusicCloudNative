@@ -36,7 +36,7 @@ const StackNavigator = () => {
         name="WithTab"
         component={TabNavigator}
         options={{
-          header: PrimaryHeader
+          headerShown: false
         }}
       />
       <Stack.Screen
@@ -45,7 +45,7 @@ const StackNavigator = () => {
         options={{
           title: 'Playing',
           header: () => (
-            <SecondaryHeader />
+            <SecondaryHeader title='正在播放' />
           ),
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         }}

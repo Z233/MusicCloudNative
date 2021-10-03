@@ -2,13 +2,15 @@ import React from "react"
 import HomeScreen from "../screens/Home"
 import LibraryScreen from "../screens/LibraryScreen"
 import PlaylistsScreen from "../screens/PlaylistsScreen"
+import StackHome from "./StackHome"
+import StackLibrary from "./StackLibrary"
 import StackPlaylists from "./StackPlaylists"
 
 const routes = {
   'home': {
     name: '首页',
     icon: 'home',
-    component: HomeScreen
+    component: StackHome
   },
   'playlists': {
     name: '播放列表',
@@ -18,7 +20,7 @@ const routes = {
   'library': {
     name: '音乐库',
     icon: 'album',
-    component: LibraryScreen,
+    component: StackLibrary,
   }
 } as { [K: string]: {
   name: string,
