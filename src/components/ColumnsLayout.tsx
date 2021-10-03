@@ -2,7 +2,12 @@ import React, { Children } from "react"
 import { View, ViewStyle } from "react-native"
 
 
-export const ColumnsLayout = (props: React.PropsWithChildren<{columns: number; style?: ViewStyle}>) => {
+type Props = React.PropsWithChildren<{
+  columns: number
+  style?: ViewStyle
+}>
+
+export const ColumnsLayout = (props: Props) => {
     return (
       <View
         style={{

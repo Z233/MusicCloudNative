@@ -3,8 +3,15 @@ import { View, Image, Text } from "react-native";
 import { IconButton } from "react-native-paper";
 import { RippleOverlay } from "./RippleOverlay";
 
+interface Props {
+  title: string;
+  subtitle: string;
+  pic: string;
+  onPress?: () => void;
+  onMorePress?: () => void;
+}
 
-export const BigItem = (props: { title: string; subtitle: string; pic: string; onPress?: () => void; onMorePress?: () => void }) => (
+export const BigItem = (props: Props) => (
   <View
     style={{
       borderRadius: 16,
