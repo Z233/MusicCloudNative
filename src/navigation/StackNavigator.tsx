@@ -11,6 +11,7 @@ import routes from "./Routes";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import PlayingScreen from "../screens/PlayingScreen";
 import SecondaryHeader from "../components/SecondaryHeader";
+import PrimaryHeader from "../components/PrimaryHeader";
 
 const Stack = createStackNavigator()
 
@@ -35,16 +36,7 @@ const StackNavigator = () => {
         name="WithTab"
         component={TabNavigator}
         options={{
-        header: ({ navigation, options, route }) => {
-          const statusHeight = StatusBar.currentHeight!
-          return (
-            <View style={{ paddingTop: statusHeight , height: statusHeight! + 56, flexDirection: 'row', justifyContent: 'space-between', elevation: 1 }}>
-              <StatusBar translucent={true} backgroundColor={'transparent'} barStyle='dark-content' />
-              <Icon style={{ marginLeft: 16, marginVertical: 16 }} name="menu" size={24} color="black" />
-              <Icon style={{ marginRight: 16, marginVertical: 16 }} name="search" size={24} color="black" />
-            </View>
-          )
-        }
+          header: PrimaryHeader
         }}
       />
       <Stack.Screen
