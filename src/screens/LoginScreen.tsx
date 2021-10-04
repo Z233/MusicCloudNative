@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -11,9 +11,16 @@ import { Button, TextInput, useTheme } from 'react-native-paper';
 import layout from '../styles/layout';
 //@ts-expect-error
 import headerBg from '../assets/header-bg.png';
+import { useClient } from '../api';
 
 const LoginScreen = () => {
   const theme = useTheme();
+  const client = useClient();
+  const [username, setUsername] = useState('publicuser');
+  const [passwd, setPasswd] = useState('public');
+  const onLogin = () => {
+    client.login(username, passwd);
+  }
   return (
     <React.Fragment>
       <StatusBar backgroundColor={theme.colors.primary} />
@@ -24,10 +31,16 @@ const LoginScreen = () => {
           <Text style={styles.headerSubtitle}>登录以继续使用</Text>
         </View>
         <View style={styles.formContainer}>
-          <TextInput style={styles.input} label="用户名" />
+          <TextInput
+            style={styles.input}
+            label="用户名"
+            onChangeText={setUsername}
+            value={username} />
           <TextInput
             style={styles.input}
             label="密码"
+            onChangeText={setPasswd}
+            value={passwd}
             secureTextEntry
             right={<TextInput.Icon name="eye" />}
           />
@@ -37,6 +50,7 @@ const LoginScreen = () => {
               style={styles.inputButton}
               icon="login"
               mode="contained"
+              onPress={onLogin}
               labelStyle={{
                 color: 'white',
               }}>

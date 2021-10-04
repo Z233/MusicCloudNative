@@ -5,36 +5,40 @@ import { BigItem } from '../../components/BigItem';
 import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles'
+import { useUserInfo } from '../../api';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const HomeScreen = () => (
-  <ScrollView style={styles.container}>
-    <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: '700',
-          marginBottom: 16
-        }}>
-        Hello Fronz.
+const HomeScreen = () => {
+  const userinfo = useUserInfo();
+  return (
+    <ScrollView style={styles.container}>
+      <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '700',
+            marginBottom: 16
+          }}>
+          Hello, {userinfo.username}.
       </Text>
-      <RecentPlaylists />
-      <Text
-        style={{
-          fontSize: 16,
-          color: '#FF6557',
-          fontWeight: '700',
-          marginVertical: 16
-        }}>
-        最近播放
+        <RecentPlaylists />
+        <Text
+          style={{
+            fontSize: 16,
+            color: '#FF6557',
+            fontWeight: '700',
+            marginVertical: 16
+          }}>
+          最近播放
       </Text>
-      <RecentTracks />
-      <View style={{ height: 180 }}></View>
-    </View>
-  </ScrollView>
-);
+        <RecentTracks />
+        <View style={{ height: 180 }}></View>
+      </View>
+    </ScrollView>
+  )
+};
 
 const RecentPlaylists = () => {
   return (
@@ -82,7 +86,7 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string; }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => {}} />
+    <RippleOverlay onPress={() => { }} />
   </View>
 );
 

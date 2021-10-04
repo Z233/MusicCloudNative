@@ -4,8 +4,8 @@ import {
   createStackNavigator,
   TransitionSpecs,
 } from '@react-navigation/stack';
-import React from 'react';
-import { StatusBar, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, View, Text } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import HomeScreen from '../screens/Home';
 import LibraryScreen from '../screens/LibraryScreen';
@@ -18,6 +18,7 @@ import SecondaryHeader from '../components/SecondaryHeader';
 import PrimaryHeader from '../components/PrimaryHeader';
 import LoginScreen from '../screens/LoginScreen';
 import StackLogin from './StackLogin';
+import { useUserInfo, useClient } from '../api';
 
 const Stack = createStackNavigator();
 
@@ -36,8 +37,24 @@ const config = {
 const isLogin = false;
 
 const StackNavigator = () => {
-  return isLogin
-  ? (
+  const client = useClient();
+  const userinfo = useUserInfo();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    client.readSavedInfo().then(() => {
+      setLoading(false);
+    });
+  }, []);
+
+
+  if (loading) return (
+    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+      <Text>(UI TODO) Loading...</Text>
+    </View>
+  )
+  if (!userinfo.token) return <StackLogin />
+  return (
     <Stack.Navigator initialRouteName="WithTab">
       <Stack.Screen
         name="WithTab"
@@ -58,9 +75,6 @@ const StackNavigator = () => {
       />
     </Stack.Navigator>
   )
-  : (
-    <StackLogin />
-  );
 };
 
 export default StackNavigator;

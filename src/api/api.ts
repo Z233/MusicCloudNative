@@ -1,10 +1,10 @@
 // file: api.ts
 
-import { Callbacks, Action, CancelToken, sleepAsync } from "@yuuza/webfx";
+import { Callbacks, Action, CancelToken, sleepAsync } from "./webfxUtil";
 import { Api } from "./apidef";
 
 
-export const api = new class {
+export class ApiBaseClient {
   readonly baseUrl = "https://mc.yuuza.net/api/";
   readonly appBaseUrl = "https://mc.yuuza.net/";
   storageUrlBase = '';
@@ -16,6 +16,7 @@ export const api = new class {
 
   async _fetch(input: RequestInfo, init?: RequestInit) {
     if (this.debugSleep) await sleepAsync(this.debugSleep * (Math.random() + 1));
+    console.info('fetch', { input, init });
     return await fetch(input, {
       credentials: 'same-origin',
       ...init

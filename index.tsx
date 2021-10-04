@@ -7,8 +7,9 @@ import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import StackRoot from './src/navigation/StackRoot';
-import PlayingBar from './src/components/PlayingBar';
 import { RecoilRoot } from 'recoil';
+import { ApiContext } from "./src/api";
+import { ApiClient } from './src/api';
 
 const theme = {
   ...DefaultTheme,
@@ -21,11 +22,13 @@ const theme = {
 
 const MusicCloud = () => (
   <RecoilRoot>
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <StackRoot />
-      </NavigationContainer>
-    </PaperProvider>
+    <ApiContext.Provider value={new ApiClient("mc-")}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <StackRoot />
+        </NavigationContainer>
+      </PaperProvider>
+    </ApiContext.Provider>
   </RecoilRoot>
 )
 

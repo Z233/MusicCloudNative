@@ -12,6 +12,7 @@ export namespace Api {
     id: number;
     owner: number;
     name: string;
+    picurl: string;
     visibility: number;
     version: number;
   }
@@ -110,7 +111,7 @@ export namespace Api {
     /** When GET me */
     serverOptions?: ServerOptions;
 
-    /** When GET me/login */
+    /** When POST me/login */
     token?: string;
   }
 
