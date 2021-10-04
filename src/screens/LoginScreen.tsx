@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     height: 256,
     position: 'absolute',
     width: Dimensions.get('screen').width,
+    resizeMode: 'stretch',
     top: 0,
     left: 0,
   },
@@ -92,11 +93,12 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     position: 'absolute',
+    left: 0,
+    right: 0,
     bottom: 8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    width: Dimensions.get('screen').width,
   },
 });
 
