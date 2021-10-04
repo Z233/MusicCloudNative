@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BigItem } from '../components/BigItem';
 import { Layout } from '../styles';
 import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem'
-import { ColumnsLayout } from '../components/ColumnsLayout';
+import { ColumnsLayout } from '../layouts/ColumnsLayout';
 import { RippleOverlay } from '../components/RippleOverlay';
 
 interface Props {

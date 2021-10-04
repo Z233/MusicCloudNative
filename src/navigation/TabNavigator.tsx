@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { useTheme } from "react-native-paper";
 import PlayingBar from "../components/PlayingBar";
 import { CommonActions, useNavigation } from "@react-navigation/core";
+import { StatusBar } from "react-native";
 
 
 const Tab = createMaterialBottomTabNavigator()
@@ -28,7 +29,6 @@ const TabNavigator = () => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="音乐库"
         shifting={true}
         activeColor="rgba(255, 255, 255, 1)"
         inactiveColor="rgba(255, 255, 255, 0.74)"

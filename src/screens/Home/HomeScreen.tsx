@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import { Image, ScrollView, Text, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BigItem } from '../../components/BigItem';
-import { ColumnsLayout } from '../../components/ColumnsLayout';
+import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles'
 
