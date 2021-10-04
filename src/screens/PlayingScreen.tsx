@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MiIcon from 'react-native-vector-icons/MaterialIcons';
 import { RippleOverlay } from '../components/RippleOverlay';
 //@ts-expect-error
-import bar from './bar.png';
+import bar from '../assets/bar.png';
 
 const PlayingScreen = () => {
   return (
