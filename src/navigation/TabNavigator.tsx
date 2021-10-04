@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { useTheme } from "react-native-paper";
 import PlayingBar from "../components/PlayingBar";
 import { CommonActions, useNavigation } from "@react-navigation/core";
+import { StatusBar } from "react-native";
 
 
 const Tab = createMaterialBottomTabNavigator()

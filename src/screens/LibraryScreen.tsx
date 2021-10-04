@@ -1,18 +1,51 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { BigItem } from '../components/BigItem';
+import layout from '../styles/layout';
+
+const testpic =
+  'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const LibraryScreen = () => (
-  <View style={{ flex: 1 }}>
-    <View
-      style={{
-        backgroundColor: '#F4F4F4',
-        padding: 16,
-        paddingVertical: 24,
-        flex: 1,
-      }}>
-      <Text style={{ fontSize: 20, fontWeight: '700' }}>Library WIP.</Text>
+  <View style={layout.container}>
+    <View style={styles.itemsContainer}>
+      <Text
+        style={{
+          marginBottom: 16,
+        }}>
+        今天
+      </Text>
+      <BigItem
+        title="動く、動く.mp3"
+        subtitle="8.7 MB，1 小时前"
+        pic={testpic}
+      />
+      <BigItem
+        title="動く、動く.mp3"
+        subtitle="8.7 MB，1 小时前"
+        pic={testpic}
+      />
+    </View>
+    <View style={styles.itemsContainer}>
+      <Text
+        style={{
+          marginBottom: 16,
+        }}>
+        9 月 18， 周六
+      </Text>
+      <BigItem
+        title="動く、動く.mp3"
+        subtitle="8.7 MB，9 月 18 日"
+        pic={testpic}
+      />
     </View>
   </View>
 );
+
+const styles = StyleSheet.create({
+  itemsContainer: {
+    marginBottom: 24,
+  },
+});
 
 export default LibraryScreen;

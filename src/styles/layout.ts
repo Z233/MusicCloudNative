@@ -7,4 +7,8 @@ export default StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 48
   },
+  loginContainer: {
+    flex: 1,
+    paddingHorizontal: 32,
+  },
 });
