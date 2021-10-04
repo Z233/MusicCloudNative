@@ -11,7 +11,7 @@ export type FuncOrVal<T> = T | Func<T>;
 export function useWebfxRef<T>(ref: Ref<T>) {
     const [val, setVal] = useState(ref.value);
     useWebfxCallbacks(ref.onChanged, x => {
-        console.info('Ref changed', ref)
+        // console.info('Ref changed', ref)
         if (val !== x.value) setVal(x.value);
     }, [val]);
     return val;

@@ -4,17 +4,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApiBaseClient } from "./api";
 import base64 from "react-native-base64";
 
+export type LoadingState = 'empty' | 'loading' | 'cached' | 'refreshing' | 'done';
+
 export interface UserInfo {
     username: string | null;
     token: string | null;
     lists: Api.TrackListInfo[] | null;
-    updating: boolean;
+    state: LoadingState;
+}
+
+export interface Playlist extends Api.TrackListGet {
+    state: LoadingState;
 }
 
 export class ApiClient {
     readonly userInfo = new Ref<UserInfo>();
     private readonly storage: Storage;
     private readonly api = new ApiBaseClient();
+    private listsMap = new Map<number, Ref<Playlist>>();
 
     constructor(storagePrefix: string) {
         this.storage = new Storage(storagePrefix);
@@ -22,14 +29,14 @@ export class ApiClient {
             username: null,
             token: null,
             lists: null,
-            updating: false,
+            state: 'empty',
         };
     }
 
     async readSavedInfo() {
         const storedInfo = await this.storage.getJson("userinfo") as UserInfo;
         if (storedInfo && storedInfo.username && storedInfo.token) {
-            this.userInfo.value = { ...this.userInfo.value, ...storedInfo, updating: true };
+            this.userInfo.value = { ...this.userInfo.value, ...storedInfo, state: 'refreshing' };
             this.setToken(storedInfo.token)
             this.getUserInfo();
         }
@@ -42,6 +49,29 @@ export class ApiClient {
         }) as Api.UserInfo;
         this.setToken(resp.token!);
         await this.handleUserInfo(resp);
+    }
+
+    getPlaylistRef(id: number) {
+        let ref = this.listsMap.get(id);
+        if (!ref) {
+            ref = new Ref<Playlist>();
+            const inIndex = this.userInfo.value?.lists?.find(x => x.id == id);
+            if (inIndex) ref.value = { ...inIndex, tracks: null!, state: 'loading' };
+            else ref.value = { id, state: 'loading' } as any;
+            this.listsMap.set(id, ref);
+            this.updateTrackList(id);
+        }
+        return ref;
+    }
+
+    async updateTrackList(id: number) {
+        const resp = await this.api.get("lists/" + id) as Playlist;
+        resp.state = 'done';
+        resp.picurl = this.api.processUrl(resp.picurl);
+        for (const t of resp.tracks) {
+            t.picurl = this.api.processUrl(t.picurl);
+        }
+        this.listsMap.get(id)!.value = resp;
     }
 
     private async getUserInfo() {
@@ -58,8 +88,11 @@ export class ApiClient {
             username: resp.username,
             token: resp.token ? resp.token : this.userInfo.value!.token,
             lists: resp.lists!,
-            updating: false,
+            state: 'done' as const,
         };
+        for (const l of userInfo.lists) {
+            l.picurl = this.api.processUrl(l.picurl);
+        }
         await this.storage.setJson("userinfo", userInfo);
         this.userInfo.value = userInfo;
     }

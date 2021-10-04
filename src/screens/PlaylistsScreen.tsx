@@ -7,12 +7,14 @@ import { Layout } from '../styles';
 import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem'
 import { ColumnsLayout } from '../layouts/ColumnsLayout';
 import { RippleOverlay } from '../components/RippleOverlay';
+import { useUserInfo } from '../api';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem
 }
 
 const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
+  const userinfo = useUserInfo();
   return (
     <ScrollView style={Layout.container}>
       <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
@@ -21,18 +23,18 @@ const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
       </ColumnsLayout>
       <PlaylistsHeader />
       <View>
-        <PlaylistItem
-          onPress={onPressPlaylist}
-          title="ACG"
-          owner="Fronz"
-          cover="https://mc-stor.yuuza.net/pic/467e08f4-6884-4461-9b98-a0176fed6f29.jpg"
-        />
-        <PlaylistItem
-          onPress={onPressPlaylist}
-          title="Cool Music"
-          owner="Yuuza"
-          cover="https://mc-stor.yuuza.net/pic/65d8a422-3c89-4aca-8e37-7d87f31203a6.jpg"
-        />
+        {
+          userinfo.lists?.map(x => (
+            <PlaylistItem
+              key={x.id}
+              id={x.id}
+              onPress={onPressPlaylist}
+              title={x.name}
+              owner={x.ownerName}
+              cover={x.picurl}
+            />
+          ))
+        }
       </View>
     </ScrollView>
   )

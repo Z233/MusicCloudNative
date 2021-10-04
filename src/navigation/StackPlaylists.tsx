@@ -12,14 +12,12 @@ const Stack = createStackNavigator();
 const StackPlaylists = () => {
   const navigation = useNavigation();
 
-  const onPressPlaylist: onPressPlaylistItem = (title, owner, cover) => {
+  const onPressPlaylist: onPressPlaylistItem = (id) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Playlist',
         params: {
-          title,
-          owner,
-          cover,
+          id
         },
       }),
     );

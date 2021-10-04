@@ -16,7 +16,7 @@ export class ApiBaseClient {
 
   async _fetch(input: RequestInfo, init?: RequestInit) {
     if (this.debugSleep) await sleepAsync(this.debugSleep * (Math.random() + 1));
-    console.info('fetch', { input, init });
+    console.info('fetch', init?.method || 'GET' , input);
     return await fetch(input, {
       credentials: 'same-origin',
       ...init
@@ -151,11 +151,12 @@ export class ApiBaseClient {
   }
   getTrack(id: number) { return this.get('tracks/' + id) as Promise<Api.Track>; }
   getList(id: number) { return this.get('lists/' + id) as Promise<Api.Track>; }
-  processUrl(url: string) {
+  processUrl<T extends string | null | undefined>(url: T): T {
+    if (!url) return url;
     if (url.match('^(https?:/)?/')) return url;
     if (this.storageUrlBase && url.startsWith('storage/'))
-      return this.storageUrlBase + url.substr(8);
-    return this.baseUrl + url;
+      return this.storageUrlBase + url.substr(8) as any;
+    return this.baseUrl + url as any;
   }
 };
 

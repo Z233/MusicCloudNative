@@ -11,6 +11,7 @@ export namespace Api {
   interface TrackListInfo {
     id: number;
     owner: number;
+    ownerName: string;
     name: string;
     picurl: string;
     visibility: number;
