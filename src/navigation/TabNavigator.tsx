@@ -28,6 +28,7 @@ const TabNavigator = () => {
   return (
     <React.Fragment>
       <Tab.Navigator
+        initialRouteName="音乐库"
         shifting={true}
         activeColor="rgba(255, 255, 255, 1)"
         inactiveColor="rgba(255, 255, 255, 0.74)"
