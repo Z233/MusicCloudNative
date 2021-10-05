@@ -6,7 +6,7 @@ import { useTheme } from 'react-native-paper';
 import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
 
-const PlaylistDetailScreen = () => {
+const PlaylistDetailScreen = React.memo(() => {
   const { params } = useRoute() as { params: { id: number } }
   const theme = useTheme();
   const list = usePlayList(params.id);
@@ -15,6 +15,7 @@ const PlaylistDetailScreen = () => {
     const keysurfix = keyMap[track.id] = (keyMap[track.id] || 0) + 1;
     return { ...track, key: track.id + '_' + keysurfix };
   });
+  console.info('list', list.id, tracks?.length);
 
   return (
     <View style={{ flex: 1 }}>
@@ -39,7 +40,7 @@ const PlaylistDetailScreen = () => {
       />
     </View>
   );
-};
+});
 
 const FakeStatusBar = () => (
   <>

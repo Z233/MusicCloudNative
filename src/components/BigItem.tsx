@@ -11,7 +11,7 @@ interface Props {
   onMorePress?: () => void;
 }
 
-export const BigItem = (props: Props) => (
+export const BigItem = React.memo((props: Props) => (
   <View
     style={{
       borderRadius: 16,
@@ -40,4 +40,4 @@ export const BigItem = (props: Props) => (
     </View>
     <RippleOverlay onPress={props.onPress} />
   </View>
-);
+));

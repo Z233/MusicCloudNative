@@ -13,7 +13,7 @@ interface Props {
   onPressPlaylist: onPressPlaylistItem
 }
 
-const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
+const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
   const userinfo = useUserInfo();
   return (
     <FlatList
@@ -40,7 +40,7 @@ const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
       )}
     />
   )
-}
+})
 
 const PlaylistsHeader = () => (
   <View style={{ flexDirection: 'row', height: 28, justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>

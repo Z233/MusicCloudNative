@@ -10,8 +10,9 @@ import { useUserInfo } from '../../api';
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const HomeScreen = () => {
+const HomeScreen = React.memo(() => {
   const userinfo = useUserInfo();
+  console.info('home', userinfo.username);
   return (
     <ScrollView style={styles.container}>
       <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
@@ -38,7 +39,7 @@ const HomeScreen = () => {
       </View>
     </ScrollView>
   )
-};
+});
 
 const RecentPlaylists = () => {
   return (
