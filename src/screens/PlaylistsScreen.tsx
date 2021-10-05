@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, FlatList } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BigItem } from '../components/BigItem';
@@ -22,20 +22,18 @@ const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
         <PlaylistButton icon="history" text="最近播放" />
       </ColumnsLayout>
       <PlaylistsHeader />
-      <View>
-        {
-          userinfo.lists?.map(x => (
-            <PlaylistItem
-              key={x.id}
-              id={x.id}
-              onPress={onPressPlaylist}
-              title={x.name}
-              owner={x.ownerName}
-              cover={x.picurl}
-            />
-          ))
-        }
-      </View>
+      <FlatList
+        data={userinfo.lists}
+        renderItem={({ item }) => (
+          <PlaylistItem
+            id={item.id}
+            onPress={onPressPlaylist}
+            title={item.name}
+            owner={item.ownerName}
+            cover={item.picurl}
+          />
+        )}
+      />
     </ScrollView>
   )
 }
@@ -90,7 +88,7 @@ const PlaylistButton = (props: { icon: string; text: string }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => {}} />
+    <RippleOverlay onPress={() => { }} />
   </View>
 );
 

@@ -26,7 +26,12 @@ const PlaylistDetailScreen = () => {
         renderItem={({ item }) => {
           return <BigItem title={item.name} subtitle={item.artist} pic={item.picurl!} />;
         }}
-        contentContainerStyle={{ paddingBottom: 180 }}
+        contentContainerStyle={{
+          backgroundColor: '#F4F4F4',
+          padding: 16,
+          paddingVertical: 24,
+          paddingBottom: 180,
+        }}
       />
     </View>
   );
