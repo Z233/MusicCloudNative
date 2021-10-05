@@ -1,14 +1,10 @@
 
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
-import { Image, StatusBar, Text, View, ScrollView } from 'react-native';
+import { Image, StatusBar, Text, View, ScrollView, FlatList } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
-
-interface Props {
-
-}
 
 const PlaylistDetailScreen = () => {
   const { params } = useRoute() as { params: { id: number } }
@@ -25,32 +21,22 @@ const PlaylistDetailScreen = () => {
         <Text>{list.name}</Text>
         <Text>{list.ownerName}</Text>
       </View>
-      <ScrollView>
-        <View
-          style={{
-            backgroundColor: '#F4F4F4',
-            padding: 16,
-            paddingVertical: 24,
-            flex: 1,
-          }}>
-          {
-            list.tracks?.map(track => {
-              const keysurfix = keyMap[track.id] = (keyMap[track.id] || 0) + 1;
-              return <BigItem key={track.id + '_' + keysurfix} title={track.name} subtitle={track.artist} pic={track.picurl!} />
-            })
-          }
-        </View>
-        <View style={{ height: 180 }}></View>
-      </ScrollView>
+      <FlatList
+        data={list.tracks}
+        renderItem={({ item }) => {
+          return <BigItem title={item.name} subtitle={item.artist} pic={item.picurl!} />;
+        }}
+        contentContainerStyle={{ paddingBottom: 180 }}
+      />
     </View>
-  )
-}
+  );
+};
 
 const FakeStatusBar = () => (
   <>
     <StatusBar barStyle="light-content" />
     <View style={{ height: StatusBar.currentHeight }}></View>
   </>
-)
+);
 
 export default PlaylistDetailScreen;
