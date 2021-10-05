@@ -17,7 +17,7 @@ import PlayingScreen from '../screens/PlayingScreen';
 import SecondaryHeader from '../components/SecondaryHeader';
 import PrimaryHeader from '../components/PrimaryHeader';
 import LoginScreen from '../screens/LoginScreen';
-import StackLogin from './StackLogin';
+import StackLogin from './StackAuth';
 import { useUserInfo, useClient } from '../api';
 
 const Stack = createStackNavigator();

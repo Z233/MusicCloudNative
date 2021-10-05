@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Dimensions,
   Image,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -21,23 +20,7 @@ const RegisterScreen = () => {
 
   return (
     <React.Fragment>
-      <StatusBar backgroundColor={theme.colors.primary} />
       <View style={layout.loginContainer}>
-        <Image source={headerBg} style={styles.headerBg} />
-        <View style={styles.headerContainer}>
-          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-            <Icon
-              style={{
-                marginBottom: 16,
-              }}
-              name="arrow-left-drop-circle-outline"
-              size={40}
-              color="white"
-            />
-          </TouchableWithoutFeedback>
-          {/* <IconButton icon="arrow-left-drop-circle-outline" size={40} /> */}
-          <Text style={styles.headerTitle}>创建账号</Text>
-        </View>
         <View style={styles.formContainer}>
           <TextInput style={styles.input} label="用户名" />
           <TextInput
