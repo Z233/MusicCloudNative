@@ -11,6 +11,10 @@ const PlaylistDetailScreen = () => {
   const theme = useTheme();
   const list = usePlayList(params.id);
   const keyMap = {} as any;
+  const tracks = list.tracks?.map(track => {
+    const keysurfix = keyMap[track.id] = (keyMap[track.id] || 0) + 1;
+    return { ...track, key: track.id + '_' + keysurfix };
+  });
 
   return (
     <View style={{ flex: 1 }}>
@@ -22,9 +26,9 @@ const PlaylistDetailScreen = () => {
         <Text>{list.ownerName}</Text>
       </View>
       <FlatList
-        data={list.tracks}
+        data={tracks}
         renderItem={({ item }) => {
-          return <BigItem title={item.name} subtitle={item.artist} pic={item.picurl!} />;
+          return <BigItem key={item.key} title={item.name} subtitle={item.artist} pic={item.picurl!} />;
         }}
         contentContainerStyle={{
           backgroundColor: '#F4F4F4',

@@ -16,25 +16,29 @@ interface Props {
 const PlaylistsScreen = ({ onPressPlaylist }: Props) => {
   const userinfo = useUserInfo();
   return (
-    <ScrollView style={Layout.container}>
-      <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
-        <PlaylistButton icon="expand-all" text="最近添加" />
-        <PlaylistButton icon="history" text="最近播放" />
-      </ColumnsLayout>
-      <PlaylistsHeader />
-      <FlatList
-        data={userinfo.lists}
-        renderItem={({ item }) => (
-          <PlaylistItem
-            id={item.id}
-            onPress={onPressPlaylist}
-            title={item.name}
-            owner={item.ownerName}
-            cover={item.picurl}
-          />
-        )}
-      />
-    </ScrollView>
+    <FlatList
+      style={Layout.container}
+      contentContainerStyle={{ paddingBottom: 180 }}
+      ListHeaderComponent={
+        <View>
+          <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
+            <PlaylistButton icon="expand-all" text="最近添加" />
+            <PlaylistButton icon="history" text="最近播放" />
+          </ColumnsLayout>
+          <PlaylistsHeader />
+        </View>
+      }
+      data={userinfo.lists}
+      renderItem={({ item }) => (
+        <PlaylistItem
+          id={item.id}
+          onPress={onPressPlaylist}
+          title={item.name}
+          owner={item.ownerName}
+          cover={item.picurl}
+        />
+      )}
+    />
   )
 }
 
