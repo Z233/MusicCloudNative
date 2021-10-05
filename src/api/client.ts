@@ -2,6 +2,7 @@ import { Ref } from "./webfxUtil";
 import { Api } from "./apidef";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApiBaseClient } from "./api";
+//@ts-expect-error
 import base64 from "react-native-base64";
 
 export type LoadingState = 'empty' | 'loading' | 'cached' | 'refreshing' | 'done';
@@ -37,7 +38,7 @@ export class ApiClient {
         const storedInfo = await this.storage.getJson("userinfo") as UserInfo;
         if (storedInfo && storedInfo.username && storedInfo.token) {
             this.userInfo.value = { ...this.userInfo.value, ...storedInfo, state: 'refreshing' };
-            this.setToken(storedInfo.token)
+            this.setToken(storedInfo.token);
             this.getUserInfo();
         }
     }
@@ -47,7 +48,17 @@ export class ApiClient {
             path: "users/me/login",
             auth: 'Basic ' + base64.encode(username + ':' + passwd)
         }) as Api.UserInfo;
-        this.setToken(resp.token!);
+        await this.handleUserInfo(resp);
+    }
+
+    async register(username: string, passwd: string) {
+        const resp = await this.api.post({
+            path: "users/new",
+            obj: {
+                username,
+                passwd
+            } as Api.UserInfo
+        }) as Api.UserInfo;
         await this.handleUserInfo(resp);
     }
 
@@ -59,12 +70,12 @@ export class ApiClient {
             if (inIndex) ref.value = { ...inIndex, tracks: null!, state: 'loading' };
             else ref.value = { id, state: 'loading' } as any;
             this.listsMap.set(id, ref);
-            this.updateTrackList(id);
+            this.updatePlaylist(id);
         }
         return ref;
     }
 
-    async updateTrackList(id: number) {
+    async updatePlaylist(id: number) {
         const resp = await this.api.get("lists/" + id) as Playlist;
         resp.state = 'done';
         resp.picurl = this.api.processUrl(resp.picurl);
@@ -90,6 +101,7 @@ export class ApiClient {
             lists: resp.lists!,
             state: 'done' as const,
         };
+        this.setToken(userInfo.token!);
         for (const l of userInfo.lists) {
             l.picurl = this.api.processUrl(l.picurl);
         }
