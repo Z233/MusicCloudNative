@@ -5,73 +5,62 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Button, TextInput, useTheme } from 'react-native-paper';
+import { Button, IconButton, TextInput, useTheme } from 'react-native-paper';
 import layout from '../styles/layout';
 //@ts-expect-error
 import headerBg from '../assets/header-bg.png';
-import { useClient } from '../api';
-import { CommonActions, useNavigation } from '@react-navigation/core';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/core';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const theme = useTheme();
-  const client = useClient();
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState('publicuser');
-  const [passwd, setPasswd] = useState('public');
-  const [loading, setLoading] = useState(false)
-
-  const onLogin = async () => {
-    setLoading(true)
-    await client.login(username, passwd);
-    setLoading(false)
-  };
-
-  const onPressRegisterButton = () => {
-    navigation.dispatch(
-      CommonActions.navigate({
-        name: 'Register',
-      }),
-    );
-  };
   return (
     <React.Fragment>
       <StatusBar backgroundColor={theme.colors.primary} />
       <View style={layout.loginContainer}>
         <Image source={headerBg} style={styles.headerBg} />
         <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>Music Cloud</Text>
-          <Text style={styles.headerSubtitle}>登录以继续使用</Text>
+          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+            <Icon
+              style={{
+                marginBottom: 16,
+              }}
+              name="arrow-left-drop-circle-outline"
+              size={40}
+              color="white"
+            />
+          </TouchableWithoutFeedback>
+          {/* <IconButton icon="arrow-left-drop-circle-outline" size={40} /> */}
+          <Text style={styles.headerTitle}>创建账号</Text>
         </View>
         <View style={styles.formContainer}>
-          <TextInput
-            style={styles.input}
-            label="用户名"
-            onChangeText={setUsername}
-            value={username}
-          />
+          <TextInput style={styles.input} label="用户名" />
           <TextInput
             style={styles.input}
             label="密码"
-            onChangeText={setPasswd}
-            value={passwd}
+            secureTextEntry
+            right={<TextInput.Icon name="eye" />}
+          />
+          <TextInput
+            style={styles.input}
+            label="确认密码"
             secureTextEntry
             right={<TextInput.Icon name="eye" />}
           />
           <View style={styles.buttonContainer}>
-            <Button onPress={onPressRegisterButton}>创建账号</Button>
             <Button
               style={styles.inputButton}
               icon="login"
               mode="contained"
-              onPress={onLogin}
-              loading={loading}
               labelStyle={{
                 color: 'white',
               }}>
-              登录
+              注册
             </Button>
           </View>
         </View>
@@ -120,7 +109,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
   },
   footerContainer: {
@@ -134,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
