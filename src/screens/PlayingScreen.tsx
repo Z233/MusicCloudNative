@@ -94,7 +94,7 @@ const Control = () => (
       <View
         style={{
           backgroundColor: '#FF6557',
-          transparent: 64,
+          width: 64,
           height: 64,
           borderRadius: 32,
           justifyContent: 'center',
