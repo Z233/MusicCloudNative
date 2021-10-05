@@ -1,20 +1,16 @@
 import {
   createStackNavigator,
   TransitionPresets,
-  TransitionSpecs,
 } from '@react-navigation/stack';
 import React from 'react';
-import { StatusBar, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AuthHeader from '../components/AuthHeader';
-import PrimaryHeader from '../components/PrimaryHeader';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 
 const Stack = createStackNavigator();
 
 const StackLogin = () => {
-  const theme = useTheme();
   const screenTransition = TransitionPresets.SlideFromRightIOS;
   return (
     <>

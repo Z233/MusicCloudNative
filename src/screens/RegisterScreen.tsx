@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Button, IconButton, TextInput, useTheme } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import layout from '../styles/layout';
-//@ts-expect-error
-import headerBg from '../assets/header-bg.png';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/core';
 
 const RegisterScreen = () => {
-  const theme = useTheme();
-  const navigation = useNavigation();
 
   return (
     <React.Fragment>

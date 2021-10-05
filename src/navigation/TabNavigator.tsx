@@ -1,15 +1,10 @@
-import HomeScreen from "../screens/Home";
-import LibraryScreen from "../screens/LibraryScreen";
-import PlaylistsScreen from "../screens/PlaylistsScreen";
 import * as React from 'react'
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import routes from "./Routes";
 import _ from 'lodash'
 import { useTheme } from "react-native-paper";
 import PlayingBar from "../components/PlayingBar";
 import { CommonActions, useNavigation } from "@react-navigation/core";
-import { StatusBar } from "react-native";
 
 
 const Tab = createMaterialBottomTabNavigator()

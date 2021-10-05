@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { Image, ScrollView, Text, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BigItem } from '../../components/BigItem';

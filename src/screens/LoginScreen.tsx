@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import layout from '../styles/layout';
 import { useClient } from '../api';
 import { CommonActions, useNavigation } from '@react-navigation/core';
 
 const LoginScreen = () => {
-  const theme = useTheme();
   const client = useClient();
   const navigation = useNavigation();
 

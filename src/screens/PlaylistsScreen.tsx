@@ -1,8 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { BigItem } from '../components/BigItem';
 import { Layout } from '../styles';
 import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem'
 import { ColumnsLayout } from '../layouts/ColumnsLayout';

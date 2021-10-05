@@ -5,7 +5,7 @@ import { ApiBaseClient } from "./api";
 //@ts-expect-error
 import base64 from "react-native-base64";
 
-export type LoadingState = 'empty' | 'loading' | 'cached' | 'refreshing' | 'done';
+export type LoadingState = 'empty' | 'loading' | 'done';
 
 export interface UserInfo {
     username: string | null;
@@ -37,7 +37,7 @@ export class ApiClient {
     async readSavedInfo() {
         const storedInfo = await this.storage.getJson("userinfo") as UserInfo;
         if (storedInfo && storedInfo.username && storedInfo.token) {
-            this.userInfo.value = { ...this.userInfo.value, ...storedInfo, state: 'refreshing' };
+            this.userInfo.value = { ...this.userInfo.value, ...storedInfo, state: 'loading' };
             this.setToken(storedInfo.token);
             this.getUserInfo();
         }

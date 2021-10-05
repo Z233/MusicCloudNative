@@ -1,6 +1,5 @@
-import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import { StatusBar, Text, View, Image } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MiIcon from 'react-native-vector-icons/MaterialIcons';

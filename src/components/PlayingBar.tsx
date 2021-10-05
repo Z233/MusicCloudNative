@@ -1,6 +1,6 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
-import { Colors, IconButton, ProgressBar, useTheme } from "react-native-paper";
+import { Image, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import { ProgressBar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const testpic =

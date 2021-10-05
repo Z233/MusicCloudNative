@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { ApiClient, UserInfo, Playlist } from "./client";
 import { useWebfxRef } from "./reactUtil";
-import { Api } from "./apidef";
 
 export const ApiContext = React.createContext<ApiClient>(null!);
 

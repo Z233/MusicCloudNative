@@ -1,7 +1,7 @@
 
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
 import React from 'react';
-import { Image, StatusBar, Text, View, ScrollView, FlatList } from 'react-native';
+import { Image, StatusBar, Text, View, FlatList } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
@@ -42,11 +42,5 @@ const PlaylistDetailScreen = React.memo(() => {
   );
 });
 
-const FakeStatusBar = () => (
-  <>
-    <StatusBar barStyle="light-content" />
-    <View style={{ height: StatusBar.currentHeight }}></View>
-  </>
-);
 
 export default PlaylistDetailScreen;
