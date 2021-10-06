@@ -1,26 +1,25 @@
-import * as React from 'react'
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import routes from "./Routes";
-import _ from 'lodash'
-import { useTheme } from "react-native-paper";
-import PlayingBar from "../components/PlayingBar";
-import { CommonActions, useNavigation } from "@react-navigation/core";
+import * as React from 'react';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import routes from './Routes';
+import _ from 'lodash';
+import { useTheme } from 'react-native-paper';
+import PlayingBar from '../components/PlayingBar';
+import { CommonActions, useNavigation } from '@react-navigation/core';
 
-
-const Tab = createMaterialBottomTabNavigator()
+const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigator = () => {
-  const navigation = useNavigation()
-  const theme = useTheme()
+  const navigation = useNavigation();
+  const theme = useTheme();
 
   const onPress = () => {
     navigation.dispatch(
       CommonActions.navigate({
-        name: 'Playing'
-      })
-    )
-  }
-  
+        name: 'Playing',
+      }),
+    );
+  };
+
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -29,8 +28,7 @@ const TabNavigator = () => {
         inactiveColor="rgba(255, 255, 255, 0.74)"
         barStyle={{
           backgroundColor: theme.colors.primary,
-        }}
-      >
+        }}>
         {_.map(routes, (route, index) => (
           <Tab.Screen
             key={index}
@@ -44,7 +42,7 @@ const TabNavigator = () => {
       </Tab.Navigator>
       <PlayingBar onPress={onPress} />
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default TabNavigator
+export default TabNavigator;

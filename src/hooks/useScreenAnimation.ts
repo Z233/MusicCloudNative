@@ -1,14 +1,8 @@
-import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useRef } from 'react';
-import {
-  Animated,
-} from 'react-native';
-import { getOnScroll } from '../store';
-import layout from '../styles/layout';
+import { useNavigation } from "@react-navigation/core";
+import { useRef, useEffect } from "react";
+import { Animated, StyleSheet } from "react-native";
 
-type Props = React.PropsWithChildren<{}>;
-
-export const ScrollViewLayout = (props: Props) => {
+export default function useScreenAnimation() {
   const navigation = useNavigation();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -28,11 +22,13 @@ export const ScrollViewLayout = (props: Props) => {
     };
   }, []);
 
+  const FADE_DURATION = 350
+
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 1000,
+      duration: FADE_DURATION,
       useNativeDriver: true,
     }).start();
   };
@@ -41,19 +37,12 @@ export const ScrollViewLayout = (props: Props) => {
     // Will change fadeAnim value to 0 in 5 seconds
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 1000,
+      duration: FADE_DURATION,
       useNativeDriver: true,
     }).start();
   };
 
-  return (
-    <Animated.ScrollView
-      style={{
-        ...layout.container,
-        opacity: fadeAnim,
-      }}
-      onScroll={getOnScroll()}>
-      {props.children}
-    </Animated.ScrollView>
-  );
-};
+  return {
+    opacity: fadeAnim
+  }
+}

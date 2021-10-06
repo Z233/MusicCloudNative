@@ -1,46 +1,62 @@
 import React from 'react';
-import { Image, ScrollView, Text, View, ViewStyle } from 'react-native';
+import {
+  Animated,
+  Image,
+  ScrollView,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BigItem } from '../../components/BigItem';
 import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
-import styles from './HomeScreen.styles'
+import styles from './HomeScreen.styles';
 import { useUserInfo } from '../../api';
 import { ScrollViewLayout } from '../../layouts/ScrollViewLayout';
-
+import { getOnScroll } from '../../store';
+import useScreenAnimation from '../../hooks/useScreenAnimation';
+import layout from '../../styles/layout';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const HomeScreen = React.memo(() => {
+const HomeScreen = () => {
   const userinfo = useUserInfo();
+  const screenAnimation = useScreenAnimation();
+
   return (
-    <ScrollViewLayout>
+    <Animated.ScrollView
+      onScroll={getOnScroll()}
+      style={{
+        ...layout.container,
+        ...screenAnimation
+      }}>
       <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
         <Text
           style={{
             fontSize: 20,
             fontWeight: '700',
-            marginBottom: 16
+            marginBottom: 16,
           }}>
           Hello, {userinfo.username}.
-      </Text>
+        </Text>
         <RecentPlaylists />
         <Text
           style={{
             fontSize: 16,
             color: '#FF6557',
             fontWeight: '700',
-            marginVertical: 16
+            marginVertical: 16,
           }}>
           最近播放
-      </Text>
+        </Text>
         <RecentTracks />
         <View style={{ height: 180 }}></View>
       </View>
-    </ScrollViewLayout>
-  )
-});
+    </Animated.ScrollView>
+  );
+};
 
 const RecentPlaylists = () => {
   return (
@@ -52,7 +68,7 @@ const RecentPlaylists = () => {
   );
 };
 
-const PlaylistButton = (props: { bg: any; icon?: string; text: string; }) => (
+const PlaylistButton = (props: { bg: any; icon?: string; text: string }) => (
   <View
     style={{
       height: 48,
@@ -88,7 +104,7 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string; }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => { }} />
+    <RippleOverlay onPress={() => {}} />
   </View>
 );
 

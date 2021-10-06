@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, Animated } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Layout } from '../styles';
@@ -10,6 +10,7 @@ import { useUserInfo } from '../api';
 import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
 import { getOnScroll } from '../store';
+import useScreenAnimation from '../hooks/useScreenAnimation';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem;
@@ -17,9 +18,13 @@ interface Props {
 
 const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
   const userinfo = useUserInfo();
+  const screenAnimation = useScreenAnimation()
   return (
-    <FlatList
-      style={layout.container}
+    <Animated.FlatList
+      style={{
+        ...layout.container,
+        ...screenAnimation
+      }}
       onScroll={getOnScroll()}
       contentContainerStyle={{ paddingBottom: 180 }}
       ListHeaderComponent={

@@ -1,5 +1,5 @@
 import { CommonActions, useNavigation } from '@react-navigation/core';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { onPressPlaylistItem } from '../components/PlaylistItem';
 import PrimaryHeader from '../components/PrimaryHeader';
@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 
 const StackPlaylists = () => {
   const navigation = useNavigation();
+  const screenTransition = TransitionPresets.SlideFromRightIOS;
 
   const onPressPlaylist: onPressPlaylistItem = (id) => {
     navigation.dispatch(
@@ -27,6 +28,7 @@ const StackPlaylists = () => {
     <Stack.Navigator initialRouteName="Playlists">
       <Stack.Screen
         options={{
+          ...screenTransition,
           header: PrimaryHeader,
         }}
         name="Playlists">
@@ -34,6 +36,7 @@ const StackPlaylists = () => {
       </Stack.Screen>
       <Stack.Screen
         options={{
+          ...screenTransition,
           header: () => <SecondaryHeader title="" />,
         }}
         name="Playlist"
