@@ -6,15 +6,16 @@ import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles'
 import { useUserInfo } from '../../api';
+import { ScrollViewLayout } from '../../layouts/ScrollViewLayout';
+
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const HomeScreen = React.memo(() => {
   const userinfo = useUserInfo();
-  console.info('home', userinfo.username);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollViewLayout>
       <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
         <Text
           style={{
@@ -37,7 +38,7 @@ const HomeScreen = React.memo(() => {
         <RecentTracks />
         <View style={{ height: 180 }}></View>
       </View>
-    </ScrollView>
+    </ScrollViewLayout>
   )
 });
 

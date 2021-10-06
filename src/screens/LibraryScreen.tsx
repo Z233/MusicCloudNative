@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BigItem } from '../components/BigItem';
+import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const LibraryScreen = () => (
-  <View style={layout.container}>
+  <ScrollViewLayout>
     <View style={styles.itemsContainer}>
       <Text
         style={{
@@ -39,7 +40,7 @@ const LibraryScreen = () => (
         pic={testpic}
       />
     </View>
-  </View>
+  </ScrollViewLayout>
 );
 
 const styles = StyleSheet.create({

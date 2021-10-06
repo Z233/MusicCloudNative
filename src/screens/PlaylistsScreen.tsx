@@ -3,52 +3,61 @@ import { Text, View, FlatList } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Layout } from '../styles';
-import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem'
+import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem';
 import { ColumnsLayout } from '../layouts/ColumnsLayout';
 import { RippleOverlay } from '../components/RippleOverlay';
 import { useUserInfo } from '../api';
+import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 
 interface Props {
-  onPressPlaylist: onPressPlaylistItem
+  onPressPlaylist: onPressPlaylistItem;
 }
 
 const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
   const userinfo = useUserInfo();
   return (
-    <FlatList
-      style={Layout.container}
-      contentContainerStyle={{ paddingBottom: 180 }}
-      ListHeaderComponent={
-        <View>
-          <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
-            <PlaylistButton icon="expand-all" text="最近添加" />
-            <PlaylistButton icon="history" text="最近播放" />
-          </ColumnsLayout>
-          <PlaylistsHeader />
-        </View>
-      }
-      data={userinfo.lists}
-      renderItem={({ item }) => (
-        <PlaylistItem
-          id={item.id}
-          onPress={onPressPlaylist}
-          title={item.name}
-          owner={item.ownerName}
-          cover={item.picurl}
-        />
-      )}
-    />
-  )
-})
+    <ScrollViewLayout>
+      <FlatList
+        contentContainerStyle={{ paddingBottom: 180 }}
+        ListHeaderComponent={
+          <View>
+            <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
+              <PlaylistButton icon="expand-all" text="最近添加" />
+              <PlaylistButton icon="history" text="最近播放" />
+            </ColumnsLayout>
+            <PlaylistsHeader />
+          </View>
+        }
+        data={userinfo.lists}
+        renderItem={({ item }) => (
+          <PlaylistItem
+            id={item.id}
+            onPress={onPressPlaylist}
+            title={item.name}
+            owner={item.ownerName}
+            cover={item.picurl}
+          />
+        )}
+      />
+    </ScrollViewLayout>
+  );
+});
 
 const PlaylistsHeader = () => (
-  <View style={{ flexDirection: 'row', height: 28, justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+  <View
+    style={{
+      flexDirection: 'row',
+      height: 28,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    }}>
     <IconButton
       icon="plus"
       size={24}
       color="rgba(0,0,0,.46)"
       style={{ alignSelf: 'center', margin: 0 }}
-      onPress={() => { }}
+      onPress={() => {}}
     />
     <View style={{ height: 28, flexDirection: 'row', alignItems: 'center' }}>
       <Text>创建时间</Text>
@@ -57,11 +66,11 @@ const PlaylistsHeader = () => (
         size={16}
         color="rgba(0,0,0,.46)"
         style={{ alignSelf: 'center', margin: 0 }}
-        onPress={() => { }}
+        onPress={() => {}}
       />
     </View>
   </View>
-)
+);
 
 const PlaylistButton = (props: { icon: string; text: string }) => (
   <View
@@ -91,7 +100,7 @@ const PlaylistButton = (props: { icon: string; text: string }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => { }} />
+    <RippleOverlay onPress={() => {}} />
   </View>
 );
 
