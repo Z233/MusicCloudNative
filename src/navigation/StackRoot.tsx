@@ -9,12 +9,14 @@ import PlayingScreen from '../screens/PlayingScreen';
 import SecondaryHeader from '../components/SecondaryHeader';
 import StackLogin from './StackAuth';
 import { useUserInfo, useClient } from '../api';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
 
 const Stack = createStackNavigator();
 
 
 
 const StackNavigator = () => {
+  const theme = useTheme()
   const client = useClient();
   const userinfo = useUserInfo();
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ const StackNavigator = () => {
 
   if (loading) return (
     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-      <Text>(UI TODO) Loading...</Text>
+      <ActivityIndicator animating={true} color={theme.colors.primary} size="large" />
     </View>
   )
   if (!userinfo.token) return <StackLogin />
