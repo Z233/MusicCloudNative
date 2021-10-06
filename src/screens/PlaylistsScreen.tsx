@@ -8,6 +8,8 @@ import { ColumnsLayout } from '../layouts/ColumnsLayout';
 import { RippleOverlay } from '../components/RippleOverlay';
 import { useUserInfo } from '../api';
 import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
+import layout from '../styles/layout';
+import { getOnScroll } from '../store';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem;
@@ -16,30 +18,30 @@ interface Props {
 const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
   const userinfo = useUserInfo();
   return (
-    <ScrollViewLayout>
-      <FlatList
-        contentContainerStyle={{ paddingBottom: 180 }}
-        ListHeaderComponent={
-          <View>
-            <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
-              <PlaylistButton icon="expand-all" text="最近添加" />
-              <PlaylistButton icon="history" text="最近播放" />
-            </ColumnsLayout>
-            <PlaylistsHeader />
-          </View>
-        }
-        data={userinfo.lists}
-        renderItem={({ item }) => (
-          <PlaylistItem
-            id={item.id}
-            onPress={onPressPlaylist}
-            title={item.name}
-            owner={item.ownerName}
-            cover={item.picurl}
-          />
-        )}
-      />
-    </ScrollViewLayout>
+    <FlatList
+      style={layout.container}
+      onScroll={getOnScroll()}
+      contentContainerStyle={{ paddingBottom: 180 }}
+      ListHeaderComponent={
+        <View>
+          <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
+            <PlaylistButton icon="expand-all" text="最近添加" />
+            <PlaylistButton icon="history" text="最近播放" />
+          </ColumnsLayout>
+          <PlaylistsHeader />
+        </View>
+      }
+      data={userinfo.lists}
+      renderItem={({ item }) => (
+        <PlaylistItem
+          id={item.id}
+          onPress={onPressPlaylist}
+          title={item.name}
+          owner={item.ownerName}
+          cover={item.picurl}
+        />
+      )}
+    />
   );
 });
 
