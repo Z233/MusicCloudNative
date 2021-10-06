@@ -1,4 +1,4 @@
-import { Callbacks, Ref } from "./webfxUtil";
+import { Callbacks, Ref } from "../utils/webfx";
 import React, { useContext, useEffect, useState } from "react";
 
 export type AnyFunc = (...args: any) => any;

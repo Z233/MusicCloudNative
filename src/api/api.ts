@@ -1,6 +1,6 @@
 // file: api.ts
 
-import { Callbacks, Action, CancelToken, sleepAsync } from "./webfxUtil";
+import { Callbacks, Action, CancelToken, sleepAsync } from "../utils/webfx";
 import { Api } from "./apidef";
 
 

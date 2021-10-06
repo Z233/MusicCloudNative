@@ -5,7 +5,7 @@ import { Image, StatusBar, Text, View, FlatList, StyleSheet } from 'react-native
 import { useTheme } from 'react-native-paper';
 import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
-import { arraySum } from '../api/webfxUtil';
+import { arraySum } from '../utils/webfx';
 
 const PlaylistDetailScreen = React.memo(() => {
   const { params } = useRoute() as { params: { id: number } }

@@ -291,6 +291,9 @@ export interface Callbacks<T extends AnyFunc = Action> {
 export const Callbacks: { new <T extends AnyFunc = Action>(): Callbacks<T>; } = CallbacksImpl;
 
 export class Ref<T> {
+    constructor(val?: T) {
+        this._value = val;
+    }
     private _value: T | undefined = undefined;
     private _onChanged: Callbacks<Action<Ref<T>>> | undefined = undefined;
     get onChanged() {
