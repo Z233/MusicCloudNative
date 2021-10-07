@@ -6,41 +6,26 @@ export default function useScreenAnimation() {
   const navigation = useNavigation();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  const FADE_DURATION = 350
+
   useEffect(() => {
     const listeners = [
       navigation.addListener('focus', () => {
-        fadeIn();
+        // Will change fadeAnim value to 1 in FADE_DURATION miliseconds
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: FADE_DURATION,
+          useNativeDriver: true,
+        }).start();
       }),
 
       navigation.addListener('blur', () => {
-        fadeOut();
+        fadeAnim.setValue(0);
       }),
     ];
 
-    return () => {
-      listeners.forEach(rm => rm())
-    };
+    return () => listeners.forEach(x => x());
   }, []);
-
-  const FADE_DURATION = 350
-
-  const fadeIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: FADE_DURATION,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const fadeOut = () => {
-    // Will change fadeAnim value to 0 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: FADE_DURATION,
-      useNativeDriver: true,
-    }).start();
-  };
 
   return {
     opacity: fadeAnim
