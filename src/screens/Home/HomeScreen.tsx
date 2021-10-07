@@ -52,7 +52,7 @@ const HomeScreen = () => {
           最近播放
         </Text>
         <RecentTracks />
-        <View style={{ height: 180 }}></View>
+        <View style={{ height: 112 }}></View>
       </View>
     </Animated.ScrollView>
   );

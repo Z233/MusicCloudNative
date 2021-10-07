@@ -26,7 +26,7 @@ const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
         ...screenAnimation
       }}
       onScroll={getOnScroll()}
-      contentContainerStyle={{ paddingBottom: 180 }}
+      contentContainerStyle={{ paddingBottom: 112 }}
       ListHeaderComponent={
         <View>
           <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F4F4',
     padding: 16,
     paddingVertical: 24,
-    paddingBottom: 180,
+    paddingBottom: 96,
   }
 })
 

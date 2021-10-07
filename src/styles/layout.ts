@@ -5,7 +5,7 @@ export default StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 48
+    paddingBottom: 112
   },
   loginContainer: {
     flex: 1,
