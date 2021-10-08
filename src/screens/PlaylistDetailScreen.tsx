@@ -12,7 +12,7 @@ import {
 import { IconButton, useTheme } from 'react-native-paper';
 import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
-import { arraySum } from '../utils/webfx';
+import { formatTimeLong, getTracksTotalLength } from '../utils/util';
 
 const PlaylistDetailScreen = React.memo(() => {
   const { params } = useRoute() as { params: { id: number } };
@@ -24,10 +24,7 @@ const PlaylistDetailScreen = React.memo(() => {
     return { ...track, key: track.id + '_' + keysurfix };
   });
   console.info('list', list.id, tracks?.length);
-  const totalMinutes = !tracks
-    ? 0
-    : Math.round(arraySum(tracks, x => x.length) / 60);
-  const [hour, minutes] = [Math.round(totalMinutes / 60), totalMinutes % 60];
+  const timeString = formatTimeLong(getTracksTotalLength(tracks));
 
   return (
     <FlatList
@@ -49,9 +46,7 @@ const PlaylistDetailScreen = React.memo(() => {
                 <Text style={styles.subtitle}>
                   {list.state == 'loading'
                     ? '加载中……'
-                    : `${tracks?.length} 首，${
-                        hour === 0 ? '' : hour + ' 小时 '
-                      }${minutes} 分钟`}
+                    : `${tracks?.length} 首，${timeString}`}
                 </Text>
                 <Text style={styles.subtitle}>{list.ownerName}</Text>
               </View>
