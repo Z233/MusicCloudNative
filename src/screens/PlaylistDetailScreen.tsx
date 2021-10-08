@@ -170,7 +170,7 @@ const PlaylistDetailScreen = React.memo(() => {
             key={item.key}
             title={item.name}
             subtitle={item.artist}
-            pic={item.picurl!}
+            pic={item.thumburl}
           />
         );
       }}

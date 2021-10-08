@@ -81,6 +81,7 @@ export class ApiClient {
         resp.picurl = this.api.processUrl(resp.picurl);
         for (const t of resp.tracks) {
             t.picurl = this.api.processUrl(t.picurl);
+            t.thumburl = this.api.processUrl(t.thumburl);
         }
         this.listsMap.get(id)!.value = resp;
     }

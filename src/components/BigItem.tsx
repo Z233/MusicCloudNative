@@ -6,7 +6,7 @@ import { RippleOverlay } from "./RippleOverlay";
 interface Props {
   title: string;
   subtitle: string;
-  pic: string;
+  pic?: string;
   onPress?: () => void;
   onMorePress?: () => void;
 }
