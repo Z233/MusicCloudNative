@@ -189,6 +189,8 @@ const PlaylistDetailScreen = React.memo(() => {
         foreground={renderForeground()}
         header={renderHeader()}
         decelerationRate="normal"
+        bounces={false}
+        snapToEdge={false}
         headerSize={headerSizeProps => setHeaderHeight(headerSizeProps.height)}
         headerHeight={56 + StatusBar.currentHeight!}
         parallaxHeight={188}
