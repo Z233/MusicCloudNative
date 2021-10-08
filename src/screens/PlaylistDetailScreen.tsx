@@ -20,7 +20,7 @@ import { BigItem } from '../components/BigItem';
 import SecondaryHeader, {
   SECONDARY_HEADER_HEIGHT,
 } from '../components/SecondaryHeader';
-import { arraySum } from '../utils/webfx';
+import { formatTimeLong, getTracksTotalLength } from '../utils/util';
 
 const PlaylistDetailScreen = React.memo(() => {
   const { params } = useRoute() as { params: { id: number } };
@@ -32,10 +32,7 @@ const PlaylistDetailScreen = React.memo(() => {
     return { ...track, key: track.id + '_' + keysurfix };
   });
   console.info('list', list.id, tracks?.length);
-  const totalMinutes = !tracks
-    ? 0
-    : Math.round(arraySum(tracks, x => x.length) / 60);
-  const [hour, minutes] = [Math.round(totalMinutes / 60), totalMinutes % 60];
+  const timeString = formatTimeLong(getTracksTotalLength(tracks));
 
   const { event, Value } = Animated;
   const scrollY = new Value(0);
@@ -65,12 +62,14 @@ const PlaylistDetailScreen = React.memo(() => {
         opacity,
         elevation: 1,
       }}>
-      <View style={{
-        height: 24,
-        width: 24,
-        backgroundColor: theme.colors.primary,
-        position: 'absolute'
-      }} />
+      <View
+        style={{
+          height: 24,
+          width: 24,
+          backgroundColor: theme.colors.primary,
+          position: 'absolute',
+        }}
+      />
       <IconButton color="white" icon="play-circle" size={PLAY_BUTTON_SIZE} />
     </Animated.View>
   );
@@ -110,9 +109,7 @@ const PlaylistDetailScreen = React.memo(() => {
             <Text style={styles.subtitle}>
               {list.state == 'loading'
                 ? '加载中……'
-                : `${tracks?.length} 首，${
-                    hour === 0 ? '' : hour + ' 小时 '
-                  }${minutes} 分钟`}
+                : `${tracks?.length} 首，${timeString}`}
             </Text>
             <Text style={styles.subtitle}>{list.ownerName}</Text>
           </View>
