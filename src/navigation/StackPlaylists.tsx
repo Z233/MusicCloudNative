@@ -37,7 +37,7 @@ const StackPlaylists = () => {
       <Stack.Screen
         options={{
           ...screenTransition,
-          header: () => <SecondaryHeader title="" />,
+          headerShown: false
         }}
         name="Playlist"
         component={PlaylistDetailScreen}

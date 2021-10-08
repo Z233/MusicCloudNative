@@ -3,6 +3,8 @@ import React from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 
+export const SECONDARY_HEADER_HEIGHT = 56
+
 interface Props {
   title: string;
   backDirection?: 'left' | 'down';
@@ -23,7 +25,7 @@ const SecondaryHeader = ({ title, backDirection, dots }: Props) => {
       />
       <View
         style={{
-          height: 56,
+          height: SECONDARY_HEADER_HEIGHT,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
