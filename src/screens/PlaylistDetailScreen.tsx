@@ -22,57 +22,18 @@ import SecondaryHeader, {
 } from '../components/SecondaryHeader';
 import { formatTimeLong, getTracksTotalLength } from '../utils/util';
 
+
+const PLAY_BUTTON_SIZE = 56;
+const OPACITY_TRIGGER_OFFSET =
+  SECONDARY_HEADER_HEIGHT + 92 - PLAY_BUTTON_SIZE / 2;
+
 const PlaylistDetailScreen = React.memo(() => {
-  const { params } = useRoute() as { params: { id: number } };
+  const { params: { id } } = useRoute() as { params: { id: number } };
   const theme = useTheme();
-  const list = usePlayList(params.id);
-  const keyMap = {} as any;
-  const tracks = list.tracks?.map(track => {
-    const keysurfix = (keyMap[track.id] = (keyMap[track.id] || 0) + 1);
-    return { ...track, key: track.id + '_' + keysurfix };
-  });
-  console.info('list', list.id, tracks?.length);
-  const timeString = formatTimeLong(getTracksTotalLength(tracks));
+  console.info('list screen', id);
 
   const { event, Value } = Animated;
   const scrollY = new Value(0);
-
-  interface PlayButtonProps {
-    top?: Animated.AnimatedInterpolation;
-    bottom?: number;
-    opacity?: Animated.AnimatedInterpolation;
-  }
-
-  const PLAY_BUTTON_SIZE = 56;
-  const OPACITY_TRIGGER_OFFSET =
-    SECONDARY_HEADER_HEIGHT + 92 - PLAY_BUTTON_SIZE / 2;
-
-  const PlayButton = ({ top, bottom, opacity }: PlayButtonProps) => (
-    <Animated.View
-      style={{
-        position: 'absolute',
-        flex: 1,
-        height: PLAY_BUTTON_SIZE,
-        width: PLAY_BUTTON_SIZE,
-        alignItems: 'center',
-        justifyContent: 'center',
-        right: 24,
-        top,
-        bottom,
-        opacity,
-        elevation: 1,
-      }}>
-      <View
-        style={{
-          height: 24,
-          width: 24,
-          backgroundColor: theme.colors.primary,
-          position: 'absolute',
-        }}
-      />
-      <IconButton color="white" icon="play-circle" size={PLAY_BUTTON_SIZE} />
-    </Animated.View>
-  );
 
   const renderForeground = () => {
     const opacity = scrollY.interpolate({
@@ -96,23 +57,7 @@ const PlaylistDetailScreen = React.memo(() => {
           backgroundColor: theme.colors.primary,
         }}>
         <Animated.View style={{ flexDirection: 'row', opacity: opacity }}>
-          <Image
-            style={{
-              width: 112,
-              height: 112,
-              borderRadius: 16,
-            }}
-            source={{ uri: list.picurl }}
-          />
-          <View style={{ marginLeft: 24 }}>
-            <Text style={styles.title}>{list.name}</Text>
-            <Text style={styles.subtitle}>
-              {list.state == 'loading'
-                ? '加载中……'
-                : `${tracks?.length} 首，${timeString}`}
-            </Text>
-            <Text style={styles.subtitle}>{list.ownerName}</Text>
-          </View>
+          <ListInfo id={id} />
         </Animated.View>
         <View style={styles.operationContainer}>
           <IconButton
@@ -161,22 +106,7 @@ const PlaylistDetailScreen = React.memo(() => {
     });
     return <PlayButton top={top} opacity={opacity} />;
   };
-  const renderItems = () => (
-    <FlatList
-      data={tracks}
-      renderItem={({ item }) => {
-        return (
-          <BigItem
-            key={item.key}
-            title={item.name}
-            subtitle={item.artist}
-            pic={item.thumburl}
-          />
-        );
-      }}
-      contentContainerStyle={styles.contentBox}
-    />
-  );
+  const renderItems = () => <ListItems id={id} />;
 
   const [headerHeight, setHeaderHeight] = useState(0);
 
@@ -217,6 +147,92 @@ const PlaylistDetailScreen = React.memo(() => {
     </>
   );
 });
+
+const ListInfo = React.memo(({ id }: { id: number }) => {
+  const list = usePlayList(id);
+  const tracks = list.tracks ?? [];
+  const timeString = formatTimeLong(getTracksTotalLength(list.tracks));
+  console.info('list info', id, tracks?.length);
+  return <>
+    <Image
+      style={{
+        width: 112,
+        height: 112,
+        borderRadius: 16,
+      }}
+      source={{ uri: list.picurl }}
+    />
+    <View style={{ marginLeft: 24 }}>
+      <Text style={styles.title}>{list.name}</Text>
+      <Text style={styles.subtitle}>
+        {list.state == 'loading'
+          ? '加载中……'
+          : `${tracks.length} 首，${timeString}`}
+      </Text>
+      <Text style={styles.subtitle}>{list.ownerName}</Text>
+    </View>
+  </>
+})
+
+const ListItems = React.memo(({ id }: { id: number }) => {
+  const list = usePlayList(id);
+  const keyMap = {} as any;
+  const tracks = list.tracks?.map(track => {
+    const keysurfix = (keyMap[track.id] = (keyMap[track.id] || 0) + 1);
+    return { ...track, key: track.id + '_' + keysurfix };
+  });
+  console.info('list items', id, tracks?.length);
+  return <FlatList
+    data={tracks}
+    renderItem={({ item }) => {
+      return (
+        <BigItem
+          key={item.key}
+          title={item.name}
+          subtitle={item.artist}
+          pic={item.thumburl}
+        />
+      );
+    }}
+    contentContainerStyle={styles.contentBox}
+  />
+})
+
+interface PlayButtonProps {
+  top?: Animated.AnimatedInterpolation;
+  bottom?: number;
+  opacity?: Animated.AnimatedInterpolation;
+}
+
+const PlayButton = ({ top, bottom, opacity }: PlayButtonProps) => {
+  const theme = useTheme();
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        flex: 1,
+        height: PLAY_BUTTON_SIZE,
+        width: PLAY_BUTTON_SIZE,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 24,
+        top,
+        bottom,
+        opacity,
+        elevation: 1,
+      }}>
+      <View
+        style={{
+          height: 24,
+          width: 24,
+          backgroundColor: theme.colors.primary,
+          position: 'absolute',
+        }}
+      />
+      <IconButton color="white" icon="play-circle" size={PLAY_BUTTON_SIZE} />
+    </Animated.View>
+  )
+};
 
 const styles = StyleSheet.create({
   title: {
