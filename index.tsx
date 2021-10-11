@@ -8,8 +8,7 @@ import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import StackRoot from './src/navigation/StackRoot';
 import { RecoilRoot } from 'recoil';
-import { ApiContext } from "./src/api";
-import { ApiClient } from './src/api';
+import { AppContext, AppService } from './src/hooks/AppContext';
 
 const theme = {
   ...DefaultTheme,
@@ -22,13 +21,13 @@ const theme = {
 
 const MusicCloud = () => (
   <RecoilRoot>
-    <ApiContext.Provider value={new ApiClient("mc-")}>
+    <AppContext.Provider value={new AppService()}>
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <StackRoot />
         </NavigationContainer>
       </PaperProvider>
-    </ApiContext.Provider>
+    </AppContext.Provider>
   </RecoilRoot>
 )
 
