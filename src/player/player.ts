@@ -1,4 +1,4 @@
-import TrackPlayer, { Event, State } from "react-native-track-player";
+import TrackPlayer, { Event, State, Capability } from "react-native-track-player";
 import { Api } from "../api";
 import { Ref } from "../utils/webfx";
 
@@ -40,7 +40,19 @@ export class Player {
     };
 
     constructor() {
+        TrackPlayer.updateOptions({
+            capabilities: [Capability.Pause, Capability.Play, Capability.Skip]
+        })
         TrackPlayer.addEventListener(Event.PlaybackState, this.stateCallback);
+        TrackPlayer.addEventListener(Event.PlaybackTrackChanged, ({ track, nextTrack }) => {
+            console.info("track changed", track, nextTrack);
+        });
+        TrackPlayer.addEventListener(Event.RemotePlay, () => {
+            this.play();
+        });
+        TrackPlayer.addEventListener(Event.RemotePause, () => {
+            this.pause();
+        });
     }
 
     async init() {
@@ -54,7 +66,12 @@ export class Player {
         await this.init();
         await TrackPlayer.reset();
         await TrackPlayer.add({
-            url: track.url
+            url: track.url,
+            artwork: track.picurl,
+            title: track.name,
+            artist: track.artist,
+            album: track.album,
+            duration: track.length,
         });
         await TrackPlayer.play();
     }
