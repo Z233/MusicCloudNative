@@ -15,7 +15,7 @@ export class ScreenState {
         return (e: NativeSyntheticEvent<NativeScrollEvent>) => {
             const offsetY = e.nativeEvent.contentOffset.y
             const isTop = offsetY <= 0;
-            if (this.isOffsetTopRef.value != isTop) this.isOffsetTopRef.value = isTop;
+            this.isOffsetTopRef.setIfChanged(isTop);
         };
     }
 }

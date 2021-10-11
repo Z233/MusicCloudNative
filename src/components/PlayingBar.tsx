@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import React, { useMemo, useEffect } from "react";
+import { Image, StyleSheet, View, Text, TouchableWithoutFeedback, Animated } from "react-native";
 import { ProgressBar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { usePlayer } from "../player/hooks";
@@ -15,32 +15,42 @@ const PlayingBar = ({ onPress }: Props) => {
   const player = usePlayer();
   const track = useWebfxRef(player.track);
   const playing = useWebfxRef(player.isPlaying);
+
+  const opacity = useMemo(() => new Animated.Value(track ? 1 : 0), []);
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: track ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true
+    }).start();
+  }, [track]);
+
   return (
-    <TouchableWithoutFeedback
-      onPress={() => onPress()}>
-      <View
-        style={styles.container}
-      >
-        <View style={styles.wrapper}>
-          <View style={styles.trackContainer}>
-            <Image style={styles.albumCover} source={{ uri: track?.thumburl }} />
-            <View style={styles.trackInfo}>
-              <Text numberOfLines={1} style={styles.trackTitle}>{track?.name}</Text>
-              <Text numberOfLines={1} style={styles.trackArtist}>{track?.artist}</Text>
+    <Animated.View style={{ ...styles.container, opacity }}>
+      <TouchableWithoutFeedback
+        onPress={() => onPress()}>
+        <View>
+          <View style={styles.wrapper}>
+            <View style={styles.trackContainer}>
+              <Image style={styles.albumCover} source={{ uri: track?.thumburl }} />
+              <View style={styles.trackInfo}>
+                <Text numberOfLines={1} style={styles.trackTitle}>{track?.name}</Text>
+                <Text numberOfLines={1} style={styles.trackArtist}>{track?.artist}</Text>
+              </View>
+            </View>
+            <View style={styles.operationContainer}>
+              <Icon name={playing ? "pause" : "play-arrow"} size={32} onPress={() => {
+                playing ? player.pause() : player.play();
+              }}></Icon>
+              {/* <IconButton icon="pause" size={20} /> */}
             </View>
           </View>
-          <View style={styles.operationContainer}>
-            <Icon name={playing ? "pause" : "play-arrow"} size={32} onPress={() => {
-              playing ? player.pause() : player.play();
-            }}></Icon>
-            {/* <IconButton icon="pause" size={20} /> */}
+          <View style={styles.progressWrapper}>
+            <Progress />
           </View>
         </View>
-        <View style={styles.progressWrapper}>
-          <Progress />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </Animated.View>
   )
 }
 
@@ -70,7 +80,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 16,
-    padding: 16
+    padding: 16,
+    overflow: 'hidden',
   },
   albumCover: {
     height: 40,
@@ -94,7 +105,7 @@ const styles = StyleSheet.create({
   operationContainer: {
   },
   progressWrapper: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 0,
     marginHorizontal: 16,
     position: 'absolute',
     bottom: 0,

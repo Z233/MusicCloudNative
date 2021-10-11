@@ -16,10 +16,12 @@ export class Player {
     positionRatio = new Ref<number>(0);
 
     private inited = false;
+    private destoryed = false;
     private positionTimer: NodeJS.Timer | null = null;
     private stateCallback = ({ state }: any) => {
+        if (this.destoryed) return;
         this.state.value = state;
-        this.isPlaying.value = playingStates.includes(state);
+        this.isPlaying.setIfChanged(playingStates.includes(state));
         console.info('player', State[state]);
         if (this.isPlaying.value !== (this.positionTimer != null)) {
             if (this.isPlaying.value) {
@@ -66,6 +68,7 @@ export class Player {
     }
 
     destroy() {
+        this.destoryed = true;
         TrackPlayer.stop().then(() => TrackPlayer.destroy());
     }
 }

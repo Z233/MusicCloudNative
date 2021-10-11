@@ -305,6 +305,10 @@ export class Ref<T> {
         this._value = val;
         if (this._onChanged) this.onChanged.invoke(this);
     }
+
+    setIfChanged(val: T) {
+        if (this.value !== val) this.value = val;
+    }
 }
 
 export class Lazy<T> {
