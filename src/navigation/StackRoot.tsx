@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   const theme = useTheme()
   const client = useClient();
-  const userinfo = useUserInfo();
+  const { value: userinfo } = useUserInfo();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

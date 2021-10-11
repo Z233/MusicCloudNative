@@ -11,39 +11,113 @@ export interface UserInfo {
     username: string | null;
     token: string | null;
     lists: Api.TrackListInfo[] | null;
-    state: LoadingState;
 }
 
-export interface Playlist extends Api.TrackListGet {
-    state: LoadingState;
+export abstract class ApiResource<T> {
+    stateRef = new Ref<LoadingState>('empty');
+    valueRef: Ref<T>;
+
+    constructor(readonly client: ApiClient, value: T) {
+        this.valueRef = new Ref<T>(value)
+    }
+    use() {
+        return {
+            state: this.stateRef.useValue(),
+            value: this.valueRef.useValue()
+        }
+    };
+
+    loadIfEmpty() {
+        if (this.stateRef.value == 'empty') {
+            return this.load();
+        }
+    }
+
+    async load() {
+        let fetched = false;
+        const key = this._cacheKey();
+        if (key && this.stateRef.value == 'empty') {
+            sleepAsync(1000).then(async () => {
+                if (fetched) return;
+                // If the fetching is too slow, then load from the cache.
+                const cached = await this.client._storage.getJson(key) as T;
+                if (fetched) return;
+                if (cached) {
+                    this.valueRef.value = cached;
+                }
+            });
+        }
+        this.stateRef.value = 'loading';
+        const value = this.valueRef.value = await this._loadImpl();
+        fetched = true;
+        if (key) this.client._storage.setJson(key, value);
+        this.stateRef.value = 'done';
+    }
+
+    protected _cacheKey(): string | null { return null; };
+    protected _loadImpl(): Promise<T> { throw new Error("No impl") };
+}
+
+export type Playlist = Api.TrackListGet;
+
+export class PlaylistResource extends ApiResource<Api.TrackListGet> {
+    protected _cacheKey(): string {
+        return "list-" + this.valueRef.value.id;
+    }
+    protected async _loadImpl() {
+        const id = this.valueRef.value.id;
+        const resp = await this.client._api.get("lists/" + id) as Playlist;
+        resp.picurl = this.client._api.processUrl(resp.picurl);
+        this.client.processTracks(resp.tracks);
+        return resp;
+    }
+}
+
+export class UploadsResources extends ApiResource<Api.Track[]> {
+    protected _cacheKey(): string {
+        return "uploads-u-" + this.client.userInfo.valueRef.value.username;
+    }
+    protected async _loadImpl() {
+        const resp = await this.client._api.get("users/me/uploads") as {
+            tracks: Api.Track[]
+        };
+        this.client.processTracks(resp.tracks);
+        return resp.tracks;
+    }
+}
+
+export class UserInfoResource extends ApiResource<UserInfo> {
 }
 
 export class ApiClient {
-    readonly userInfo = new Ref<UserInfo>({
+    readonly userInfo = new UserInfoResource(this, {
         username: null,
         token: null,
         lists: null,
-        state: 'empty',
     });
-    private readonly storage: Storage;
-    private readonly api = new ApiBaseClient();
-    private listsMap = new Map<number, Ref<Playlist>>();
+
+    private listsMap = new Map<number, PlaylistResource>();
+    uploads = new UploadsResources(this, []);
+
+    readonly _storage: Storage;
+    readonly _api = new ApiBaseClient();
 
     constructor(storagePrefix: string) {
-        this.storage = new Storage(storagePrefix);
+        this._storage = new Storage(storagePrefix);
     }
 
     async readSavedInfo() {
-        const storedInfo = await this.storage.getJson("userinfo") as UserInfo;
+        const storedInfo = await this._storage.getJson("userinfo") as UserInfo;
         if (storedInfo && storedInfo.username && storedInfo.token) {
-            this.userInfo.value = { ...this.userInfo.value, ...storedInfo, state: 'loading' };
+            this.userInfo.valueRef.value = { ...this.userInfo.valueRef.value, ...storedInfo };
+            this.userInfo.stateRef.value = 'loading';
             this.setToken(storedInfo.token);
             this.getUserInfo();
         }
     }
 
     async login(username: string, passwd: string) {
-        const resp = await this.api.post({
+        const resp = await this._api.post({
             path: "users/me/login",
             auth: 'Basic ' + base64.encode(username + ':' + passwd)
         }) as Api.UserInfo;
@@ -51,7 +125,7 @@ export class ApiClient {
     }
 
     async register(username: string, passwd: string) {
-        const resp = await this.api.post({
+        const resp = await this._api.post({
             path: "users/new",
             obj: {
                 username,
@@ -61,67 +135,60 @@ export class ApiClient {
         await this.handleUserInfo(resp);
     }
 
-    getPlaylistRef(id: number) {
-        let ref = this.listsMap.get(id);
-        if (!ref) {
-            ref = new Ref<Playlist>(null!);
-            const inIndex = this.userInfo.value?.lists?.find(x => x.id == id);
-            if (inIndex) ref.value = { ...inIndex, tracks: null!, state: 'loading' };
-            else ref.value = { id, state: 'loading' } as any;
-            this.listsMap.set(id, ref);
-            this.updatePlaylist(id);
+    getPlaylistResource(id: number) {
+        let res = this.listsMap.get(id);
+        if (!res) {
+            res = new PlaylistResource(this, null!);
+            const inIndex = this.userInfo.valueRef.value?.lists?.find(x => x.id == id);
+            if (inIndex) res.valueRef.value = { ...inIndex, tracks: null! };
+            else res.valueRef = { id } as any;
+            res.stateRef.value = 'loading';
+            this.listsMap.set(id, res);
+            this.updatePlaylistResource(id);
         }
-        return ref;
+        return res;
     }
 
-    async updatePlaylist(id: number) {
-        const ref = this.listsMap.get(id)!;
-        let fetched = false;
-        if (!ref.value.tracks) {
-            sleepAsync(1000).then(async () => {
-                if (fetched) return;
-                // If the fetching is too slow, then load from the cache.
-                const cached = await this.storage.getJson('list-' + id) as Playlist;
-                if (cached) {
-                    ref.value = { ...cached, state: 'loading' };
-                }
-            });
-        }
-        const resp = await this.api.get("lists/" + id) as Playlist;
-        fetched = true;
-        resp.state = 'done';
-        resp.picurl = this.api.processUrl(resp.picurl);
-        for (const t of resp.tracks) {
-            t.url = this.api.processUrl(t.url);
-            t.picurl = this.api.processUrl(t.picurl);
-            t.thumburl = this.api.processUrl(t.thumburl);
-        }
-        this.storage.setJson('list-' + id, resp);
-        ref.value = resp;
+    getUploadsResource() {
+        this.uploads.loadIfEmpty();
+        return this.uploads;
+    }
+
+    async updatePlaylistResource(id: number) {
+        await this.listsMap.get(id)!.load();
     }
 
     private async getUserInfo() {
-        const resp = await this.api.get("users/me") as Api.UserInfo;
+        const resp = await this._api.get("users/me") as Api.UserInfo;
         await this.handleUserInfo(resp);
     }
 
     private setToken(token: string) {
-        this.api.defaultAuth = "Bearer " + token;
+        this._api.defaultAuth = "Bearer " + token;
     }
 
     private async handleUserInfo(resp: Api.UserInfo) {
         const userInfo = {
             username: resp.username,
-            token: resp.token ? resp.token : this.userInfo.value!.token,
+            token: resp.token ? resp.token : this.userInfo.valueRef.value!.token,
             lists: resp.lists!,
-            state: 'done' as const,
         };
+        this.userInfo.stateRef.value = 'done';
         this.setToken(userInfo.token!);
         for (const l of userInfo.lists) {
-            l.picurl = this.api.processUrl(l.picurl);
+            l.picurl = this._api.processUrl(l.picurl);
         }
-        await this.storage.setJson("userinfo", userInfo);
-        this.userInfo.value = userInfo;
+        await this._storage.setJson("userinfo", userInfo);
+        this.userInfo.valueRef.value = userInfo;
+    }
+
+    processTracks(tracks: Api.Track[]) {
+        for (const t of tracks) {
+            t.url = this._api.processUrl(t.url);
+            t.picurl = this._api.processUrl(t.picurl);
+            t.thumburl = this._api.processUrl(t.thumburl);
+        }
+        return tracks;
     }
 }
 

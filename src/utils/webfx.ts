@@ -1,6 +1,8 @@
 //@ts-nocheck
 // file: utils.ts
 
+import { useWebfxRef } from "./webfxForReact";
+
 const _object_assign = Object.assign;
 const _object_hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -308,6 +310,9 @@ export class Ref<T> {
 
     setIfChanged(val: T) {
         if (this.value !== val) this.value = val;
+    }
+    useValue() {
+        return useWebfxRef(this);
     }
 }
 

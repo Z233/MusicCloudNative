@@ -15,13 +15,13 @@ import { IconButton, useTheme } from 'react-native-paper';
 import StickyParallaxHeader, {
   StickyParallaxHeaderProps,
 } from 'react-native-sticky-parallax-header';
-import { usePlayList } from '../api';
 import { BigItem } from '../components/BigItem';
 import SecondaryHeader, {
   SECONDARY_HEADER_HEIGHT,
 } from '../components/SecondaryHeader';
 import { formatTimeLong, getTracksTotalLength } from '../utils/tracks';
 import { usePlayer } from '../player/hooks';
+import { useClient, usePlaylist } from '../api';
 
 
 const PLAY_BUTTON_SIZE = 56;
@@ -150,9 +150,9 @@ const PlaylistDetailScreen = React.memo(() => {
 });
 
 const ListInfo = React.memo(({ id }: { id: number }) => {
-  const list = usePlayList(id);
-  const tracks = list.tracks ?? [];
-  const timeString = formatTimeLong(getTracksTotalLength(list.tracks));
+  const {value: list, state} = usePlaylist(id);
+  const tracks = list?.tracks ?? [];
+  const timeString = formatTimeLong(getTracksTotalLength(tracks));
   console.info('list info', id, tracks?.length);
   return <>
     <Image
@@ -161,24 +161,24 @@ const ListInfo = React.memo(({ id }: { id: number }) => {
         height: 112,
         borderRadius: 16,
       }}
-      source={{ uri: list.picurl }}
+      source={{ uri: list?.picurl }}
     />
     <View style={{ marginLeft: 24 }}>
-      <Text style={styles.title}>{list.name}</Text>
+      <Text style={styles.title}>{list?.name}</Text>
       <Text style={styles.subtitle}>
-        {list.state == 'loading'
+        {state == 'loading'
           ? '加载中……'
           : `${tracks.length} 首，${timeString}`}
       </Text>
-      <Text style={styles.subtitle}>{list.ownerName}</Text>
+      <Text style={styles.subtitle}>{list?.ownerName}</Text>
     </View>
   </>
 })
 
 const ListItems = React.memo(({ id }: { id: number }) => {
-  const list = usePlayList(id);
+  const list = useClient().getPlaylistResource(id).valueRef.useValue();
   const keyMap = {} as any;
-  const tracks = list.tracks?.map(track => {
+  const tracks = list?.tracks?.map(track => {
     const keysurfix = (keyMap[track.id] = (keyMap[track.id] || 0) + 1);
     return { ...track, key: track.id + '_' + keysurfix };
   });

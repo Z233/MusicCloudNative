@@ -22,7 +22,7 @@ const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const HomeScreen = (props: ScreenProps) => {
-  const userinfo = useUserInfo();
+  const { value: userinfo } = useUserInfo();
   const screenAnimation = useScreenAnimation();
 
   return (

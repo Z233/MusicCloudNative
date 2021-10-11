@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
-import { ApiClient, UserInfo, Playlist } from "./client";
-import { useWebfxRef } from "../utils/webfxForReact";
 import { AppContext } from "../hooks/AppContext";
 
 export function useClient() {
     return useContext(AppContext).apiClient;
 }
 
-export function useUserInfo(): UserInfo {
-    return useWebfxRef(useClient().userInfo)!;
+export function useUserInfo() {
+    return useClient().userInfo.use();
 }
 
-export function usePlayList(id: number): Playlist {
-    const client = useClient();
-    return useWebfxRef(client.getPlaylistRef(id))!;
+export function usePlaylist(id: number) {
+    return useClient().getPlaylistResource(id).use();
+}
+
+export function useUploads() {
+    return useClient().getUploadsResource().use();
 }

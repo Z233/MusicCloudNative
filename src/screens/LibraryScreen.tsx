@@ -5,12 +5,16 @@ import useScreenAnimation from '../hooks/useScreenAnimation';
 import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
 import { ScreenProps } from '../utils/screen';
+import { useUploads } from '../api';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const LibraryScreen = (props: ScreenProps) => {
   const screenAnimation = useScreenAnimation();
+  const {state, value: tracks} = useUploads();
+  console.info('library', tracks.length);
+  // TODO
   return (
     <Animated.ScrollView
       onScroll={props.screenState.getOnScroll()}

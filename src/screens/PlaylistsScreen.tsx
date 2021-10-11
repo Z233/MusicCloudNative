@@ -17,7 +17,7 @@ interface Props {
 }
 
 const PlaylistsScreen = React.memo((props: ScreenProps<Props>) => {
-  const userinfo = useUserInfo();
+  const { value: userinfo } = useUserInfo();
   const screenAnimation = useScreenAnimation()
   return (
     <Animated.FlatList
