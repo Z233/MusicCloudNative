@@ -21,6 +21,7 @@ import SecondaryHeader, {
   SECONDARY_HEADER_HEIGHT,
 } from '../components/SecondaryHeader';
 import { formatTimeLong, getTracksTotalLength } from '../utils/tracks';
+import { usePlayer } from '../player/hooks';
 
 
 const PLAY_BUTTON_SIZE = 56;
@@ -181,6 +182,7 @@ const ListItems = React.memo(({ id }: { id: number }) => {
     const keysurfix = (keyMap[track.id] = (keyMap[track.id] || 0) + 1);
     return { ...track, key: track.id + '_' + keysurfix };
   });
+  const player = usePlayer();
   console.info('list items', id, tracks?.length);
   return <FlatList
     data={tracks}
@@ -191,6 +193,7 @@ const ListItems = React.memo(({ id }: { id: number }) => {
           title={item.name}
           subtitle={item.artist}
           pic={item.thumburl}
+          onPress={() => { player.playTrack(item); }}
         />
       );
     }}
