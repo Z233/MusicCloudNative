@@ -1,4 +1,4 @@
-import { Ref } from "../utils/webfx";
+import { Ref, sleepAsync } from "../utils/webfx";
 import { Api } from "./apidef";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApiBaseClient } from "./api";
@@ -75,14 +75,29 @@ export class ApiClient {
     }
 
     async updatePlaylist(id: number) {
+        const ref = this.listsMap.get(id)!;
+        let fetched = false;
+        if (!ref.value.tracks) {
+            sleepAsync(1000).then(async () => {
+                if (fetched) return;
+                // If the fetching is too slow, then load from the cache.
+                const cached = await this.storage.getJson('list-' + id) as Playlist;
+                if (cached) {
+                    ref.value = { ...cached, state: 'loading' };
+                }
+            });
+        }
         const resp = await this.api.get("lists/" + id) as Playlist;
+        fetched = true;
         resp.state = 'done';
         resp.picurl = this.api.processUrl(resp.picurl);
         for (const t of resp.tracks) {
+            t.url = this.api.processUrl(t.url);
             t.picurl = this.api.processUrl(t.picurl);
             t.thumburl = this.api.processUrl(t.thumburl);
         }
-        this.listsMap.get(id)!.value = resp;
+        this.storage.setJson('list-' + id, resp);
+        ref.value = resp;
     }
 
     private async getUserInfo() {
