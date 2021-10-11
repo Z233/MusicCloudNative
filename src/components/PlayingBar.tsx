@@ -2,9 +2,9 @@ import React from "react";
 import { Image, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { ProgressBar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-const testpic =
-  'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
+import { usePlayer } from "../player/hooks";
+import { useWebfxRef } from "../utils/webfxForReact";
+import { State } from "../player";
 
 interface Props {
   onPress: Function
@@ -12,8 +12,9 @@ interface Props {
 
 
 const PlayingBar = ({ onPress }: Props) => {
-  
-  const theme = useTheme()
+  const player = usePlayer();
+  const track = useWebfxRef(player.track);
+  const playing = useWebfxRef(player.isPlaying);
   return (
     <TouchableWithoutFeedback
       onPress={() => onPress()}>
@@ -22,29 +23,39 @@ const PlayingBar = ({ onPress }: Props) => {
       >
         <View style={styles.wrapper}>
           <View style={styles.trackContainer}>
-            <Image style={styles.albumCover} source={{ uri: testpic }} />
+            <Image style={styles.albumCover} source={{ uri: track?.thumburl }} />
             <View style={styles.trackInfo}>
-              <Text style={styles.trackTitle}>Sincerely</Text>
-              <Text style={styles.trackArtist}>TRUE</Text>
+              <Text numberOfLines={1} style={styles.trackTitle}>{track?.name}</Text>
+              <Text numberOfLines={1} style={styles.trackArtist}>{track?.artist}</Text>
             </View>
           </View>
           <View style={styles.operationContainer}>
-            <Icon name="pause" size={32}></Icon>
+            <Icon name={playing ? "pause" : "play-arrow"} size={32} onPress={() => {
+              playing ? player.pause() : player.play();
+            }}></Icon>
             {/* <IconButton icon="pause" size={20} /> */}
           </View>
         </View>
         <View style={styles.progressWrapper}>
-          <ProgressBar
-            style={styles.progress}
-            color={theme.colors.primary}
-            progress={0.5}
-          />
+          <Progress />
         </View>
       </View>
     </TouchableWithoutFeedback>
   )
-
 }
+
+const Progress = () => {
+  const theme = useTheme()
+  const player = usePlayer();
+  return (
+    <ProgressBar
+      style={styles.progress}
+      color={theme.colors.primary}
+      progress={useWebfxRef(player.positionRatio)}
+    />
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',

@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import StackRoot from './src/navigation/StackRoot';
 import { RecoilRoot } from 'recoil';
 import { AppContext, AppService } from './src/hooks/AppContext';
+import TrackPlayer from "react-native-track-player";
 
 const theme = {
   ...DefaultTheme,
@@ -19,16 +20,24 @@ const theme = {
   },
 };
 
-const MusicCloud = () => (
-  <RecoilRoot>
-    <AppContext.Provider value={new AppService()}>
+const MusicCloud = () => {
+  const appService = React.useMemo(() => new AppService(), []);
+  React.useEffect(() => {
+    return () => appService.destroy();
+  }, []);
+
+  return (
+    <AppContext.Provider value={appService}>
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <StackRoot />
         </NavigationContainer>
       </PaperProvider>
     </AppContext.Provider>
-  </RecoilRoot>
-)
+  )
+}
 
 AppRegistry.registerComponent(appName, () => MusicCloud);
+TrackPlayer.registerPlaybackService(() => async () => {
+  
+});

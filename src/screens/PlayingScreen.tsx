@@ -6,6 +6,9 @@ import MiIcon from 'react-native-vector-icons/MaterialIcons';
 import { RippleOverlay } from '../components/RippleOverlay';
 //@ts-expect-error
 import bar from '../assets/bar.png';
+import { usePlayer } from '../player/hooks';
+import { useWebfxRef } from '../utils/webfxForReact';
+import { formatTime } from '../utils/webfx';
 
 const PlayingScreen = () => {
   return (
@@ -24,90 +27,106 @@ const PlayingScreen = () => {
   );
 };
 
-const Picture = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <View
-      style={{ elevation: 16, backgroundColor: '#FFFFFF', borderRadius: 16 }}>
-      <Image
-        style={{ width: '70%', aspectRatio: 1, borderRadius: 16 }}
-        source={{
-          uri: 'https://mc-stor.yuuza.net/pic/467e08f4-6884-4461-9b98-a0176fed6f29.jpg',
-        }}
-      />
-    </View>
-  </View>
-);
-
-const Control = () => (
-  <View
-    style={{
-      flex: 0.8,
-      alignSelf: 'center',
-      width: '70%',
-      justifyContent: 'space-evenly',
-    }}>
-    <View style={{ height: 60, width: '100%' }}>
-      <Text style={{ fontSize: 22, fontWeight: '700' }}>Sincerely</Text>
-      <Text
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          fontSize: 16,
-          color: 'rgba(0,0,0,0.24)',
-        }}>
-        TRUE
-      </Text>
-      <MiIcon
-        style={{ position: 'absolute', right: 0, top: 14 }}
-        name="favorite-border"
-        size={32}
-      />
-    </View>
-    <View style={{ width: '100%' }}>
-      <Image
-        source={bar}
-        resizeMode="contain"
-        style={{ width: '100%', height: 48 }}
-      />
+const Picture = () => {
+  const track = useWebfxRef(usePlayer().track);
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <View
-        style={{
-          marginTop: 16,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <Text style={{ fontSize: 14 }}>02:21</Text>
-        <Text style={{ fontSize: 14 }}>04:42</Text>
+        style={{ elevation: 16, backgroundColor: '#FFFFFF', borderRadius: 16 }}>
+        <Image
+          style={{ width: '70%', aspectRatio: 1, borderRadius: 16 }}
+          source={{
+            uri: track?.picurl,
+          }}
+        />
       </View>
     </View>
+  )
+};
+
+const Control = () => {
+  const player = usePlayer();
+  const track = useWebfxRef(player.track);
+  const playing = useWebfxRef(player.isPlaying);
+  return (
     <View
       style={{
-        flex: 0.3,
+        flex: 0.8,
         alignSelf: 'center',
-        width: '130%',
+        width: '70%',
         justifyContent: 'space-evenly',
-        alignItems: 'center',
-        flexDirection: 'row',
       }}>
-      <IconButton icon="cached" size={32} onPress={() => {}} />
-      <IconButton icon="skip-previous" size={32} onPress={() => {}} />
+      <View style={{ height: 60, width: '100%' }}>
+        <Text numberOfLines={1} style={{ fontSize: 22, fontWeight: '700' }}>{track?.name}</Text>
+        <Text
+          numberOfLines={1}
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            fontSize: 16,
+            color: 'rgba(0,0,0,0.24)',
+          }}>
+          {track?.artist}
+        </Text>
+        <MiIcon
+          style={{ position: 'absolute', right: 0, top: 14 }}
+          name="favorite-border"
+          size={32}
+        />
+      </View>
+      <View style={{ width: '100%' }}>
+        <Image
+          source={bar}
+          resizeMode="contain"
+          style={{ width: '100%', height: 48 }}
+        />
+        <View
+          style={{
+            marginTop: 16,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <PositionText />
+          <Text style={{ fontSize: 14 }}>{formatTime(track?.length)}</Text>
+        </View>
+      </View>
       <View
         style={{
-          backgroundColor: '#FF6557',
-          width: 64,
-          height: 64,
-          borderRadius: 32,
-          justifyContent: 'center',
+          flex: 0.3,
+          alignSelf: 'center',
+          width: '130%',
+          justifyContent: 'space-evenly',
           alignItems: 'center',
-          overflow: 'hidden',
+          flexDirection: 'row',
         }}>
-        <Icon name="pause" size={32} color="#FFFFFF" />
-        <RippleOverlay onPress={() => {}} />
+        <IconButton icon="cached" size={32} onPress={() => { }} />
+        <IconButton icon="skip-previous" size={32} onPress={() => { }} />
+        <View
+          style={{
+            backgroundColor: '#FF6557',
+            width: 64,
+            height: 64,
+            borderRadius: 32,
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+          }}>
+          <Icon name={playing ? "pause" : "play"} size={32} color="#FFFFFF" />
+          <RippleOverlay onPress={() => {
+            playing ? player.pause() : player.play();
+          }} />
+        </View>
+        <IconButton icon="skip-next" size={32} onPress={() => { }} />
+        <IconButton icon="cached" size={32} onPress={() => { }} />
       </View>
-      <IconButton icon="skip-next" size={32} onPress={() => {}} />
-      <IconButton icon="cached" size={32} onPress={() => {}} />
     </View>
-  </View>
-);
+  )
+};
+
+const PositionText = () => {
+  const position = useWebfxRef(usePlayer().position);
+  return <Text style={{ fontSize: 14 }}>{formatTime(position)}</Text>;
+}
 
 export default PlayingScreen;
