@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StatusBar, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { isOffsetTopState } from '../store';
+import { Ref } from '../utils/webfx';
+import { ScreenState } from '../utils/screen';
 
-const PrimaryHeader = () => {
+const PrimaryHeader = ({ screenState }: { screenState: ScreenState }) => {
   const statusHeight = StatusBar.currentHeight!;
-  const isOffsetTop = useRecoilValue(isOffsetTopState);
-  const fadeAnim = useRef(new Animated.Value(isOffsetTop ? 1 : 0)).current;
+  const isOffsetTop = screenState.useIsOffsetTop();
+  const fadeAnim = useRef(new Animated.Value(isOffsetTop ? 0 : 1)).current;
   const FADE_DURATION = 100
 
   const fadeIn = () => {
@@ -33,8 +34,8 @@ const PrimaryHeader = () => {
   })
 
   useEffect(() => {
-    if (isOffsetTop) fadeIn()
-    else if (!isOffsetTop) fadeOut()
+    if (isOffsetTop) fadeOut()
+    else fadeIn()
   }, [isOffsetTop])
 
 

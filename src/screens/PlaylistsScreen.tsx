@@ -9,14 +9,14 @@ import { RippleOverlay } from '../components/RippleOverlay';
 import { useUserInfo } from '../api';
 import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
-import { getOnScroll } from '../store';
 import useScreenAnimation from '../hooks/useScreenAnimation';
+import { ScreenProps } from '../utils/screen';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem;
 }
 
-const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
+const PlaylistsScreen = React.memo((props: ScreenProps<Props>) => {
   const userinfo = useUserInfo();
   const screenAnimation = useScreenAnimation()
   return (
@@ -25,7 +25,7 @@ const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
         ...layout.container,
         ...screenAnimation
       }}
-      onScroll={getOnScroll()}
+      onScroll={props.screenState.getOnScroll()}
       contentContainerStyle={{ paddingBottom: 112 }}
       ListHeaderComponent={
         <View>
@@ -40,7 +40,7 @@ const PlaylistsScreen = React.memo(({ onPressPlaylist }: Props) => {
       renderItem={({ item }) => (
         <PlaylistItem
           id={item.id}
-          onPress={onPressPlaylist}
+          onPress={props.onPressPlaylist}
           title={item.name}
           owner={item.ownerName}
           cover={item.picurl}

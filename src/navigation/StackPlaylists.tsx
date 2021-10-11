@@ -6,6 +6,7 @@ import PrimaryHeader from '../components/PrimaryHeader';
 import SecondaryHeader from '../components/SecondaryHeader';
 import PlaylistDetailScreen from '../screens/PlaylistDetailScreen';
 import PlaylistsScreen from '../screens/PlaylistsScreen';
+import { useScreenState } from '../utils/screen';
 
 const Stack = createStackNavigator();
 
@@ -23,17 +24,18 @@ const StackPlaylists = () => {
       }),
     );
   };
+  const screenState = useScreenState();
 
   return (
     <Stack.Navigator initialRouteName="Playlists">
       <Stack.Screen
         options={{
           ...screenTransition,
-          header: PrimaryHeader,
+          header: () => <PrimaryHeader screenState={screenState} />
         }}
-        name="Playlists">
-        {() => <PlaylistsScreen onPressPlaylist={onPressPlaylist} />}
-      </Stack.Screen>
+        name="Playlists"
+        children={() => <PlaylistsScreen screenState={screenState} onPressPlaylist={onPressPlaylist} />}
+      />
       <Stack.Screen
         options={{
           ...screenTransition,

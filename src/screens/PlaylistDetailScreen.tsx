@@ -20,7 +20,7 @@ import { BigItem } from '../components/BigItem';
 import SecondaryHeader, {
   SECONDARY_HEADER_HEIGHT,
 } from '../components/SecondaryHeader';
-import { formatTimeLong, getTracksTotalLength } from '../utils/util';
+import { formatTimeLong, getTracksTotalLength } from '../utils/tracks';
 
 
 const PLAY_BUTTON_SIZE = 56;

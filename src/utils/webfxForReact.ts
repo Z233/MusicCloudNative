@@ -1,19 +1,12 @@
-import { Callbacks, Ref } from "../utils/webfx";
+import { Callbacks, Ref, AnyFunc } from "./webfx";
 import React, { useContext, useEffect, useState } from "react";
-
-export type AnyFunc = (...args: any) => any;
-export type Action<T = void> = (arg: T) => void;
-export type Func<TRet> = () => TRet;
-export type AsyncFunc<T> = Func<Promise<T>>;
-
-export type FuncOrVal<T> = T | Func<T>;
 
 export function useWebfxRef<T>(ref: Ref<T>) {
     const [val, setVal] = useState(ref.value);
     useWebfxCallbacks(ref.onChanged, x => {
         // console.info('Ref changed', ref)
         if (val !== x.value) setVal(x.value);
-    }, [val]);
+    }, [ref, val]);
     return val;
 }
 

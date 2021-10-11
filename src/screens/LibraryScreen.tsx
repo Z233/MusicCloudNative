@@ -4,14 +4,16 @@ import { BigItem } from '../components/BigItem';
 import useScreenAnimation from '../hooks/useScreenAnimation';
 import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
+import { ScreenProps } from '../utils/screen';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const LibraryScreen = () => {
+const LibraryScreen = (props: ScreenProps) => {
   const screenAnimation = useScreenAnimation();
   return (
     <Animated.ScrollView
+      onScroll={props.screenState.getOnScroll()}
       style={{
         ...layout.container,
         ...screenAnimation,

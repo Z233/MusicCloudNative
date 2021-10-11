@@ -14,20 +14,20 @@ import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles';
 import { useUserInfo } from '../../api';
 import { ScrollViewLayout } from '../../layouts/ScrollViewLayout';
-import { getOnScroll } from '../../store';
 import useScreenAnimation from '../../hooks/useScreenAnimation';
 import layout from '../../styles/layout';
+import { ScreenProps } from '../../utils/screen';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
-const HomeScreen = () => {
+const HomeScreen = (props: ScreenProps) => {
   const userinfo = useUserInfo();
   const screenAnimation = useScreenAnimation();
 
   return (
     <Animated.ScrollView
-      onScroll={getOnScroll()}
+      onScroll={props.screenState.getOnScroll()}
       style={{
         ...layout.container,
         ...screenAnimation

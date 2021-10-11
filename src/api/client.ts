@@ -19,19 +19,18 @@ export interface Playlist extends Api.TrackListGet {
 }
 
 export class ApiClient {
-    readonly userInfo = new Ref<UserInfo>();
+    readonly userInfo = new Ref<UserInfo>({
+        username: null,
+        token: null,
+        lists: null,
+        state: 'empty',
+    });
     private readonly storage: Storage;
     private readonly api = new ApiBaseClient();
     private listsMap = new Map<number, Ref<Playlist>>();
 
     constructor(storagePrefix: string) {
         this.storage = new Storage(storagePrefix);
-        this.userInfo.value = {
-            username: null,
-            token: null,
-            lists: null,
-            state: 'empty',
-        };
     }
 
     async readSavedInfo() {
@@ -65,7 +64,7 @@ export class ApiClient {
     getPlaylistRef(id: number) {
         let ref = this.listsMap.get(id);
         if (!ref) {
-            ref = new Ref<Playlist>();
+            ref = new Ref<Playlist>(null!);
             const inIndex = this.userInfo.value?.lists?.find(x => x.id == id);
             if (inIndex) ref.value = { ...inIndex, tracks: null!, state: 'loading' };
             else ref.value = { id, state: 'loading' } as any;

@@ -2,17 +2,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import PrimaryHeader from '../components/PrimaryHeader';
 import HomeScreen from '../screens/Home';
+import { useScreenState } from '../utils/screen';
 
 const Stack = createStackNavigator();
 
 const StackHome = () => {
+  const screenState = useScreenState();
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        children={() => <HomeScreen screenState={screenState} />}
         options={{
-          header: PrimaryHeader
+          header: () => <PrimaryHeader screenState={screenState} />
         }}
       />
     </Stack.Navigator>
