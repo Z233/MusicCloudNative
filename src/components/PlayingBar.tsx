@@ -6,6 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Animated,
+  Easing,
 } from 'react-native';
 import { ProgressBar, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -22,17 +23,25 @@ const PlayingBar = ({ onPress }: Props) => {
   const track = useWebfxRef(player.track);
   const playing = useWebfxRef(player.isPlaying);
 
+  const bottom = useMemo(() => new Animated.Value(track ? 72 : -72), []);
   const opacity = useMemo(() => new Animated.Value(track ? 1 : 0), []);
   useEffect(() => {
+    Animated.timing(bottom, {
+      toValue: track ? 72 : -72,
+      duration: 400,
+      useNativeDriver: false,
+      easing: Easing.bezier(0.17, 0.67, 0.59, 0.9),
+    }).start();
     Animated.timing(opacity, {
       toValue: track ? 1 : 0,
-      duration: 300,
-      useNativeDriver: true,
+      duration: 400,
+      useNativeDriver: false,
+      easing: Easing.bezier(0.17, 0.67, 0.59, 0.9),
     }).start();
   }, [track]);
 
   return (
-    <Animated.View style={{ ...styles.container, opacity }}>
+    <Animated.View style={{ ...styles.container, bottom, opacity }}>
       <TouchableWithoutFeedback onPress={() => onPress()}>
         <View
           style={{
@@ -88,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     position: 'absolute',
-    bottom: 72,
     paddingHorizontal: 16,
   },
   wrapper: {
@@ -111,22 +119,20 @@ const styles = StyleSheet.create({
   trackContainer: {
     flexDirection: 'row',
     flex: 1,
-    alignItems: 'center' 
+    alignItems: 'center',
   },
   trackInfo: {
     flex: 1,
   },
   trackTitle: {
     fontWeight: 'bold',
-    lineHeight: 20
+    lineHeight: 20,
   },
   trackArtist: {
     color: 'rgba(0, 0, 0, 0.24)',
-    lineHeight: 20
+    lineHeight: 20,
   },
-  operationContainer: {
-    
-  },
+  operationContainer: {},
   progressWrapper: {
     paddingHorizontal: 0,
     marginHorizontal: 16,
