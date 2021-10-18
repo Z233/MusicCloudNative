@@ -41,7 +41,7 @@ const Picture = () => {
         />
       </View>
     </View>
-  )
+  );
 };
 
 const Control = () => {
@@ -56,24 +56,29 @@ const Control = () => {
         width: '70%',
         justifyContent: 'space-evenly',
       }}>
-      <View style={{ height: 60, width: '100%' }}>
-        <Text numberOfLines={1} style={{ fontSize: 22, fontWeight: '700' }}>{track?.name}</Text>
-        <Text
-          numberOfLines={1}
-          style={{
-            position: 'absolute',
-            left: 0,
-            bottom: 0,
-            fontSize: 16,
-            color: 'rgba(0,0,0,0.24)',
-          }}>
-          {track?.artist}
-        </Text>
-        <MiIcon
-          style={{ position: 'absolute', right: 0, top: 14 }}
-          name="favorite-border"
-          size={32}
-        />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{ display: 'flex', width: '80%' }}>
+          <Text
+            numberOfLines={1}
+            style={{ fontSize: 22, fontWeight: '700', marginBottom: 4 }}>
+            {track?.name}
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              fontSize: 16,
+              color: 'rgba(0,0,0,0.24)',
+            }}>
+            {track?.artist}
+          </Text>
+        </View>
+        <MiIcon name="favorite-border" size={32} />
       </View>
       <View style={{ width: '100%' }}>
         <Image
@@ -100,8 +105,8 @@ const Control = () => {
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-        <IconButton icon="cached" size={32} onPress={() => { }} />
-        <IconButton icon="skip-previous" size={32} onPress={() => { }} />
+        <IconButton icon="cached" size={32} onPress={() => {}} />
+        <IconButton icon="skip-previous" size={32} onPress={() => {}} />
         <View
           style={{
             backgroundColor: '#FF6557',
@@ -112,21 +117,23 @@ const Control = () => {
             alignItems: 'center',
             overflow: 'hidden',
           }}>
-          <Icon name={playing ? "pause" : "play"} size={32} color="#FFFFFF" />
-          <RippleOverlay onPress={() => {
-            playing ? player.pause() : player.play();
-          }} />
+          <Icon name={playing ? 'pause' : 'play'} size={32} color="#FFFFFF" />
+          <RippleOverlay
+            onPress={() => {
+              playing ? player.pause() : player.play();
+            }}
+          />
         </View>
-        <IconButton icon="skip-next" size={32} onPress={() => { }} />
-        <IconButton icon="cached" size={32} onPress={() => { }} />
+        <IconButton icon="skip-next" size={32} onPress={() => {}} />
+        <IconButton icon="cached" size={32} onPress={() => {}} />
       </View>
     </View>
-  )
+  );
 };
 
 const PositionText = () => {
   const position = useWebfxRef(usePlayer().position);
   return <Text style={{ fontSize: 14 }}>{formatTime(position)}</Text>;
-}
+};
 
 export default PlayingScreen;

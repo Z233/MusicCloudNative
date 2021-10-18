@@ -1,15 +1,21 @@
-import React, { useMemo, useEffect } from "react";
-import { Image, StyleSheet, View, Text, TouchableWithoutFeedback, Animated } from "react-native";
-import { ProgressBar, useTheme } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { usePlayer } from "../player/hooks";
-import { useWebfxRef } from "../utils/webfxForReact";
-import { State } from "../player";
+import React, { useMemo, useEffect } from 'react';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Animated,
+} from 'react-native';
+import { ProgressBar, useTheme } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { usePlayer } from '../player/hooks';
+import { useWebfxRef } from '../utils/webfxForReact';
+import { State } from '../player';
 
 interface Props {
-  onPress: Function
+  onPress: Function;
 }
-
 
 const PlayingBar = ({ onPress }: Props) => {
   const player = usePlayer();
@@ -21,27 +27,39 @@ const PlayingBar = ({ onPress }: Props) => {
     Animated.timing(opacity, {
       toValue: track ? 1 : 0,
       duration: 300,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   }, [track]);
 
   return (
     <Animated.View style={{ ...styles.container, opacity }}>
-      <TouchableWithoutFeedback
-        onPress={() => onPress()}>
-        <View>
+      <TouchableWithoutFeedback onPress={() => onPress()}>
+        <View
+          style={{
+            width: '100%',
+          }}>
           <View style={styles.wrapper}>
             <View style={styles.trackContainer}>
-              <Image style={styles.albumCover} source={{ uri: track?.thumburl }} />
+              <Image
+                style={styles.albumCover}
+                source={{ uri: track?.thumburl }}
+              />
               <View style={styles.trackInfo}>
-                <Text numberOfLines={1} style={styles.trackTitle}>{track?.name}</Text>
-                <Text numberOfLines={1} style={styles.trackArtist}>{track?.artist}</Text>
+                <Text numberOfLines={1} style={styles.trackTitle}>
+                  {track?.name}
+                </Text>
+                <Text numberOfLines={1} style={styles.trackArtist}>
+                  {track?.artist}
+                </Text>
               </View>
             </View>
             <View style={styles.operationContainer}>
-              <Icon name={playing ? "pause" : "play-arrow"} size={32} onPress={() => {
-                playing ? player.pause() : player.play();
-              }}></Icon>
+              <Icon
+                name={playing ? 'pause' : 'play-arrow'}
+                size={32}
+                onPress={() => {
+                  playing ? player.pause() : player.play();
+                }}></Icon>
               {/* <IconButton icon="pause" size={20} /> */}
             </View>
           </View>
@@ -51,11 +69,11 @@ const PlayingBar = ({ onPress }: Props) => {
         </View>
       </TouchableWithoutFeedback>
     </Animated.View>
-  )
-}
+  );
+};
 
 const Progress = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const player = usePlayer();
   return (
     <ProgressBar
@@ -63,15 +81,15 @@ const Progress = () => {
       color={theme.colors.primary}
       progress={useWebfxRef(player.positionRatio)}
     />
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     position: 'absolute',
     bottom: 72,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   wrapper: {
     display: 'flex',
@@ -80,29 +98,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 16,
-    padding: 16,
+    padding: 12,
     overflow: 'hidden',
+    width: '100%',
   },
   albumCover: {
-    height: 40,
-    width: 40,
+    height: 48,
+    width: 48,
     borderRadius: 8,
-    marginRight: 16
+    marginRight: 16,
   },
   trackContainer: {
-    display: 'flex',
     flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center' 
   },
   trackInfo: {
-
+    flex: 1,
   },
   trackTitle: {
-    fontWeight: "bold"
+    fontWeight: 'bold',
+    lineHeight: 20
   },
   trackArtist: {
-    color: 'rgba(0, 0, 0, 0.24)'
+    color: 'rgba(0, 0, 0, 0.24)',
+    lineHeight: 20
   },
   operationContainer: {
+    
   },
   progressWrapper: {
     paddingHorizontal: 0,
@@ -113,8 +136,8 @@ const styles = StyleSheet.create({
     right: 0,
   },
   progress: {
-    borderRadius: 4
-  }
-})
+    borderRadius: 4,
+  },
+});
 
-export default PlayingBar
+export default PlayingBar;
