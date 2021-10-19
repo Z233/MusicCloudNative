@@ -10,6 +10,7 @@ import SecondaryHeader from '../components/SecondaryHeader';
 import StackLogin from './StackAuth';
 import { useUserInfo, useClient } from '../api';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
+import SearchScreen from '../screens/SearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,13 @@ const StackNavigator = () => {
           header: () => <SecondaryHeader title="正在播放" backDirection='down' dots={() => { }} />,
           cardStyleInterpolator:
             CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerShown: false
         }}
       />
     </Stack.Navigator>
