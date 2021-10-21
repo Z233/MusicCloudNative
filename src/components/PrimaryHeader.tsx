@@ -9,7 +9,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import { TouchableRipple } from 'react-native-paper';
-import { CommonActions, useNavigation } from '@react-navigation/core';
+import {
+  CommonActions,
+  useNavigation,
+  DrawerActions,
+} from '@react-navigation/core';
 import { RippleOverlay } from './RippleOverlay';
 
 interface IconOverlayProps {
@@ -82,7 +86,10 @@ const PrimaryHeader = ({ screenState }: { screenState: ScreenState }) => {
         backgroundColor={'transparent'}
         barStyle="dark-content"
       />
-      <PrimaryIconButton icon="menu" onPress={() => {}} />
+      <PrimaryIconButton
+        icon="menu"
+        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+      />
       <PrimaryIconButton
         icon="search"
         onPress={() => {

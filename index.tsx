@@ -1,15 +1,18 @@
 /**
  * @format
  */
-import * as React from 'react';
-import { AppRegistry } from 'react-native';
+import React from 'react';
+import { AppRegistry, View, Text } from 'react-native';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import StackRoot from './src/navigation/StackRoot';
 import { RecoilRoot } from 'recoil';
 import { AppContext, AppService } from './src/hooks/AppContext';
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from 'react-native-track-player';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DrawerMenu from './src/components/DrawerMenu';
+const Drawer = createDrawerNavigator();
 
 const theme = {
   ...DefaultTheme,
@@ -30,14 +33,19 @@ const MusicCloud = () => {
     <AppContext.Provider value={appService}>
       <PaperProvider theme={theme}>
         <NavigationContainer>
-          <StackRoot />
+          <Drawer.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerShown: false
+            }}
+            drawerContent={() => <DrawerMenu />}>
+            <Drawer.Screen name="Home" component={StackRoot} />
+          </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>
     </AppContext.Provider>
-  )
-}
+  );
+};
 
 AppRegistry.registerComponent(appName, () => MusicCloud);
-TrackPlayer.registerPlaybackService(() => async () => {
-  
-});
+TrackPlayer.registerPlaybackService(() => async () => {});

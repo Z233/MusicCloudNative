@@ -11,13 +11,12 @@ import StackLogin from './StackAuth';
 import { useUserInfo, useClient } from '../api';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 import SearchScreen from '../screens/SearchScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
 
-
-
 const StackNavigator = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const client = useClient();
   const { value: userinfo } = useUserInfo();
   const [loading, setLoading] = useState(true);
@@ -28,13 +27,17 @@ const StackNavigator = () => {
     });
   }, []);
 
-
-  if (loading) return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-      <ActivityIndicator animating={true} color={theme.colors.primary} size="large" />
-    </View>
-  )
-  if (!userinfo.token) return <StackLogin />
+  if (loading)
+    return (
+      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <ActivityIndicator
+          animating={true}
+          color={theme.colors.primary}
+          size="large"
+        />
+      </View>
+    );
+  if (!userinfo.token) return <StackLogin />;
   return (
     <Stack.Navigator initialRouteName="WithTab">
       <Stack.Screen
@@ -49,7 +52,13 @@ const StackNavigator = () => {
         component={PlayingScreen}
         options={{
           title: 'Playing',
-          header: () => <SecondaryHeader title="正在播放" backDirection='down' dots={() => { }} />,
+          header: () => (
+            <SecondaryHeader
+              title="正在播放"
+              backDirection="down"
+              dots={() => {}}
+            />
+          ),
           cardStyleInterpolator:
             CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
@@ -58,11 +67,11 @@ const StackNavigator = () => {
         name="Search"
         component={SearchScreen}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
-  )
+  );
 };
 
 export default StackNavigator;

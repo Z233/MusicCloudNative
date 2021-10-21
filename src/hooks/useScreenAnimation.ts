@@ -1,12 +1,19 @@
-import { useNavigation } from "@react-navigation/core";
-import { useRef, useEffect } from "react";
-import { Animated, StyleSheet } from "react-native";
+import { useNavigation } from '@react-navigation/core';
+import { useRef, useEffect } from 'react';
+import { Animated, StyleSheet } from 'react-native';
 
 export default function useScreenAnimation() {
   const navigation = useNavigation();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const FADE_DURATION = 350
+  const fadeAnim = useRef(
+    new Animated.Value(
+      navigation.isFocused() && navigation.getState().routes[0].name === 'Home'
+        ? 1
+        : 0,
+    ),
+  ).current;
+
+  const FADE_DURATION = 350;
 
   useEffect(() => {
     const listeners = [
@@ -28,6 +35,6 @@ export default function useScreenAnimation() {
   }, []);
 
   return {
-    opacity: fadeAnim
-  }
+    opacity: fadeAnim,
+  };
 }

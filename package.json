@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-navigation/bottom-tabs": "^6.0.5",
+    "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/elements": "^1.1.0",
     "@react-navigation/material-bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
@@ -25,8 +26,10 @@
     "react-native-base64": "^0.2.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-paper": "^4.9.2",
+    "react-native-reanimated": "^2.2.3",
     "react-native-rename": "^2.9.0",
     "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.8.0",
     "react-native-sticky-parallax-header": "^0.4.1",
     "react-native-track-player": "^2.1.1",
     "react-native-vector-icons": "^8.1.0",
