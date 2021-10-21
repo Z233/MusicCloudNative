@@ -9,11 +9,27 @@ import PlayingScreen from '../screens/PlayingScreen';
 import SecondaryHeader from '../components/SecondaryHeader';
 import StackLogin from './StackAuth';
 import { useUserInfo, useClient } from '../api';
-import { ActivityIndicator, useTheme } from 'react-native-paper';
+import { ActivityIndicator, useTheme, IconButton } from 'react-native-paper';
 import SearchScreen from '../screens/SearchScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import SettingsScreen from '../screens/SettingsScreen';
+import AboutScreen from '../screens/AboutScreen';
+import { RippleOverlay } from '../components/RippleOverlay';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
+
+const BackIconButton = () => {
+  const navigation = useNavigation();
+  return (
+    <IconButton
+      icon="chevron-left"
+      size={32}
+      onPress={() => navigation.goBack()}
+    />
+  );
+};
 
 const StackNavigator = () => {
   const theme = useTheme();
@@ -68,6 +84,20 @@ const StackNavigator = () => {
         component={SearchScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="设置"
+        component={SettingsScreen}
+        options={{
+          headerLeft: BackIconButton,
+        }}
+      />
+      <Stack.Screen
+        name="关于"
+        component={AboutScreen}
+        options={{
+          headerLeft: BackIconButton,
         }}
       />
     </Stack.Navigator>

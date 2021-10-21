@@ -34,12 +34,13 @@ const MusicCloud = () => {
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <Drawer.Navigator
-            initialRouteName="Home"
+            initialRouteName="Root"
             screenOptions={{
-              headerShown: false
+              headerShown: false,
+              swipeEdgeWidth: 0
             }}
             drawerContent={() => <DrawerMenu />}>
-            <Drawer.Screen name="Home" component={StackRoot} />
+            <Drawer.Screen name="Root" component={StackRoot} />
           </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>
