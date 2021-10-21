@@ -8,7 +8,7 @@ export function useApp() { return useContext(AppContext); }
 
 export class AppService {
     apiClient = new ApiClient("mc-");
-    player = new Player();
+    player = new Player(this);
 
     destroy() {
         console.info("AppService destroy");

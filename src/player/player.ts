@@ -1,6 +1,7 @@
 import TrackPlayer, { Event, State, Capability } from "react-native-track-player";
 import { Api } from "../api";
 import { Ref } from "../utils/webfx";
+import { AppService } from "../hooks/AppContext";
 
 export { State } from "react-native-track-player";
 
@@ -39,7 +40,7 @@ export class Player {
         }
     };
 
-    constructor() {
+    constructor(readonly app: AppService) {
         TrackPlayer.updateOptions({
             capabilities: [Capability.Pause, Capability.Play, Capability.Skip]
         })
@@ -74,6 +75,7 @@ export class Player {
             duration: track.length,
         });
         await TrackPlayer.play();
+        this.app.apiClient.addPlayingRecord(track);
     }
 
     async pause() {

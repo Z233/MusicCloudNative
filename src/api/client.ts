@@ -21,7 +21,9 @@ export abstract class ApiResource<T> {
     constructor(readonly client: ApiClient, value: T) {
         this.valueRef = new Ref<T>(value)
     }
-    use() {
+
+    use(loadIfEmpty = false) {
+        if (loadIfEmpty) this.loadIfEmpty();
         return {
             state: this.stateRef.useValue(),
             value: this.valueRef.useValue()
@@ -53,6 +55,11 @@ export abstract class ApiResource<T> {
         fetched = true;
         if (key) this.client._storage.setJson(key, value);
         this.stateRef.value = 'done';
+    }
+
+    async saveCache() {
+        const key = this._cacheKey();
+        if (key) this.client._storage.setJson(key, this.valueRef.value);
     }
 
     protected _cacheKey(): string | null { return null; };
@@ -87,6 +94,19 @@ export class UploadsResources extends ApiResource<Api.Track[]> {
     }
 }
 
+export class RecentPlaysResources extends ApiResource<Api.Track[]> {
+    protected _cacheKey(): string {
+        return "recentplays-u-" + this.client.userInfo.valueRef.value.username;
+    }
+    protected async _loadImpl() {
+        const resp = await this.client._api.get("users/me/recentplays") as {
+            tracks: Api.Track[]
+        };
+        this.client.processTracks(resp.tracks);
+        return resp.tracks;
+    }
+}
+
 export class UserInfoResource extends ApiResource<UserInfo> {
 }
 
@@ -100,6 +120,7 @@ export class ApiClient {
 
     private listsMap = new Map<number, PlaylistResource>();
     uploads = new UploadsResources(this, []);
+    recentplays = new RecentPlaysResources(this, []);
 
     readonly _storage: Storage;
     readonly _api = new ApiBaseClient();
@@ -146,6 +167,19 @@ export class ApiClient {
         await this.getUserInfo();
     }
 
+    async addPlayingRecord(track: Api.Track) {
+        this.recentplays.valueRef.value = [track, ...this.recentplays.valueRef.value.filter(t => t.id != track.id)];
+        this.recentplays.saveCache();
+        await this._api.post({
+            path: 'users/me/playing',
+            obj: {
+                listid: 0,
+                trackid: track.id,
+                position: 0,
+            } as Api.TrackLocation
+        });
+    }
+
     getPlaylistResource(id: number) {
         let res = this.listsMap.get(id);
         if (!res) {
@@ -158,11 +192,6 @@ export class ApiClient {
             this.updatePlaylistResource(id);
         }
         return res;
-    }
-
-    getUploadsResource() {
-        this.uploads.loadIfEmpty();
-        return this.uploads;
     }
 
     async updatePlaylistResource(id: number) {

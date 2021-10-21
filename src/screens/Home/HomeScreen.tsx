@@ -12,11 +12,13 @@ import { BigItem } from '../../components/BigItem';
 import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles';
-import { useUserInfo } from '../../api';
+import { useUserInfo, useRecentPlays, Api } from '../../api';
 import { ScrollViewLayout } from '../../layouts/ScrollViewLayout';
 import useScreenAnimation from '../../hooks/useScreenAnimation';
 import layout from '../../styles/layout';
 import { ScreenProps } from '../../utils/screen';
+import TrackItem from '../../components/TrackItem';
+import { usePlayer } from '../../player/hooks';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
@@ -104,7 +106,7 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => {}} />
+    <RippleOverlay onPress={() => { }} />
   </View>
 );
 
@@ -119,16 +121,23 @@ const testRecentTracks = Array(10)
     />
   ));
 
-const RecentTracks = () => (
-  <View>
-    {testRecentTracks}
-    {/* <BigItem
-      title="動く、動く"
-      subtitle="水瀬いのり / 久保ユリカ"
-      pic={testpic}
-    />
-    <BigItem title="Sincerely" subtitle="TRUE" pic={testpic} /> */}
-  </View>
-);
+const RecentTracks = React.memo(() => {
+  let { value: tracks } = useRecentPlays();
+  // console.info("recent", tracks?.length);
+  tracks = tracks?.slice(0, 20) ?? [];
+  const player = usePlayer();
+  const playTrack = (item: Api.Track) => { player.playTrack(item); }
+  return (
+    <View>
+      {tracks?.map((t, i) => (
+        <TrackItem
+          key={i}
+          track={t}
+          onPress={playTrack}
+        />
+      ))}
+    </View>
+  )
+});
 
 export default HomeScreen;

@@ -14,5 +14,9 @@ export function usePlaylist(id: number) {
 }
 
 export function useUploads() {
-    return useClient().getUploadsResource().use();
+    return useClient().uploads.use(true);
+}
+
+export function useRecentPlays() {
+    return useClient().recentplays.use(true);
 }

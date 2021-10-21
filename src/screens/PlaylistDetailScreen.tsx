@@ -21,7 +21,8 @@ import SecondaryHeader, {
 } from '../components/SecondaryHeader';
 import { formatTimeLong, getTracksTotalLength } from '../utils/tracks';
 import { usePlayer } from '../player/hooks';
-import { useClient, usePlaylist } from '../api';
+import { useClient, usePlaylist, Api } from '../api';
+import TrackItem from '../components/TrackItem';
 
 
 const PLAY_BUTTON_SIZE = 56;
@@ -183,17 +184,16 @@ const ListItems = React.memo(({ id }: { id: number }) => {
     return { ...track, key: track.id + '_' + keysurfix };
   });
   const player = usePlayer();
+  const playTrack = (item: Api.Track) => { player.playTrack(item); }
   console.info('list items', id, tracks?.length);
   return <FlatList
     data={tracks}
     renderItem={({ item }) => {
       return (
-        <BigItem
+        <TrackItem
           key={item.key}
-          title={item.name}
-          subtitle={item.artist}
-          pic={item.thumburl}
-          onPress={() => { player.playTrack(item); }}
+          track={item}
+          onPress={playTrack}
         />
       );
     }}
