@@ -9,6 +9,7 @@ export type LoadingState = 'empty' | 'loading' | 'done';
 
 export interface UserInfo {
     username: string | null;
+    avatar: string | null;
     token: string | null;
     lists: Api.TrackListInfo[] | null;
 }
@@ -92,6 +93,7 @@ export class UserInfoResource extends ApiResource<UserInfo> {
 export class ApiClient {
     readonly userInfo = new UserInfoResource(this, {
         username: null,
+        avatar: null,
         token: null,
         lists: null,
     });
@@ -135,6 +137,15 @@ export class ApiClient {
         await this.handleUserInfo(resp);
     }
 
+    async setAvatar(buffer: Uint8Array) {
+        await this._api.put({
+            path: 'users/me/avatar',
+            mode: 'raw',
+            obj: buffer
+        });
+        await this.getUserInfo();
+    }
+
     getPlaylistResource(id: number) {
         let res = this.listsMap.get(id);
         if (!res) {
@@ -170,6 +181,7 @@ export class ApiClient {
     private async handleUserInfo(resp: Api.UserInfo) {
         const userInfo = {
             username: resp.username,
+            avatar: this._api.processUrl(resp.avatar) || null,
             token: resp.token ? resp.token : this.userInfo.valueRef.value!.token,
             lists: resp.lists!,
         };
