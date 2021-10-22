@@ -179,12 +179,12 @@ const ListInfo = React.memo(({ id }: { id: number }) => {
 const ListItems = React.memo(({ id }: { id: number }) => {
   const list = useClient().getPlaylistResource(id).valueRef.useValue();
   const keyMap = {} as any;
-  const tracks = list?.tracks?.map(track => {
+  const tracks = list?.tracks?.map((track, idx) => {
     const keysurfix = (keyMap[track.id] = (keyMap[track.id] || 0) + 1);
     return { ...track, key: track.id + '_' + keysurfix };
   });
   const player = usePlayer();
-  const playTrack = (item: Api.Track) => { player.playTrack(item); }
+  const playTrack = (item: Api.Track) => { player.playTrack(item, list); }
   console.info('list items', id, tracks?.length);
   return <FlatList
     data={tracks}

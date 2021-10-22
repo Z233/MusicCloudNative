@@ -46,8 +46,9 @@ const Picture = () => {
 
 const Control = () => {
   const player = usePlayer();
-  const track = useWebfxRef(player.track);
+  const track = useWebfxRef(player.track, 'control_track');
   const playing = useWebfxRef(player.isPlaying);
+  console.info('playing', track?.id);
   return (
     <View
       style={{
@@ -106,7 +107,7 @@ const Control = () => {
           flexDirection: 'row',
         }}>
         <IconButton icon="cached" size={32} onPress={() => {}} />
-        <IconButton icon="skip-previous" size={32} onPress={() => {}} />
+        <IconButton icon="skip-previous" size={32} onPress={() => {player.prev()}} />
         <View
           style={{
             backgroundColor: '#FF6557',
@@ -124,7 +125,7 @@ const Control = () => {
             }}
           />
         </View>
-        <IconButton icon="skip-next" size={32} onPress={() => {}} />
+        <IconButton icon="skip-next" size={32} onPress={() => {player.next()}} />
         <IconButton icon="cached" size={32} onPress={() => {}} />
       </View>
     </View>

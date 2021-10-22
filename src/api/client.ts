@@ -76,7 +76,7 @@ export class PlaylistResource extends ApiResource<Api.TrackListGet> {
         const id = this.valueRef.value.id;
         const resp = await this.client._api.get("lists/" + id) as Playlist;
         resp.picurl = this.client._api.processUrl(resp.picurl);
-        this.client.processTracks(resp.tracks);
+        this.client.processTracks(resp.tracks, id);
         return resp;
     }
 }
@@ -223,11 +223,14 @@ export class ApiClient {
         this.userInfo.valueRef.value = userInfo;
     }
 
-    processTracks(tracks: Api.Track[]) {
+    processTracks(tracks: Api.Track[], list?: number) {
+        let i = 0;
         for (const t of tracks) {
             t.url = this._api.processUrl(t.url);
             t.picurl = this._api.processUrl(t.picurl);
             t.thumburl = this._api.processUrl(t.thumburl);
+            t._list = list;
+            t._pos = i++;
         }
         return tracks;
     }

@@ -61,6 +61,8 @@ export namespace Api {
     files?: TrackFile[];
     version?: number;
     visibility?: number;
+    _list?: number;
+    _pos?: number;
   }
 
   interface TrackFile {
