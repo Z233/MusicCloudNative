@@ -7,14 +7,18 @@ export function useWebfxRef<T>(ref: Ref<T>, tag?: string) {
         // console.info('Ref changed', ref)
         if (tag) console.info('ref ' + tag + ' changed', x.value);
         setVal(x.value);
-    }, [val]);
+    }, [val], tag);
     if (val !== ref.value) setVal(ref.value);
     return val;
 }
 
-export function useWebfxCallbacks<T extends AnyFunc>(callbacks: Callbacks<T>, cb: T, deps?: React.DependencyList) {
+export function useWebfxCallbacks<T extends AnyFunc>(callbacks: Callbacks<T>, cb: T, deps?: React.DependencyList, tag?: string) {
     useEffect(() => {
+        tag && console.info('callback add', tag);
         callbacks.add(cb);
-        return () => callbacks.remove(cb);
-    }, deps ? [callbacks, cb, deps] : undefined);
+        return () => {
+            tag && console.info('callback remove', tag);
+            callbacks.remove(cb);
+        };
+    }, deps ? [callbacks, cb, ...deps] : undefined);
 }
