@@ -14,7 +14,6 @@ import PlaylistItem, { onPressPlaylistItem } from '../components/PlaylistItem';
 import { ColumnsLayout } from '../layouts/ColumnsLayout';
 import { RippleOverlay } from '../components/RippleOverlay';
 import { useUserInfo } from '../api';
-import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
 import useScreenAnimation from '../hooks/useScreenAnimation';
 import { ScreenProps } from '../utils/screen';

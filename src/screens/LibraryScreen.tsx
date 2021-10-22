@@ -2,7 +2,6 @@ import React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { BigItem } from '../components/BigItem';
 import useScreenAnimation from '../hooks/useScreenAnimation';
-import { ScrollViewLayout } from '../layouts/ScrollViewLayout';
 import layout from '../styles/layout';
 import { ScreenProps } from '../utils/screen';
 import { useUploads } from '../api';

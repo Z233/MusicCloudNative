@@ -13,7 +13,6 @@ import { ColumnsLayout } from '../../layouts/ColumnsLayout';
 import { RippleOverlay } from '../../components/RippleOverlay';
 import styles from './HomeScreen.styles';
 import { useUserInfo, useRecentPlays, Api } from '../../api';
-import { ScrollViewLayout } from '../../layouts/ScrollViewLayout';
 import useScreenAnimation from '../../hooks/useScreenAnimation';
 import layout from '../../styles/layout';
 import { ScreenProps } from '../../utils/screen';
