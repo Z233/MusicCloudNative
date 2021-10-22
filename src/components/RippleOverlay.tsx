@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export const RippleOverlay = (props: { onPress?: () => void }) => (
   <TouchableRipple
