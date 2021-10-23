@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MiIcon from 'react-native-vector-icons/MaterialIcons';
 import { RippleOverlay } from '../components/RippleOverlay';
@@ -9,6 +9,7 @@ import bar from '../assets/bar.png';
 import { usePlayer } from '../player/hooks';
 import { useWebfxRef } from '../utils/webfxForReact';
 import { formatTime } from '../utils/webfx';
+import { useLoudnessMap } from '../api';
 
 const PlayingScreen = () => {
   return (
@@ -82,11 +83,7 @@ const Control = () => {
         <MiIcon name="favorite-border" size={32} />
       </View>
       <View style={{ width: '100%' }}>
-        <Image
-          source={bar}
-          resizeMode="contain"
-          style={{ width: '100%', height: 48 }}
-        />
+        <ProgressBar />
         <View
           style={{
             marginTop: 16,
@@ -107,7 +104,13 @@ const Control = () => {
           flexDirection: 'row',
         }}>
         <IconButton icon="cached" size={32} onPress={() => {}} />
-        <IconButton icon="skip-previous" size={32} onPress={() => {player.prev()}} />
+        <IconButton
+          icon="skip-previous"
+          size={32}
+          onPress={() => {
+            player.prev();
+          }}
+        />
         <View
           style={{
             backgroundColor: '#FF6557',
@@ -125,7 +128,13 @@ const Control = () => {
             }}
           />
         </View>
-        <IconButton icon="skip-next" size={32} onPress={() => {player.next()}} />
+        <IconButton
+          icon="skip-next"
+          size={32}
+          onPress={() => {
+            player.next();
+          }}
+        />
         <IconButton icon="cached" size={32} onPress={() => {}} />
       </View>
     </View>
@@ -135,6 +144,38 @@ const Control = () => {
 const PositionText = () => {
   const position = useWebfxRef(usePlayer().position);
   return <Text style={{ fontSize: 14 }}>{formatTime(position)}</Text>;
+};
+
+const ProgressBar = () => {
+  const track = useWebfxRef(usePlayer().track);
+  const theme = useTheme();
+  if (track) {
+    const loudnessMap = useLoudnessMap(track.id, 10);
+    console.log(loudnessMap);
+  }
+  // return (
+  //   <Image
+  //     source={bar}
+  //     resizeMode="contain"
+  //     style={{ width: '100%', height: 48 }}
+  //   />
+  // );
+  return (
+    <View style={{
+      width: '100%',
+      height: 48,
+      flexDirection: 'row'
+    }}>
+      {new Array(28).map(_ => (
+        <View
+          style={{
+            height: 8,
+            width: 8,
+            backgroundColor: theme.colors.primary,
+          }}></View>
+      ))}
+    </View>
+  );
 };
 
 export default PlayingScreen;
