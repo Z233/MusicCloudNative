@@ -37,7 +37,7 @@ const CommonDetailModal = ({
         </View>
         <View style={styles.operations}>
           {operations.map((o, i) => (
-            <ModalOperation key={o.label} icon={o.icon} label={o.label} />
+            <ModalOperation {...o} />
           ))}
         </View>
       </View>

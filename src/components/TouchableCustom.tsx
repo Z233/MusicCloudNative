@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 type Props = React.PropsWithChildren<{
-  onPress: () => void;
+  onPress?: () => void;
 }>;
 
 const TouchableCustom = (props: Props) => {
@@ -26,8 +26,9 @@ const TouchableCustom = (props: Props) => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={props.onPress}
-      onPressIn={() => pressed.value = true}
-      onPressOut={() => pressed.value = false}>
+      onPressIn={() => { pressed.value = true}}
+      onPressOut={() => { pressed.value = false}}
+      >
       <Animated.View style={[uas]}>
         {props.children ?? Children.only(props.children)}
       </Animated.View>
