@@ -167,7 +167,7 @@ export class CommentsResources extends ApiResource<Comments> {
         return "comments-" + this.value.path;
     }
     protected async _loadImpl() {
-        const resp = await this.client._api.get(this.value.path) as Api.CommentList;
+        const resp = await this.client._api.get(this.value.path + '?reverse=1') as Api.CommentList;
         return { path: this.value.path, comments: resp.comments };
     }
 

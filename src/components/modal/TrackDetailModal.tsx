@@ -41,7 +41,7 @@ const TrackDetailModal = () => {
         name: fav ? 'favorite' : 'favorite-border',
         from: 'MaterialIcons',
       },
-      label: fav ? '取消最爱' : '添加到最爱',
+      label: fav ? I`取消最爱` : I`添加到最爱`,
       onPress: () => {
         setFav(!fav);
       },
