@@ -80,7 +80,7 @@ export class Player {
                         console.warn("unknown track from queue", {current: this.track.value, api: track});
                     }
                 } else {
-                    this.track.value = null;
+                    // this.track.value = null;
                 }
             }),
             TrackPlayer.addEventListener(Event.RemotePlay, () => {
