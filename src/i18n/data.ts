@@ -30,4 +30,6 @@ export const data = `
 播放列表名称...|Playlist name...
 取消|Cancel
 创建|Create
+开发者：{0}、{1}|Developed by {0} and {1}
+基于 React Native|Based on React Native
 `
