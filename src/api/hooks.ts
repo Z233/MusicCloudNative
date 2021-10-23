@@ -60,5 +60,10 @@ export const commentPaths = {
 }
 
 export function useComments(path: string) {
-    return useClient().getCommentsResource(path).use();
+    const res = useClient().getCommentsResource(path);
+    return {
+        state: res.stateRef.useValue(),
+        comments: res.valueRef.useValue(),
+        postComment: res.postComment.bind(res),
+    }
 }

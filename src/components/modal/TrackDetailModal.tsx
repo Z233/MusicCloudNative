@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Api, useFavouriteState } from '../../api';
+import { Api, useFavouriteState, useComments, commentPaths } from '../../api';
 import { ModalOperationProps } from './ModalOperation';
 import CommonDetailModal from './CommonDetailModal';
 import { useI18n } from '../../i18n/hooks';
@@ -11,6 +11,8 @@ const TrackDetailModal = () => {
   } = useRoute() as { params: { track: Api.Track } };
   const [fav, setFav] = useFavouriteState(track);
   const I = useI18n();
+  const { comments } = useComments(commentPaths.track(track.id));
+  const commentCount = comments.comments?.length ?? null;
 
   const operations: ModalOperationProps[] = [
     {

@@ -32,7 +32,8 @@ export abstract class ApiResource<T> {
         if (loadIfEmpty) this.loadIfEmpty();
         return {
             state: this.stateRef.useValue(),
-            value: this.valueRef.useValue()
+            value: this.valueRef.useValue(),
+            resource: this,
         }
     };
 
