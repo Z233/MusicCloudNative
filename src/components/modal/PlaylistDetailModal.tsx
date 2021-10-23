@@ -4,10 +4,10 @@ import { Api } from '../../api';
 import { ModalOperationProps } from './ModalOperation';
 import CommonDetailModal from './CommonDetailModal';
 
-const TrackDetailModal = () => {
+const PlaylistDetailModal = () => {
   const {
-    params: { track },
-  } = useRoute() as { params: { track: Api.Track } };
+    params: { title, owner, cover },
+  } = useRoute() as { params: { title: string; owner: string; cover: string } };
 
   const operations: ModalOperationProps[] = [
     {
@@ -15,35 +15,21 @@ const TrackDetailModal = () => {
         name: 'favorite-border',
         from: 'MaterialIcons',
       },
-      label: '添加到最爱',
+      label: '添加到收藏',
     },
     {
       icon: {
-        name: 'remove-circle-outline',
-        from: 'MaterialIcons',
-      },
-      label: '从当前播放列表移除',
-    },
-    {
-      icon: {
-        name: 'playlist-plus',
+        name: 'playlist-edit',
         from: 'MaterialCommunityIcons',
       },
-      label: '添加到其他播放列表',
+      label: '编辑播放列表',
     },
     {
       icon: {
-        name: 'playlist-play',
+        name: 'playlist-remove',
         from: 'MaterialCommunityIcons',
       },
-      label: '添加到正在播放',
-    },
-    {
-      icon: {
-        name: 'cloud-download-outline',
-        from: 'MaterialCommunityIcons',
-      },
-      label: '下载到本地',
+      label: '删除播放列表',
     },
     {
       icon: {
@@ -52,16 +38,23 @@ const TrackDetailModal = () => {
       },
       label: '分享',
     },
+    {
+      icon: {
+        name: 'lock-outline',
+        from: 'MaterialIcons',
+      },
+      label: '设为公开',
+    },
   ];
 
   return (
     <CommonDetailModal
-      imgUrl={track.picurl}
-      title={track.name}
-      subtitle={track.artist}
+      imgUrl={cover}
+      title={title}
+      subtitle={'创建者：' + owner}
       operations={operations}
     />
   );
 };
 
-export default TrackDetailModal;
+export default PlaylistDetailModal;

@@ -19,6 +19,7 @@ import { RippleOverlay } from '../components/RippleOverlay';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import TrackDetailModal from '../components/modal/TrackDetailModal';
+import PlaylistDetailModal from '../components/modal/PlaylistDetailModal';
 
 const Stack = createStackNavigator();
 
@@ -112,9 +113,10 @@ const StackNavigator = () => {
           gestureResponseDistance: 1000,
           ...TransitionPresets.ModalPresentationIOS,
           keyboardHandlingEnabled: true,
-          
+
         }}>
         <Stack.Screen name="TrackDetailModal" component={TrackDetailModal} />
+        <Stack.Screen name="PlaylistDetailModal" component={PlaylistDetailModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
