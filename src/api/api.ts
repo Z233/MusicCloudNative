@@ -40,6 +40,20 @@ export class ApiBaseClient {
         return await resp.json();
     return resp;
   }
+  async getRaw(path: string, options?: FetchOptions): Promise<any> {
+    return new Promise((res, rej) => {
+      var xhr = new XMLHttpRequest();
+      options = options || {};
+      xhr.open('GET', this.baseUrl + path, true);
+      xhr.responseType = "arraybuffer";
+      Object.entries(this.getHeaders(options)).forEach(([k, v]) => xhr.setRequestHeader(k, v as any));
+      xhr.onload = (e) => {
+        res(xhr.response);
+      };
+      xhr.onerror = (e) => rej(xhr.statusText);
+      xhr.send();
+    });
+  }
   async post(arg:
     { method?: 'POST' | 'PUT' | 'DELETE'; }
     & PostOptions & PostBodyOptions

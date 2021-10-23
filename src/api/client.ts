@@ -113,8 +113,8 @@ export class LoudmapResources extends ApiResource<{id: number; loudmap: Uint8Arr
     }
     protected async _loadImpl() {
         const id = this.valueRef.value.id;
-        const resp = await this.client._api.get("tracks/" + id + "/loudnessmap") as Response;
-        return { id, loudmap: new Uint8Array(await resp.arrayBuffer())};
+        const resp = await this.client._api.getRaw("tracks/" + id + "/loudnessmap") as any;
+        return { id, loudmap: new Uint8Array(resp)};
     }
 }
 
@@ -211,6 +211,7 @@ export class ApiClient {
         if (!res) {
             res = new LoudmapResources(this, {id, loudmap: null});
             res.loadIfEmpty();
+            this.loudMap.set(id, res);
         }
         return res;
     }
