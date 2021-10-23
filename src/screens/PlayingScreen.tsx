@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,7 @@ import { usePlayer } from '../player/hooks';
 import { useWebfxRef } from '../utils/webfxForReact';
 import { formatTime } from '../utils/webfx';
 import { useLoudnessMap } from '../api';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
 const PlayingScreen = () => {
   return (
@@ -147,33 +148,56 @@ const PositionText = () => {
 };
 
 const ProgressBar = () => {
-  const track = useWebfxRef(usePlayer().track);
+  const POINTS_NUM = 28;
+  const player = usePlayer();
+  const track = useWebfxRef(player.track);
+  const posRate = useSharedValue(useWebfxRef(player.positionRatio))
   const theme = useTheme();
-  if (track) {
-    const loudnessMap = useLoudnessMap(track.id, 10);
-    console.log(loudnessMap);
+  const loudnessArr = useLoudnessMap(track?.id ?? 0, POINTS_NUM);
+
+  interface BarProps {
+    width: string;
+    opacity: number;
   }
-  // return (
-  //   <Image
-  //     source={bar}
-  //     resizeMode="contain"
-  //     style={{ width: '100%', height: 48 }}
-  //   />
-  // );
+
+  const Bar = ({ width, opacity }: BarProps) => {
+    return (
+      <Animated.View
+        style={{
+          width,
+          opacity,
+          position: 'absolute',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          overflow: 'hidden',
+          alignItems: 'center',
+        }}>
+        {new Array(POINTS_NUM).fill(null).map((_, i) => (
+          <View
+            key={i}
+            style={{
+              height: (loudnessArr?.[i] ?? 0) * 36 + 12,
+              width: 6,
+              borderRadius: 3,
+              backgroundColor: theme.colors.primary,
+              marginLeft: i === 0 ? 0 : 3.9,
+            }}
+          />
+        ))}
+      </Animated.View>
+    );
+  };
+
   return (
-    <View style={{
-      width: '100%',
-      height: 48,
-      flexDirection: 'row'
-    }}>
-      {new Array(28).map(_ => (
-        <View
-          style={{
-            height: 8,
-            width: 8,
-            backgroundColor: theme.colors.primary,
-          }}></View>
-      ))}
+    <View
+      style={{
+        width: '100%',
+        height: 48,
+        position: 'relative',
+      }}>
+      <Bar width="100%" opacity={0.3} />
+      <Bar width="54%" opacity={1} />
     </View>
   );
 };
