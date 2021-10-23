@@ -7,11 +7,12 @@ export class AppI18n {
     core = new I18n();
     I = createStringBuilder(this.core);
     IA = createArrayBuilder(this.core);
+    languages = ['zh-cn', 'en-us'];
 
     init() {
         this.core.curLang = this.curlang.value;
         this.core.add2dArray([
-            ['zh-cn', 'en-us'],
+            this.languages,
             ...data.split('\n').filter(x => x).map(x => x.split('|')),
         ])
     }

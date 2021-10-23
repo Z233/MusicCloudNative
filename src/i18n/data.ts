@@ -24,7 +24,6 @@ export const data = `
 下载到本地|Download
 分享|Share
 加载中……|Loading...
-切换语言|Change language
 创建时间|Create date
 新建播放列表|New playlist
 播放列表名称...|Playlist name...
@@ -32,4 +31,7 @@ export const data = `
 创建|Create
 开发者：{0}、{1}|Developed by {0} and {1}
 基于 React Native|Based on React Native
+切换语言|Change language
+简体中文（中国）|English (United States)
+主题色|Theme color
 `
