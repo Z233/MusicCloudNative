@@ -107,6 +107,17 @@ export class RecentPlaysResources extends ApiResource<Api.Track[]> {
     }
 }
 
+export class LoudmapResources extends ApiResource<{id: number; loudmap: Uint8Array | null}> {
+    protected _cacheKey(): string {
+        return "loudmap-" + this.valueRef.value.id;
+    }
+    protected async _loadImpl() {
+        const id = this.valueRef.value.id;
+        const resp = await this.client._api.get("tracks/" + id + "/loudnessmap") as Response;
+        return { id, loudmap: new Uint8Array(await resp.arrayBuffer())};
+    }
+}
+
 export class UserInfoResource extends ApiResource<UserInfo> {
 }
 
@@ -121,6 +132,7 @@ export class ApiClient {
     private listsMap = new Map<number, PlaylistResource>();
     uploads = new UploadsResources(this, []);
     recentplays = new RecentPlaysResources(this, []);
+    private loudMap = new Map<number, LoudmapResources>();
 
     readonly _storage: Storage;
     readonly _api = new ApiBaseClient();
@@ -190,6 +202,15 @@ export class ApiClient {
             res.stateRef.value = 'loading';
             this.listsMap.set(id, res);
             this.updatePlaylistResource(id);
+        }
+        return res;
+    }
+
+    getLoudmapResource(id: number) {
+        let res = this.loudMap.get(id);
+        if (!res) {
+            res = new LoudmapResources(this, {id, loudmap: null});
+            res.loadIfEmpty();
         }
         return res;
     }
