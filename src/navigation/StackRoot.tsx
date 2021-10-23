@@ -1,6 +1,7 @@
 import {
   CardStyleInterpolators,
   createStackNavigator,
+  TransitionPresets,
 } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
@@ -17,6 +18,7 @@ import AboutScreen from '../screens/AboutScreen';
 import { RippleOverlay } from '../components/RippleOverlay';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import TrackDetailModal from '../components/modal/TrackDetailModal';
 
 const Stack = createStackNavigator();
 
@@ -68,13 +70,14 @@ const StackNavigator = () => {
         component={PlayingScreen}
         options={{
           title: 'Playing',
-          header: () => (
-            <SecondaryHeader
-              title="正在播放"
-              backDirection="down"
-              dots={() => {}}
-            />
-          ),
+          // header: () => (
+          //   <SecondaryHeader
+          //     title="正在播放"
+          //     backDirection="down"
+          //     dots={() => {}}
+          //   />
+          // ),
+          headerShown: false,
           cardStyleInterpolator:
             CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
@@ -100,6 +103,19 @@ const StackNavigator = () => {
           headerLeft: BackIconButton,
         }}
       />
+      <Stack.Group
+        screenOptions={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardOverlayEnabled: true,
+          gestureEnabled: true,
+          gestureResponseDistance: 1000,
+          ...TransitionPresets.ModalPresentationIOS,
+          keyboardHandlingEnabled: true,
+          
+        }}>
+        <Stack.Screen name="TrackDetailModal" component={TrackDetailModal} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };

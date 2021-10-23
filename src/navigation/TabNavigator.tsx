@@ -24,6 +24,7 @@ const TabNavigator = () => {
   return (
     <React.Fragment>
       <Tab.Navigator
+        backBehavior="none"
         shifting={true}
         activeColor="rgba(255, 255, 255, 1)"
         inactiveColor="rgba(255, 255, 255, 0.74)"

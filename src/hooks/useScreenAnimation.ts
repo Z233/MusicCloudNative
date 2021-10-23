@@ -1,9 +1,12 @@
 import { useNavigation } from '@react-navigation/core';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 
 export default function useScreenAnimation() {
   const navigation = useNavigation();
+  const [curRouteName, setCurRouteName] = useState(
+    navigation.getState().routeNames[0],
+  );
 
   const fadeAnim = useRef(
     new Animated.Value(
@@ -27,6 +30,7 @@ export default function useScreenAnimation() {
       }),
 
       navigation.addListener('blur', () => {
+        if (navigation.canGoBack()) return;
         fadeAnim.setValue(0);
       }),
     ];

@@ -1,17 +1,18 @@
 import { useNavigation } from '@react-navigation/core';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 
-export const SECONDARY_HEADER_HEIGHT = 56
+export const SECONDARY_HEADER_HEIGHT = 56;
 
 interface Props {
   title: string;
   backDirection?: 'left' | 'down';
   dots?: () => void;
+  right?: ReactElement;
 }
 
-const SecondaryHeader = ({ title, backDirection, dots }: Props) => {
+const SecondaryHeader = ({ title, backDirection, dots, right }: Props) => {
   const theme = useTheme();
   const navigation = useNavigation();
   return (
@@ -40,11 +41,16 @@ const SecondaryHeader = ({ title, backDirection, dots }: Props) => {
           }}
         />
         <Text style={{ fontSize: 20, color: '#FFFFFF' }}>{title}</Text>
-        {
-          dots ?
-            <IconButton icon="dots-horizontal" size={32} color="#FFFFFF" onPress={dots} />
-            : <View style={{ width: 32, height: 32, margin: 14 }} />
-        }
+        {dots ? (
+          <IconButton
+            icon="dots-horizontal"
+            size={32}
+            color="#FFFFFF"
+            onPress={dots}
+          />
+        ) : (
+          <View style={{ width: 32, height: 32, margin: 14 }} />
+        )}
       </View>
     </>
   );

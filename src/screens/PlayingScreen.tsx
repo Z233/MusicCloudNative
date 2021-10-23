@@ -17,21 +17,33 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { State } from '../player';
+import SecondaryHeader from '../components/SecondaryHeader';
+import { showTrackDetailModal } from '../components/TrackItem';
+import { useNavigation } from '@react-navigation/native';
 
 const PlayingScreen = () => {
+  const track = useWebfxRef(usePlayer().track);
+  const navigation = useNavigation()
   return (
-    <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
-      <View
-        style={{
-          backgroundColor: '#FFFFFF',
-          flex: 1,
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
-        }}>
-        <Picture />
-        <Control />
+    <>
+      <SecondaryHeader
+        title="正在播放"
+        backDirection="down"
+        dots={() => showTrackDetailModal(track!, navigation)}
+      />
+      <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
+        <View
+          style={{
+            backgroundColor: '#FFFFFF',
+            flex: 1,
+            borderTopLeftRadius: 32,
+            borderTopRightRadius: 32,
+          }}>
+          <Picture />
+          <Control />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -178,7 +190,7 @@ const ProgressBar = () => {
   });
 
   useEffect(() => {
-    progressWidth.value = posRate * 100 + '%'
+    progressWidth.value = posRate * 100 + '%';
   }, [posRate]);
 
   interface BarProps {
@@ -240,14 +252,16 @@ const ProgressBar = () => {
             }}
           />
         ))}
-        <View style={{
-          width: 4,
-          height: 56,
-          backgroundColor: theme.colors.primary,
-          position: 'absolute',
-          right: 0,
-          borderRadius: 9999
-        }} />
+        <View
+          style={{
+            width: 4,
+            height: 56,
+            backgroundColor: theme.colors.primary,
+            position: 'absolute',
+            right: 0,
+            borderRadius: 9999,
+          }}
+        />
       </Animated.View>
     </View>
   );

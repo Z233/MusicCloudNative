@@ -2,7 +2,7 @@ import React, { Children } from "react"
 import { View, ViewStyle } from "react-native"
 
 
-type Props = React.PropsWithChildren<{
+type Props =  React.PropsWithChildren<{
   columns: number
   style?: ViewStyle
 }>
