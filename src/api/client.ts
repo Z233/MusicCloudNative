@@ -210,7 +210,7 @@ export class ApiClient {
         let res = this.loudMap.get(id);
         if (!res) {
             res = new LoudmapResources(this, {id, loudmap: null});
-            res.loadIfEmpty();
+            if (id > 0) res.loadIfEmpty();
             this.loudMap.set(id, res);
         }
         return res;

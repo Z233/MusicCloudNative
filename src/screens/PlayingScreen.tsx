@@ -1,6 +1,6 @@
-import React from 'react';
-import { Text, View, Image } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { Text, View, Image, StyleProp, ViewStyle } from 'react-native';
+import { IconButton, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MiIcon from 'react-native-vector-icons/MaterialIcons';
 import { RippleOverlay } from '../components/RippleOverlay';
@@ -9,6 +9,14 @@ import bar from '../assets/bar.png';
 import { usePlayer } from '../player/hooks';
 import { useWebfxRef } from '../utils/webfxForReact';
 import { formatTime } from '../utils/webfx';
+import { useLoudnessMap } from '../api';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
+import { State } from '../player';
 
 const PlayingScreen = () => {
   return (
@@ -82,11 +90,7 @@ const Control = () => {
         <MiIcon name="favorite-border" size={32} />
       </View>
       <View style={{ width: '100%' }}>
-        <Image
-          source={bar}
-          resizeMode="contain"
-          style={{ width: '100%', height: 48 }}
-        />
+        <ProgressBar />
         <View
           style={{
             marginTop: 16,
@@ -107,7 +111,13 @@ const Control = () => {
           flexDirection: 'row',
         }}>
         <IconButton icon="cached" size={32} onPress={() => {}} />
-        <IconButton icon="skip-previous" size={32} onPress={() => {player.prev()}} />
+        <IconButton
+          icon="skip-previous"
+          size={32}
+          onPress={() => {
+            player.prev();
+          }}
+        />
         <View
           style={{
             backgroundColor: '#FF6557',
@@ -125,7 +135,13 @@ const Control = () => {
             }}
           />
         </View>
-        <IconButton icon="skip-next" size={32} onPress={() => {player.next()}} />
+        <IconButton
+          icon="skip-next"
+          size={32}
+          onPress={() => {
+            player.next();
+          }}
+        />
         <IconButton icon="cached" size={32} onPress={() => {}} />
       </View>
     </View>
@@ -135,6 +151,106 @@ const Control = () => {
 const PositionText = () => {
   const position = useWebfxRef(usePlayer().position);
   return <Text style={{ fontSize: 14 }}>{formatTime(position)}</Text>;
+};
+
+const ProgressBar = () => {
+  const POINTS_NUM = 28;
+  const player = usePlayer();
+  const track = useWebfxRef(player.track);
+  const posRate = useWebfxRef(player.positionRatio);
+  const theme = useTheme();
+  const loudnessArr = useLoudnessMap(track?.id ?? 0, POINTS_NUM);
+
+  const progressWidth = useSharedValue(
+    player.state.value === State.Playing ? posRate * 100 + '%' : '0%',
+  );
+  const progressStyles = useAnimatedStyle(() => {
+    return {
+      width: progressWidth.value,
+      opacity: 1,
+      position: 'absolute',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      overflow: 'hidden',
+      alignItems: 'center',
+    };
+  });
+
+  useEffect(() => {
+    progressWidth.value = posRate * 100 + '%'
+  }, [posRate]);
+
+  interface BarProps {
+    width: string;
+    opacity: number;
+    animatedStyles?: Animated.AnimateStyle<ViewStyle>;
+  }
+
+  const Bar = ({ width, opacity, animatedStyles }: BarProps) => {
+    return (
+      <Animated.View
+        style={[
+          {
+            width,
+            opacity,
+            position: 'absolute',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            overflow: 'hidden',
+            alignItems: 'center',
+          },
+          animatedStyles,
+        ]}>
+        {new Array(POINTS_NUM).fill(null).map((_, i) => (
+          <View
+            key={i}
+            style={{
+              height: (loudnessArr?.[i] ?? 0) * 36 + 12,
+              width: 6,
+              borderRadius: 3,
+              backgroundColor: theme.colors.primary,
+              marginLeft: i === 0 ? 0 : 4.4,
+            }}
+          />
+        ))}
+      </Animated.View>
+    );
+  };
+
+  return (
+    <View
+      style={{
+        width: '100%',
+        height: 56,
+        position: 'relative',
+      }}>
+      <Bar width="100%" opacity={0.3} />
+      <Animated.View style={[progressStyles]}>
+        {new Array(POINTS_NUM).fill(null).map((_, i) => (
+          <View
+            key={i}
+            style={{
+              height: (loudnessArr?.[i] ?? 0) * 36 + 12,
+              width: 6,
+              borderRadius: 3,
+              backgroundColor: theme.colors.primary,
+              marginLeft: i === 0 ? 0 : 4.4,
+            }}
+          />
+        ))}
+        <View style={{
+          width: 4,
+          height: 56,
+          backgroundColor: theme.colors.primary,
+          position: 'absolute',
+          right: 0,
+          borderRadius: 9999
+        }} />
+      </Animated.View>
+    </View>
+  );
 };
 
 export default PlayingScreen;
