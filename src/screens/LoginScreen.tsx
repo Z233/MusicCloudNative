@@ -4,10 +4,12 @@ import { Button, TextInput, useTheme } from 'react-native-paper';
 import layout from '../styles/layout';
 import { useClient } from '../api';
 import { CommonActions, useNavigation } from '@react-navigation/core';
+import { useI18n } from '../i18n/hooks';
 
 const LoginScreen = () => {
   const client = useClient();
   const navigation = useNavigation();
+  const I = useI18n();
 
   const [username, setUsername] = useState('publicuser');
   const [passwd, setPasswd] = useState('public');
@@ -31,20 +33,20 @@ const LoginScreen = () => {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          label="用户名"
+          label={I`用户名`}
           onChangeText={setUsername}
           value={username}
         />
         <TextInput
           style={styles.input}
-          label="密码"
+          label={I`密码`}
           onChangeText={setPasswd}
           value={passwd}
           secureTextEntry
           right={<TextInput.Icon name="eye" />}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={onPressRegisterButton}>创建账号</Button>
+          <Button onPress={onPressRegisterButton}>{I`创建账号`}</Button>
           <Button
             style={styles.inputButton}
             icon="login"
@@ -54,7 +56,7 @@ const LoginScreen = () => {
             labelStyle={{
               color: 'white',
             }}>
-            登录
+            {I`登录`}
           </Button>
         </View>
       </View>

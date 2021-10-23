@@ -18,6 +18,7 @@ import layout from '../styles/layout';
 import useScreenAnimation from '../hooks/useScreenAnimation';
 import { ScreenProps } from '../utils/screen';
 import NewPlaylistDialog from '../components/NewPlaylistDialog';
+import { useI18n } from '../i18n/hooks';
 
 interface Props {
   onPressPlaylist: onPressPlaylistItem;
@@ -26,6 +27,7 @@ interface Props {
 const PlaylistsScreen = React.memo((props: ScreenProps<Props>) => {
   const { value: userinfo } = useUserInfo();
   const screenAnimation = useScreenAnimation();
+  const I = useI18n();
   return (
     <>
       <Animated.FlatList
@@ -38,8 +40,8 @@ const PlaylistsScreen = React.memo((props: ScreenProps<Props>) => {
         ListHeaderComponent={
           <View>
             <ColumnsLayout columns={2} style={{ marginBottom: 16 }}>
-              <PlaylistButton icon="expand-all" text="最近添加" />
-              <PlaylistButton icon="history" text="最近播放" />
+              <PlaylistButton icon="expand-all" text={I`最近添加`} />
+              <PlaylistButton icon="history" text={I`最近播放`} />
             </ColumnsLayout>
             <PlaylistsHeader />
           </View>
@@ -60,6 +62,7 @@ const PlaylistsScreen = React.memo((props: ScreenProps<Props>) => {
 });
 
 const PlaylistsHeader = () => {
+  const I = useI18n();
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -82,7 +85,7 @@ const PlaylistsHeader = () => {
         />
         <View
           style={{ height: 28, flexDirection: 'row', alignItems: 'center' }}>
-          <Text>创建时间</Text>
+          <Text>{I`创建时间`}</Text>
           <IconButton
             icon="sort"
             size={16}

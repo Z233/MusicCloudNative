@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import TrackDetailModal from '../components/modal/TrackDetailModal';
 import PlaylistDetailModal from '../components/modal/PlaylistDetailModal';
+import { useI18n } from '../i18n/hooks';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ const StackNavigator = () => {
   const client = useClient();
   const { value: userinfo } = useUserInfo();
   const [loading, setLoading] = useState(true);
+  const I = useI18n();
 
   useEffect(() => {
     client.readSavedInfo().then(() => {
@@ -100,16 +102,18 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="设置"
+        name="Settings"
         component={SettingsScreen}
         options={{
+          title: I`设置`,
           headerLeft: BackIconButton,
         }}
       />
       <Stack.Screen
-        name="关于"
+        name="About"
         component={AboutScreen}
         options={{
+          title: I`关于`,
           headerLeft: BackIconButton,
         }}
       />

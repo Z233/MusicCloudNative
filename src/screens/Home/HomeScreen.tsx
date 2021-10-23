@@ -19,6 +19,7 @@ import { ScreenProps } from '../../utils/screen';
 import TrackItem from '../../components/TrackItem';
 import { usePlayer } from '../../player/hooks';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
+import { useI18n } from '../../i18n/hooks';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
@@ -26,6 +27,7 @@ const testpic =
 const HomeScreen = (props: ScreenProps) => {
   const { value: userinfo } = useUserInfo();
   const screenAnimation = useScreenAnimation();
+  const I = useI18n();
 
   return (
     <Animated.ScrollView
@@ -51,7 +53,7 @@ const HomeScreen = (props: ScreenProps) => {
             fontWeight: '700',
             marginVertical: 16,
           }}>
-          最近播放
+          {I`最近播放`}
         </Text>
         <RecentTracks />
         <View style={{ height: 112 }}></View>
@@ -61,11 +63,12 @@ const HomeScreen = (props: ScreenProps) => {
 };
 
 const RecentPlaylists = () => {
+  const I = useI18n();
   return (
     <ColumnsLayout columns={2}>
-      <PlaylistButton bg={testpic} icon="history" text="最近播放" />
-      <PlaylistButton bg={testpic} text="播放列表1" />
-      <PlaylistButton bg={testpic} icon="cloud" text="音乐库" />
+      <PlaylistButton bg={testpic} icon="history" text={I`最近播放`} />
+      <PlaylistButton bg={testpic} text={I`播放列表1`} />
+      <PlaylistButton bg={testpic} icon="cloud" text={I`音乐库`} />
     </ColumnsLayout>
   );
 };

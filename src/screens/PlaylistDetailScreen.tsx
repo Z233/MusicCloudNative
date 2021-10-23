@@ -23,6 +23,7 @@ import { formatTimeLong, getTracksTotalLength } from '../utils/tracks';
 import { usePlayer } from '../player/hooks';
 import { useClient, usePlaylist, Api } from '../api';
 import TrackItem from '../components/TrackItem';
+import { useI18n } from '../i18n/hooks';
 
 
 const PLAY_BUTTON_SIZE = 56;
@@ -151,6 +152,7 @@ const PlaylistDetailScreen = React.memo(() => {
 });
 
 const ListInfo = React.memo(({ id }: { id: number }) => {
+  const I = useI18n();
   const {value: list, state} = usePlaylist(id);
   const tracks = list?.tracks ?? [];
   const timeString = formatTimeLong(getTracksTotalLength(tracks));
@@ -168,8 +170,8 @@ const ListInfo = React.memo(({ id }: { id: number }) => {
       <Text style={styles.title}>{list?.name}</Text>
       <Text style={styles.subtitle}>
         {state == 'loading'
-          ? '加载中……'
-          : `${tracks.length} 首，${timeString}`}
+          ? I`加载中……`
+          : I`${tracks.length} 首，${timeString}`}
       </Text>
       <Text style={styles.subtitle}>{list?.ownerName}</Text>
     </View>

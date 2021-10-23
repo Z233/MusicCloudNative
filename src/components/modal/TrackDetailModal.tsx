@@ -3,12 +3,14 @@ import { useRoute } from '@react-navigation/native';
 import { Api, useFavouriteState } from '../../api';
 import { ModalOperationProps } from './ModalOperation';
 import CommonDetailModal from './CommonDetailModal';
+import { useI18n } from '../../i18n/hooks';
 
 const TrackDetailModal = () => {
   const {
     params: { track },
   } = useRoute() as { params: { track: Api.Track } };
   const [fav, setFav] = useFavouriteState(track);
+  const I = useI18n();
 
   const operations: ModalOperationProps[] = [
     {
@@ -16,7 +18,7 @@ const TrackDetailModal = () => {
         name: fav ? 'favorite' : 'favorite-border',
         from: 'MaterialIcons',
       },
-      label: fav ? '取消最爱' : '添加到最爱',
+      label: fav ? I`取消最爱` : I`添加到最爱`,
       onPress: () => {console.info('!'); setFav(!fav)},
     },
     {
@@ -24,35 +26,35 @@ const TrackDetailModal = () => {
         name: 'remove-circle-outline',
         from: 'MaterialIcons',
       },
-      label: '从当前播放列表移除',
+      label: I`从当前播放列表移除`,
     },
     {
       icon: {
         name: 'playlist-plus',
         from: 'MaterialCommunityIcons',
       },
-      label: '添加到其他播放列表',
+      label: I`添加到其他播放列表`,
     },
     {
       icon: {
         name: 'playlist-play',
         from: 'MaterialCommunityIcons',
       },
-      label: '添加到正在播放',
+      label: I`添加到正在播放`,
     },
     {
       icon: {
         name: 'cloud-download-outline',
         from: 'MaterialCommunityIcons',
       },
-      label: '下载到本地',
+      label: I`下载到本地`,
     },
     {
       icon: {
         name: 'share',
         from: 'MaterialIcons',
       },
-      label: '分享',
+      label: I`分享`,
     },
   ];
 

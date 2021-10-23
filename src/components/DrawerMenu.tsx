@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StatusBar, Text } from 'react-native';
 import { Drawer, TouchableRipple } from 'react-native-paper';
 import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useI18n } from '../i18n/hooks';
 
 interface DrawerItemProps {
   label: string;
@@ -36,6 +37,7 @@ const DrawerItem = (props: DrawerItemProps) => {
 const DrawerMenu = () => {
   const [active, setActive] = React.useState('');
   const navigation = useNavigation();
+  const I = useI18n();
 
   const navigateTo = (name: string) =>
     navigation.dispatch(
@@ -70,8 +72,8 @@ const DrawerMenu = () => {
             style={{
               padding: 8,
             }}>
-            <DrawerItem label="设置" onPress={() => navigateTo("设置")} />
-            <DrawerItem label="关于" onPress={() => navigateTo("关于")} />
+            <DrawerItem label={I`设置`} onPress={() => navigateTo("Settings")} />
+            <DrawerItem label={I`关于`} onPress={() => navigateTo("About")} />
           </View>
         </View>
       </View>

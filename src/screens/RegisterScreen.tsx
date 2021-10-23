@@ -7,23 +7,24 @@ import {
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import layout from '../styles/layout';
+import { useI18n } from '../i18n/hooks';
 
 const RegisterScreen = () => {
-
+  const I = useI18n();
   return (
     <React.Fragment>
       <View style={layout.loginContainer}>
         <View style={styles.formContainer}>
-          <TextInput style={styles.input} label="用户名" />
+          <TextInput style={styles.input} label={I`用户名`} />
           <TextInput
             style={styles.input}
-            label="密码"
+            label={I`密码`}
             secureTextEntry
             right={<TextInput.Icon name="eye" />}
           />
           <TextInput
             style={styles.input}
-            label="确认密码"
+            label={I`确认密码`}
             secureTextEntry
             right={<TextInput.Icon name="eye" />}
           />
@@ -35,7 +36,7 @@ const RegisterScreen = () => {
               labelStyle={{
                 color: 'white',
               }}>
-              注册
+              {I`注册`}
             </Button>
           </View>
         </View>

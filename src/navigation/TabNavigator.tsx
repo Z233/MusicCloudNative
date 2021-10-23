@@ -6,12 +6,39 @@ import { useTheme } from 'react-native-paper';
 import PlayingBar from '../components/PlayingBar';
 import { CommonActions, useNavigation } from '@react-navigation/core';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import StackHome from './StackHome';
+import StackPlaylists from './StackPlaylists';
+import StackLibrary from './StackLibrary';
+import { useI18n } from '../i18n/hooks';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigator = () => {
   const navigation = useNavigation();
   const theme = useTheme();
+  const I = useI18n();
+
+  const routes = {
+    'home': {
+      name: I`首页`,
+      icon: 'home',
+      component: StackHome
+    },
+    'playlists': {
+      name: I`播放列表`,
+      icon: 'history',
+      component: StackPlaylists
+    },
+    'library': {
+      name: I`音乐库`,
+      icon: 'album',
+      component: StackLibrary,
+    }
+  } as { [K: string]: {
+    name: string,
+    icon: string,
+    component: () => JSX.Element
+  } }
 
   const onPress = () => {
     navigation.dispatch(
@@ -34,9 +61,10 @@ const TabNavigator = () => {
         {_.map(routes, (route, index) => (
           <Tab.Screen
             key={index}
-            name={route.name}
+            name={route.name + '_stack'}
             component={route.component}
             options={{
+              title: route.name,
               tabBarIcon: route.icon,
             }}
           />

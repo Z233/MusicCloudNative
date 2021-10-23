@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Portal, Dialog, TextInput, Button } from 'react-native-paper';
 import { Text } from 'react-native';
+import { useI18n } from '../i18n/hooks';
 
 interface Props {
   visible: boolean;
@@ -9,6 +10,7 @@ interface Props {
 
 const NewPlaylistDialog = ({ visible, hideDialog }: Props) => {
   const [input, setInput] = useState('');
+  const I = useI18n();
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={hideDialog}>
@@ -17,13 +19,13 @@ const NewPlaylistDialog = ({ visible, hideDialog }: Props) => {
             style={{
               marginBottom: 16,
             }}>
-            新建播放列表
+            {I`新建播放列表`}
           </Text>
           <TextInput
             value={input}
             onChangeText={text => setInput(text)}
             mode="flat"
-            placeholder="播放列表名称..."
+            placeholder={I`播放列表名称...`}
             dense={true}
             style={{
               backgroundColor: 'transparent',
@@ -36,7 +38,7 @@ const NewPlaylistDialog = ({ visible, hideDialog }: Props) => {
               style={{
                 fontWeight: 'bold',
               }}>
-              取消
+              {I`取消`}
             </Text>
           </Button>
           <Button
@@ -46,7 +48,7 @@ const NewPlaylistDialog = ({ visible, hideDialog }: Props) => {
               style={{
                 fontWeight: 'bold',
               }}>
-              创建
+              {I`创建`}
             </Text>
           </Button>
         </Dialog.Actions>
