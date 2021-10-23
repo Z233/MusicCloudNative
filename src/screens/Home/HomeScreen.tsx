@@ -18,6 +18,7 @@ import layout from '../../styles/layout';
 import { ScreenProps } from '../../utils/screen';
 import TrackItem from '../../components/TrackItem';
 import { usePlayer } from '../../player/hooks';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
@@ -31,7 +32,7 @@ const HomeScreen = (props: ScreenProps) => {
       onScroll={props.screenState.getOnScroll()}
       style={{
         ...layout.container,
-        ...screenAnimation
+        ...screenAnimation,
       }}>
       <View style={{ backgroundColor: '#F4F4F4', flex: 1 }}>
         <Text
@@ -105,7 +106,7 @@ const PlaylistButton = (props: { bg: any; icon?: string; text: string }) => (
         {props.text}
       </Text>
     </View>
-    <RippleOverlay onPress={() => { }} />
+    <RippleOverlay onPress={() => {}} />
   </View>
 );
 
@@ -122,21 +123,27 @@ const testRecentTracks = Array(10)
 
 const RecentTracks = React.memo(() => {
   let { value: tracks } = useRecentPlays();
-  // console.info("recent", tracks?.length);
   tracks = tracks?.slice(0, 20) ?? [];
   const player = usePlayer();
-  const playTrack = (item: Api.Track) => { player.playTrack(item); }
-  return (
+  const theme = useTheme();
+  const playTrack = (item: Api.Track) => {
+    player.playTrack(item);
+  };
+  return tracks.length > 0 ? (
     <View>
       {tracks?.map((t, i) => (
-        <TrackItem
-          key={i}
-          track={t}
-          onPress={playTrack}
-        />
+        <TrackItem key={i} track={t} onPress={playTrack} />
       ))}
     </View>
-  )
+  ) : (
+    <ActivityIndicator
+      style={{
+        marginTop: 36
+      }}
+      animating={true}
+      color={theme.colors.primary}
+    />
+  );
 });
 
 export default HomeScreen;
