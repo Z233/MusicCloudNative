@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Api } from '../../api';
+import { Api, useUserInfo } from '../../api';
 import { ModalOperationProps } from './ModalOperation';
 import CommonDetailModal from './CommonDetailModal';
 
@@ -8,15 +8,9 @@ const PlaylistDetailModal = () => {
   const {
     params: { title, owner, cover },
   } = useRoute() as { params: { title: string; owner: string; cover: string } };
+  const { value: user } = useUserInfo()
 
-  const operations: ModalOperationProps[] = [
-    {
-      icon: {
-        name: 'favorite-border',
-        from: 'MaterialIcons',
-      },
-      label: '添加到收藏',
-    },
+  const operations: ModalOperationProps[] = ([
     {
       icon: {
         name: 'playlist-edit',
@@ -24,13 +18,20 @@ const PlaylistDetailModal = () => {
       },
       label: '编辑播放列表',
     },
-    {
+    user.username != owner ? {
+      icon: {
+        name: 'favorite-border',
+        from: 'MaterialIcons',
+      },
+      label: '移除收藏',
+    } : null,
+    user.username == owner ? {
       icon: {
         name: 'playlist-remove',
         from: 'MaterialCommunityIcons',
       },
       label: '删除播放列表',
-    },
+    } : null,
     {
       icon: {
         name: 'share',
@@ -45,7 +46,7 @@ const PlaylistDetailModal = () => {
       },
       label: '设为公开',
     },
-  ];
+  ] as ModalOperationProps[]).filter(x => x);
 
   return (
     <CommonDetailModal

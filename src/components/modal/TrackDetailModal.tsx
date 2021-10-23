@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Api } from '../../api';
+import { Api, useFavouriteState } from '../../api';
 import { ModalOperationProps } from './ModalOperation';
 import CommonDetailModal from './CommonDetailModal';
 
@@ -8,14 +8,16 @@ const TrackDetailModal = () => {
   const {
     params: { track },
   } = useRoute() as { params: { track: Api.Track } };
+  const [fav, setFav] = useFavouriteState(track);
 
   const operations: ModalOperationProps[] = [
     {
       icon: {
-        name: 'favorite-border',
+        name: fav ? 'favorite' : 'favorite-border',
         from: 'MaterialIcons',
       },
-      label: '添加到最爱',
+      label: fav ? '取消最爱' : '添加到最爱',
+      onPress: () => {console.info('!'); setFav(!fav)},
     },
     {
       icon: {

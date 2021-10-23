@@ -9,7 +9,7 @@ import bar from '../assets/bar.png';
 import { usePlayer } from '../player/hooks';
 import { useWebfxRef } from '../utils/webfxForReact';
 import { formatTime } from '../utils/webfx';
-import { useLoudnessMap } from '../api';
+import { useLoudnessMap, useFavouriteState } from '../api';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -68,6 +68,8 @@ const Control = () => {
   const player = usePlayer();
   const track = useWebfxRef(player.track, 'control_track');
   const playing = useWebfxRef(player.isPlaying);
+  const [fav, setFav] = useFavouriteState(track);
+  const theme = useTheme();
   console.info('playing', track?.id);
   return (
     <View
@@ -99,7 +101,7 @@ const Control = () => {
             {track?.artist}
           </Text>
         </View>
-        <MiIcon name="favorite-border" size={32} />
+        <MiIcon name={fav ? "favorite" : "favorite-border"} color={fav ? theme.colors.primary : 'black'} size={32} onPress={() => setFav(!fav)} />
       </View>
       <View style={{ width: '100%' }}>
         <ProgressBar />
@@ -122,7 +124,7 @@ const Control = () => {
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-        <IconButton icon="cached" size={32} onPress={() => {}} />
+        <IconButton icon="cached" size={32} onPress={() => { }} />
         <IconButton
           icon="skip-previous"
           size={32}
@@ -154,7 +156,7 @@ const Control = () => {
             player.next();
           }}
         />
-        <IconButton icon="cached" size={32} onPress={() => {}} />
+        <IconButton icon="cached" size={32} onPress={() => { }} />
       </View>
     </View>
   );

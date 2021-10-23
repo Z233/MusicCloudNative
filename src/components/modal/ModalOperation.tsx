@@ -3,6 +3,7 @@ import MiIcon from 'react-native-vector-icons/MaterialIcons';
 import McIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TouchableCustom from '../TouchableCustom';
 import { View, Text } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export interface ModalOperationProps {
   icon: {
@@ -10,11 +11,13 @@ export interface ModalOperationProps {
     name: string;
   };
   label: string;
+  onPress?: () => void;
 }
 
-const ModalOperation = ({ icon, label }: ModalOperationProps) => {
+const ModalOperation = ({ icon, label, onPress }: ModalOperationProps) => {
+  const theme = useTheme();
   return (
-    <TouchableCustom onPress={() => {}}>
+    <TouchableCustom onPress={onPress}>
       <View
         style={{
           flexDirection: 'row',
@@ -33,6 +36,7 @@ const ModalOperation = ({ icon, label }: ModalOperationProps) => {
               style={{
                 marginRight: 24,
               }}
+              color={icon.name == 'favorite' ? theme.colors.primary : undefined}
             />
           );
         })()}

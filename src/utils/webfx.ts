@@ -259,11 +259,13 @@ interface SiType<T> {
 
 class CallbacksImpl<T extends AnyFunc = Action> extends Array<T> {
     private _hook?: Callbacks<(adding: boolean, func: T) => void> = undefined;
+    _debug = false;
     get onChanged() {
         this._hook = this._hook ?? new Callbacks();
         return this._hook;
     }
     invoke(...args: Parameters<T>) {
+        this._debug && console.info("invoke()", this.length);
         this.forEach((x) => {
             try {
                 x.apply(this, args);
@@ -274,10 +276,12 @@ class CallbacksImpl<T extends AnyFunc = Action> extends Array<T> {
     }
     add(callback: T) {
         this.push(callback);
+        this._debug && console.info("add()", this.length);
         this._hook?.invoke(true, callback);
         return callback;
     }
     remove(callback: T) {
+        this._debug && console.info("remove()", this.length);
         super.remove(callback);
         this._hook?.invoke(false, callback);
     }
@@ -293,6 +297,11 @@ export interface Callbacks<T extends AnyFunc = Action> {
 export const Callbacks: { new <T extends AnyFunc = Action>(): Callbacks<T>; } = CallbacksImpl;
 
 export class Ref<T> {
+    _debug = false;
+    _setDebug() {
+        this._debug = true;
+        this.onChanged._debug = true;
+    }
     constructor(val: T) {
         this._value = val;
     }
@@ -304,15 +313,28 @@ export class Ref<T> {
     }
     get value() { return this._value; }
     set value(val) {
+        this._debug && console.info("set()");
         this._value = val;
         if (this._onChanged) this._onChanged.invoke(this);
     }
 
+    invokeChanged() {
+        this._debug && console.info("invokeChanged()");
+        if (this._onChanged) this._onChanged.invoke(this);
+    }
     setIfChanged(val: T) {
         if (this.value !== val) this.value = val;
     }
     useValue() {
         return useWebfxRef(this);
+    }
+    waitForChange() {
+        return new Promise((res) => {
+            const cb = this.onChanged.add(() => {
+                this.onChanged.remove(cb);
+                res();
+            });
+        })
     }
 }
 
