@@ -23,7 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const PlayingScreen = () => {
   const track = useWebfxRef(usePlayer().track);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <>
       <SecondaryHeader
@@ -101,7 +101,12 @@ const Control = () => {
             {track?.artist}
           </Text>
         </View>
-        <MiIcon name={fav ? "favorite" : "favorite-border"} color={fav ? theme.colors.primary : 'black'} size={32} onPress={() => setFav(!fav)} />
+        <MiIcon
+          name={fav ? 'favorite' : 'favorite-border'}
+          color={fav ? theme.colors.primary : 'black'}
+          size={32}
+          onPress={() => setFav(!fav)}
+        />
       </View>
       <View style={{ width: '100%' }}>
         <ProgressBar />
@@ -124,7 +129,7 @@ const Control = () => {
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-        <IconButton icon="cached" size={32} onPress={() => { }} />
+        <IconButton icon="cached" size={32} onPress={() => {}} />
         <IconButton
           icon="skip-previous"
           size={32}
@@ -156,7 +161,7 @@ const Control = () => {
             player.next();
           }}
         />
-        <IconButton icon="cached" size={32} onPress={() => { }} />
+        <IconButton icon="cached" size={32} onPress={() => {}} />
       </View>
     </View>
   );

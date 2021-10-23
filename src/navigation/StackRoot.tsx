@@ -21,6 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import TrackDetailModal from '../components/modal/TrackDetailModal';
 import PlaylistDetailModal from '../components/modal/PlaylistDetailModal';
 import { useI18n } from '../i18n/hooks';
+import CommentsScreen from '../screens/CommentsScreen';
 
 const Stack = createStackNavigator();
 
@@ -115,6 +116,13 @@ const StackNavigator = () => {
         options={{
           title: I`关于`,
           headerLeft: BackIconButton,
+        }}
+      />
+      <Stack.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{
+          headerShown: false
         }}
       />
     </Stack.Navigator>

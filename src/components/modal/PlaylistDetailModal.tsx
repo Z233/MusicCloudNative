@@ -18,7 +18,7 @@ const PlaylistDetailModal = () => {
         name: 'playlist-edit',
         from: 'MaterialCommunityIcons',
       },
-      label: I`编辑播放列表`,
+      label: '重命名播放列表',
     },
     user.username != owner ? {
       icon: {
