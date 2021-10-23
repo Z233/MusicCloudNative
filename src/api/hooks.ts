@@ -21,7 +21,7 @@ export function useRecentPlays() {
     return useClient().recentplays.use(true);
 }
 
-export function useLoadnessMap(trackId: number, points: number) {
+export function useLoudnessMap(trackId: number, points: number) {
     const { loudmap: louds } = useClient().getLoudmapResource(trackId).valueRef.useValue();
     return useMemo(() => {
         if (louds && louds.length > 20) {
