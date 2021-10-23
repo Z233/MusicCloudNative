@@ -66,21 +66,30 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+
+      <Stack.Group
+        screenOptions={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardOverlayEnabled: true,
+          gestureEnabled: true,
+          gestureResponseDistance: 1000,
+          ...TransitionPresets.ModalPresentationIOS,
+          keyboardHandlingEnabled: true,
+        }}>
+        <Stack.Screen name="TrackDetailModal" component={TrackDetailModal} />
+        <Stack.Screen
+          name="PlaylistDetailModal"
+          component={PlaylistDetailModal}
+        />
+      </Stack.Group>
+
       <Stack.Screen
         name="Playing"
         component={PlayingScreen}
         options={{
           title: 'Playing',
-          // header: () => (
-          //   <SecondaryHeader
-          //     title="正在播放"
-          //     backDirection="down"
-          //     dots={() => {}}
-          //   />
-          // ),
           headerShown: false,
-          cardStyleInterpolator:
-            CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
       />
       <Stack.Screen
@@ -104,20 +113,6 @@ const StackNavigator = () => {
           headerLeft: BackIconButton,
         }}
       />
-      <Stack.Group
-        screenOptions={{
-          headerShown: false,
-          presentation: 'transparentModal',
-          cardOverlayEnabled: true,
-          gestureEnabled: true,
-          gestureResponseDistance: 1000,
-          ...TransitionPresets.ModalPresentationIOS,
-          keyboardHandlingEnabled: true,
-
-        }}>
-        <Stack.Screen name="TrackDetailModal" component={TrackDetailModal} />
-        <Stack.Screen name="PlaylistDetailModal" component={PlaylistDetailModal} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 };
