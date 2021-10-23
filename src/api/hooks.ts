@@ -53,3 +53,12 @@ function useFavList() {
     return listres;
 }
 
+export const commentPaths = {
+    track(id: number) { return `tracks/${id}/comments`; },
+    myNotes() { return `my/notes`; },
+    discussion() { return `discussion`; },
+}
+
+export function useComments(path: string) {
+    return useClient().getCommentsResource(path).use();
+}

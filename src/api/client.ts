@@ -82,7 +82,7 @@ export abstract class ApiResource<T> {
 
     async saveCache() {
         const key = this._cacheKey();
-        if (key) this.client._storage.setJson(key, this.value);
+        if (key) await this.client._storage.setJson(key, this.value);
     }
 
     protected _cacheKey(): string | null { return null; };
@@ -112,6 +112,7 @@ export class PlaylistResource extends ApiResource<Api.TrackListGet> {
             } as Api.TrackListPut
         });
         this.valueRef.value = { ...list, version: list.version + 1 }
+        this.saveCache();
     }
     addTrack(...tracks: Api.Track[]) {
         this.value.tracks.unshift(...tracks?.map(track => ({ ...track, _list: this.value.id })));
@@ -155,6 +156,29 @@ export class RecentPlaysResources extends ApiResource<Api.Track[]> {
     }
 }
 
+interface Comments {
+    path: string;
+    comments: Api.Comment[] | null;
+}
+
+export class CommentsResources extends ApiResource<Comments> {
+    protected _cacheKey(): string {
+        return "comments-" + this.value.path;
+    }
+    protected async _loadImpl() {
+        const resp = await this.client._api.get(this.value.path) as Api.CommentList;
+        return { path: this.value.path, comments: resp.comments };
+    }
+
+    async postComment(content: string) {
+        await this.client._api.post({
+            path: this.value.path + '/new',
+            obj: { content },
+        });
+        await this.load();
+    }
+}
+
 export class LoudmapResources extends ApiResource<{ id: number; loudmap: Uint8Array | null }> {
     protected _cacheKey(): string {
         return "loudmap-" + this.value.id;
@@ -182,6 +206,7 @@ export class ApiClient {
     uploads = new UploadsResources(this, []);
     recentplays = new RecentPlaysResources(this, []);
     private loudMap = new Map<number, LoudmapResources>();
+    private comments = new Map<string, CommentsResources>();
 
     readonly _storage: Storage;
     readonly _api = new ApiBaseClient();
@@ -261,6 +286,16 @@ export class ApiClient {
             res = new LoudmapResources(this, { id, loudmap: null });
             if (id > 0) res.loadIfEmpty();
             this.loudMap.set(id, res);
+        }
+        return res;
+    }
+
+    getCommentsResource(path: string) {
+        let res = this.comments.get(path);
+        if (!res) {
+            res = new CommentsResources(this, { path, comments: null });
+            if (path) res.loadIfEmpty();
+            this.comments.set(path, res);
         }
         return res;
     }
