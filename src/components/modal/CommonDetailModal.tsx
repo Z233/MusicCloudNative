@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import ModalOperation, { ModalOperationProps } from './ModalOperation';
+import { useNavigation } from '@react-navigation/native';
 
 interface CommonDetailModalProps {
   imgUrl?: string;
@@ -15,6 +16,7 @@ const CommonDetailModal = ({
   subtitle,
   operations,
 }: CommonDetailModalProps) => {
+  const nav = useNavigation();
   return (
     <View
       style={{
@@ -22,6 +24,18 @@ const CommonDetailModal = ({
         flexDirection: 'column',
         justifyContent: 'flex-end',
       }}>
+      <View
+        style={{
+          flex: 1,
+          width: '100%',
+          backgroundColor: '#00000001',
+        }}
+        onTouchStart={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          nav.goBack();
+        }}
+      />
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.coverWrapper}>
