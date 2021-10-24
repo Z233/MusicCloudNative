@@ -158,6 +158,24 @@ export class RecentPlaysResources extends ApiResource<Api.Track[]> {
     }
 }
 
+export class SearchResource extends ApiResource<Api.Track[]> {
+    query: string = '';
+    // no cache
+
+    protected async _loadImpl() {
+        const resp = await this.client._api.get("tracks?query=" + encodeURIComponent(this.query)) as {
+            tracks: Api.Track[]
+        };
+        this.client.processTracks(resp.tracks);
+        return resp.tracks;
+    }
+
+    newSearch(query: string) {
+        this.query = query;
+        this.load();
+    }
+}
+
 interface Comments {
     path: string;
     comments: Api.Comment[] | null;
@@ -195,20 +213,23 @@ export class LoudmapResources extends ApiResource<{ id: number; loudmap: Uint8Ar
 export class UserInfoResource extends ApiResource<UserInfo> {
 }
 
+const emptyUserinfo = {
+    id: null,
+    username: null,
+    avatar: null,
+    token: null,
+    lists: null,
+};
+
 export class ApiClient {
-    readonly userInfo = new UserInfoResource(this, {
-        id: null,
-        username: null,
-        avatar: null,
-        token: null,
-        lists: null,
-    });
+    readonly userInfo = new UserInfoResource(this, { ...emptyUserinfo });
 
     private listsMap = new Map<number, PlaylistResource>();
     uploads = new UploadsResources(this, []);
     recentplays = new RecentPlaysResources(this, []);
     private loudMap = new Map<number, LoudmapResources>();
     private comments = new Map<string, CommentsResources>();
+    search = new SearchResource(this, []);
 
     onSaveUserinfo: (obj: UserInfo) => void = null!;
 
@@ -234,6 +255,12 @@ export class ApiClient {
             auth: 'Basic ' + base64.encode(username + ':' + passwd)
         }) as Api.UserInfo;
         await this.handleUserInfo(resp);
+    }
+
+    logout() {
+        this.userInfo.stateRef.value = 'empty';
+        this.userInfo.value = { ...emptyUserinfo };
+        this.onSaveUserinfo(this.userInfo.value);
     }
 
     async register(username: string, passwd: string) {

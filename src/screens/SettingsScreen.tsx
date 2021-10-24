@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import layout from '../styles/layout';
 import {
   List,
@@ -91,12 +91,12 @@ const SettingsScreen = () => {
             </Text>
             <View style={styles.colorRow}>
               {themeColors.slice(0, 5).map((color, index) => (
-                <ColorPattern color={color} themeColor={theme.colors.primary} />
+                <ColorPattern key={color} color={color} themeColor={theme.colors.primary} />
               ))}
             </View>
             <View style={styles.colorRow}>
-              {themeColors.slice(4, 9).map((color, index) => (
-                <ColorPattern color={color} themeColor={theme.colors.primary} />
+              {themeColors.slice(5, 10).map((color, index) => (
+                <ColorPattern key={color} color={color} themeColor={theme.colors.primary} />
               ))}
             </View>
           </View>
@@ -133,12 +133,18 @@ interface ColorPatternProps {
 }
 
 const ColorPattern = (props: ColorPatternProps) => {
+  const app = useApp();
   return (
-    <TouchableWithoutFeedback>
-      <View
+    <Pressable
+      onPress={() => {
+        app.themeRef.value = props.color;
+        app.save();
+      }}
+    >
+      <View 
         style={{
-          width: 24,
-          height: 24,
+          width: 48,
+          height: 48,
           backgroundColor: props.color,
           borderRadius: 99999,
           marginRight: 12,
@@ -152,7 +158,7 @@ const ColorPattern = (props: ColorPatternProps) => {
               left: 0,
               bottom: 0,
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              borderRadius: 9999,
+              borderRadius: 99999,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -160,7 +166,7 @@ const ColorPattern = (props: ColorPatternProps) => {
           </View>
         ) : null}
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 

@@ -5,23 +5,30 @@ import useScreenAnimation from '../hooks/useScreenAnimation';
 import layout from '../styles/layout';
 import { ScreenProps } from '../utils/screen';
 import { useUploads } from '../api';
+import TrackItem from '../components/TrackItem';
+import { usePlayer } from '../player/hooks';
 
 const testpic =
   'https://mc.yuuza.net/api/storage/pic/223202bf-bc43-4eea-b81b-59394b84ef82.jpg';
 
 const LibraryScreen = (props: ScreenProps) => {
   const screenAnimation = useScreenAnimation();
+  const player = usePlayer();
   const {state, value: tracks} = useUploads();
   console.info('library', tracks.length);
-  // TODO
+
   return (
-    <Animated.ScrollView
+    <Animated.FlatList
+      data={tracks}
+      renderItem={({item}) => (
+        <TrackItem track={item} onPress={() => player.playTrack(item)} />
+      )}
       onScroll={props.screenState.getOnScroll()}
       style={{
         ...layout.container,
         ...screenAnimation,
       }}>
-      <View style={styles.itemsContainer}>
+      {/* <View style={styles.itemsContainer}>
         <Text
           style={{
             marginBottom: 16,
@@ -51,8 +58,8 @@ const LibraryScreen = (props: ScreenProps) => {
           subtitle="8.7 MB，9 月 18 日"
           pic={testpic}
         />
-      </View>
-    </Animated.ScrollView>
+      </View> */}
+    </Animated.FlatList>
   );
 };
 

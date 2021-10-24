@@ -14,20 +14,22 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerMenu from './src/components/DrawerMenu';
 const Drawer = createDrawerNavigator();
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#ff6557',
-    accent: 'yellow',
-  },
-};
-
 const MusicCloud = () => {
   const appService = React.useMemo(() => new AppService(), []);
   React.useEffect(() => {
     return () => appService.destroy();
   }, []);
+
+  const themeSetting = appService.themeRef.useValue();
+
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: themeSetting,
+      accent: 'yellow',
+    },
+  };
 
   return (
     <AppContext.Provider value={appService}>

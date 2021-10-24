@@ -21,7 +21,7 @@ interface IconOverlayProps {
   onPress: () => void;
 }
 
-const PrimaryIconButton = ({ icon, onPress }: IconOverlayProps) => (
+export const PrimaryIconButton = ({ icon, onPress }: IconOverlayProps) => (
   <View
     style={{
       width: 48,

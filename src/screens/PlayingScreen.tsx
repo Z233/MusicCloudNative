@@ -24,6 +24,7 @@ import { useNavigation } from '@react-navigation/native';
 const PlayingScreen = () => {
   const track = useWebfxRef(usePlayer().track);
   const navigation = useNavigation();
+  const theme = useTheme();
   return (
     <>
       <SecondaryHeader
@@ -31,7 +32,7 @@ const PlayingScreen = () => {
         backDirection="down"
         dots={() => showTrackDetailModal(track!, navigation)}
       />
-      <View style={{ flex: 1, backgroundColor: '#FF6557' }}>
+      <View style={{ flex: 1, backgroundColor: theme.colors.primary }}>
         <View
           style={{
             backgroundColor: '#FFFFFF',
@@ -139,7 +140,7 @@ const Control = () => {
         />
         <View
           style={{
-            backgroundColor: '#FF6557',
+            backgroundColor: theme.colors.primary,
             width: 64,
             height: 64,
             borderRadius: 32,
