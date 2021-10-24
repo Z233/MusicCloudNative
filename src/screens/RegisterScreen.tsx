@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -8,16 +8,23 @@ import {
 import { Button, TextInput } from 'react-native-paper';
 import layout from '../styles/layout';
 import { useI18n } from '../i18n/hooks';
+import { useClient } from '../api';
 
 const RegisterScreen = () => {
   const I = useI18n();
+  const client = useClient();
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
   return (
     <React.Fragment>
       <View style={layout.loginContainer}>
         <View style={styles.formContainer}>
-          <TextInput style={styles.input} label={I`用户名`} />
+          <TextInput value={username} onChangeText={setUsername} style={styles.input} label={I`用户名`} />
           <TextInput
             style={styles.input}
+            value={password}
+            onChangeText={setPassword}
             label={I`密码`}
             secureTextEntry
             right={<TextInput.Icon name="eye" />}
@@ -35,7 +42,14 @@ const RegisterScreen = () => {
               mode="contained"
               labelStyle={{
                 color: 'white',
-              }}>
+              }}
+              loading={loading}
+              onPress={async () => {
+                setLoading(true)
+                await client.register(username, password);
+                setLoading(false)
+              }}
+              >
               {I`注册`}
             </Button>
           </View>
