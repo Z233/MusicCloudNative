@@ -28,6 +28,7 @@ const HomeScreen = (props: ScreenProps) => {
   const { value: userinfo } = useUserInfo();
   const screenAnimation = useScreenAnimation();
   const I = useI18n();
+  const theme = useTheme();
 
   return (
     <Animated.ScrollView
@@ -49,7 +50,7 @@ const HomeScreen = (props: ScreenProps) => {
         <Text
           style={{
             fontSize: 16,
-            color: '#FF6557',
+            color: theme.colors.primary,
             fontWeight: '700',
             marginVertical: 16,
           }}>
