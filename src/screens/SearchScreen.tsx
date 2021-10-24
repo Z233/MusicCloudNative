@@ -10,14 +10,13 @@ import TrackItem from '../components/TrackItem';
 import { usePlayer } from '../player/hooks';
 
 const SearchScreen = () => {
-  const [query, setQuery] = useState('');
   const { results, newSearch } = useSearch();
   const player = usePlayer();
   return (
     <>
       <View style={styles.headerContainer}>
         <StatusBar backgroundColor="transparent" />
-        <SearchBar onSearch={query => query || newSearch(query)} />
+        <SearchBar onSearch={query => query && newSearch(query)} />
       </View>
       <FlatList
         data={results}
