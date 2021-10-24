@@ -17,7 +17,7 @@ export function processLoudness(louds: Uint8Array | null, points: number) {
 
         // scale after log()
         const tmp = [...peakAvgs].filter(x => x > 0).sort((a, b) => a - b);
-        const low = Math.log(tmp[Math.floor(tmp.length * 0.01)]) * scaleY;
+        const low = Math.log(tmp[Math.floor(tmp.length * 0.10)]) * scaleY;
         const high = Math.log(tmp[Math.floor(tmp.length * 0.99)]) * scaleY;
         const scaleY2 = height * (0.95 - 0.2) / (high - low);
         const offsetY2 = (height * 0.2) - (low * scaleY2);
@@ -32,6 +32,7 @@ export function processLoudness(louds: Uint8Array | null, points: number) {
                 y *= scaleY2;
                 y += offsetY2;
             }
+            if (y <= 0) y = 0;
             result.push(y);
         }
         return result;
