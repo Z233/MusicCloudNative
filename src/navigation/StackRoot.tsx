@@ -22,6 +22,7 @@ import TrackDetailModal from '../components/modal/TrackDetailModal';
 import PlaylistDetailModal from '../components/modal/PlaylistDetailModal';
 import { useI18n } from '../i18n/hooks';
 import CommentsScreen from '../screens/CommentsScreen';
+import { useApp } from '../hooks/AppContext';
 
 const Stack = createStackNavigator();
 
@@ -38,13 +39,13 @@ const BackIconButton = () => {
 
 const StackNavigator = () => {
   const theme = useTheme();
-  const client = useClient();
+  const app = useApp();
   const { value: userinfo } = useUserInfo();
   const [loading, setLoading] = useState(true);
   const I = useI18n();
 
   useEffect(() => {
-    client.readSavedInfo().then(() => {
+    app.init().then(() => {
       setLoading(false);
     });
   }, []);

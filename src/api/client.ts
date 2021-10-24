@@ -5,6 +5,7 @@ import { ApiBaseClient } from "./api";
 //@ts-expect-error
 import base64 from "react-native-base64";
 import { pick } from "lodash";
+import { Storage } from "../utils/storage";
 
 export type LoadingState = 'empty' | 'loading' | 'done' | 'error';
 
@@ -167,7 +168,7 @@ export class CommentsResources extends ApiResource<Comments> {
         return "comments-" + this.value.path;
     }
     protected async _loadImpl() {
-        const resp = await this.client._api.get(this.value.path) as Api.CommentList;
+        const resp = await this.client._api.get(this.value.path + '?reverse=1') as Api.CommentList;
         return { path: this.value.path, comments: resp.comments };
     }
 
@@ -209,6 +210,8 @@ export class ApiClient {
     private loudMap = new Map<number, LoudmapResources>();
     private comments = new Map<string, CommentsResources>();
 
+    onSaveUserinfo: (obj: UserInfo) => void = null!;
+
     readonly _storage: Storage;
     readonly _api = new ApiBaseClient();
 
@@ -216,8 +219,7 @@ export class ApiClient {
         this._storage = new Storage(storagePrefix);
     }
 
-    async readSavedInfo() {
-        const storedInfo = await this._storage.getJson("userinfo") as UserInfo;
+    handleSavedInfo(storedInfo?: UserInfo) {
         if (storedInfo && storedInfo.username && storedInfo.token) {
             this.userInfo.valueRef.value = { ...this.userInfo.valueRef.value, ...storedInfo };
             this.userInfo.stateRef.value = 'loading';
@@ -327,7 +329,7 @@ export class ApiClient {
         for (const l of userInfo.lists) {
             l.picurl = this._api.processUrl(l.picurl);
         }
-        await this._storage.setJson("userinfo", userInfo);
+        this.onSaveUserinfo(userInfo);
         this.userInfo.valueRef.value = userInfo;
     }
 
@@ -341,19 +343,5 @@ export class ApiClient {
             t._pos = i++;
         }
         return tracks;
-    }
-}
-
-class Storage {
-    constructor(readonly prefix: string) {
-    }
-
-    async getJson(key: string) {
-        const str = await AsyncStorage.getItem(this.prefix + key);
-        return str ? JSON.parse(str) : null;
-    }
-
-    async setJson(key: string, val: any) {
-        await AsyncStorage.setItem(this.prefix + key, JSON.stringify(val));
     }
 }
