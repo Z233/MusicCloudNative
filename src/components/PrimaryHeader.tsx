@@ -21,7 +21,7 @@ interface IconOverlayProps {
   onPress: () => void;
 }
 
-const PrimaryIconButton = ({ icon, onPress }: IconOverlayProps) => (
+export const PrimaryIconButton = ({ icon, onPress }: IconOverlayProps) => (
   <View
     style={{
       width: 48,
@@ -90,19 +90,13 @@ const PrimaryHeader = ({ screenState }: { screenState: ScreenState }) => {
         icon="menu"
         onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
       />
-      <View style={{
-        flexDirection: 'row'
-      }}>
-        <PrimaryIconButton
-          icon="search"
-          onPress={() => {
-            navigation.dispatch(
-              CommonActions.navigate({
-                name: 'Search',
-              }),
-            );
-          }}
-        />
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        {navigation.getState().routeNames[0] === 'Library' ? (
+          <PrimaryIconButton icon="upload-file" onPress={() => {}} />
+        ) : null}
         <PrimaryIconButton
           icon="search"
           onPress={() => {

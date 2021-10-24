@@ -5,6 +5,7 @@ import { IconButton, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSearch } from '../api';
+import { PrimaryIconButton } from '../components/PrimaryHeader';
 import TrackItem from '../components/TrackItem';
 import { usePlayer } from '../player/hooks';
 
@@ -16,13 +17,17 @@ const SearchScreen = () => {
     <>
       <View style={styles.headerContainer}>
         <StatusBar backgroundColor="transparent" />
-        <SearchBar onSearch={setQuery} />
+        <SearchBar onSearch={query => query || newSearch(query)} />
       </View>
       <FlatList
         data={results}
         renderItem={({ item }) => (
           <TrackItem track={item} onPress={() => player.playTrack(item)} />
         )}
+        contentContainerStyle={{
+          margin: 16,
+          paddingBottom: 96,
+        }}
       />
     </>
   );
@@ -47,7 +52,8 @@ const SearchBar = (props: { onSearch: (query: string) => void }) => {
       placeholder="搜索..."
       autoFocus={true}
     />
-    <IconButton icon="search" size={24} onPress={() => props.onSearch(input)} />
+    <PrimaryIconButton icon="search" onPress={() => props.onSearch(input)}/>
+    {/* <Icon name="search" size={24} onPress={() => props.onSearch(input)} /> */}
   </View>
   )
 }

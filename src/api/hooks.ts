@@ -71,7 +71,7 @@ export function useComments(path: string) {
 export function useSearch() {
     const res = useClient().search;
     return {
-        results: res.value,
+        results: res.valueRef.useValue(),
         newSearch: res.newSearch.bind(res),
     }
 }
