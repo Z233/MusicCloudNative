@@ -67,3 +67,11 @@ export function useComments(path: string) {
         postComment: res.postComment.bind(res),
     }
 }
+
+export function useSearch() {
+    const res = useClient().search;
+    return {
+        results: res.value,
+        newSearch: res.newSearch.bind(res),
+    }
+}
