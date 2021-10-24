@@ -3,6 +3,9 @@ import { View, StatusBar, Text } from 'react-native';
 import { Drawer, TouchableRipple } from 'react-native-paper';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useI18n } from '../i18n/hooks';
+import { Image } from 'react-native';
+import { useUserInfo } from '../api';
+import { useApp } from '../hooks/AppContext';
 
 interface DrawerItemProps {
   label: string;
@@ -38,6 +41,8 @@ const DrawerMenu = () => {
   const [active, setActive] = React.useState('');
   const navigation = useNavigation();
   const I = useI18n();
+  const { value: user } = useUserInfo();
+  const app = useApp();
 
   const navigateTo = (name: string) =>
     navigation.dispatch(
@@ -53,15 +58,32 @@ const DrawerMenu = () => {
         borderWidth: 0,
         flex: 1,
       }}>
-      <Text
+      <View
         style={{
-          paddingHorizontal: 20,
-          paddingTop: 16,
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}
+      >
+        <Image
+          style={{
+            margin: 16,
+            width: 64,
+            aspectRatio: 1,
+            borderRadius: 999,
+            marginRight: 16,
+          }}
+          source={{ uri: app.apiClient._api.baseUrl + 'users/' + user.id + '/avatar.jpg' }}
+        />
+        <Text style={{ fontSize: 16 }}>{user.username}</Text>
+      </View>
+      {/* <Text
+        style={{
+          margin: 16,
           fontSize: 16,
           fontWeight: 'bold',
         }}>
         MusicCloud
-      </Text>
+      </Text> */}
       <View
         style={{
           flex: 1,
@@ -74,6 +96,11 @@ const DrawerMenu = () => {
             }}>
             <DrawerItem label={I`设置`} onPress={() => navigateTo("Settings")} />
             <DrawerItem label={I`关于`} onPress={() => navigateTo("About")} />
+            <DrawerItem label={I`注销`} onPress={() => {
+              navigation.goBack();
+              app.apiClient.logout()
+            }} />
+
           </View>
         </View>
       </View>

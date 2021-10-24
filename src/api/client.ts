@@ -195,14 +195,16 @@ export class LoudmapResources extends ApiResource<{ id: number; loudmap: Uint8Ar
 export class UserInfoResource extends ApiResource<UserInfo> {
 }
 
+const emptyUserinfo = {
+    id: null,
+    username: null,
+    avatar: null,
+    token: null,
+    lists: null,
+};
+
 export class ApiClient {
-    readonly userInfo = new UserInfoResource(this, {
-        id: null,
-        username: null,
-        avatar: null,
-        token: null,
-        lists: null,
-    });
+    readonly userInfo = new UserInfoResource(this, {...emptyUserinfo});
 
     private listsMap = new Map<number, PlaylistResource>();
     uploads = new UploadsResources(this, []);
@@ -234,6 +236,12 @@ export class ApiClient {
             auth: 'Basic ' + base64.encode(username + ':' + passwd)
         }) as Api.UserInfo;
         await this.handleUserInfo(resp);
+    }
+
+    logout() {
+        this.userInfo.stateRef.value = 'empty';
+        this.userInfo.value = {...emptyUserinfo};
+        this.onSaveUserinfo(this.userInfo.value);
     }
 
     async register(username: string, passwd: string) {
