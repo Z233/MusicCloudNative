@@ -51,52 +51,52 @@ export class Player {
 
     private subscribtions: EmitterSubscription[];
 
-    constructor(readonly app: AppService) {
-        TrackPlayer.updateOptions({
-            capabilities: [
-                Capability.Pause,
-                Capability.Play,
-                Capability.Skip,
-                Capability.SkipToNext,
-                Capability.SkipToPrevious,
-            ]
-        });
-        this.track.onChanged.add(() => {
-            console.info('player.track', this.track.value);
-        })
-        this.subscribtions = [
-            TrackPlayer.addEventListener(Event.PlaybackState, this.stateCallback),
-            TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async ({ track: prevTrack, nextTrack: track }) => {
-                prevTrack = prevTrack != null && await TrackPlayer.getTrack(prevTrack)
-                track = track != null && await TrackPlayer.getTrack(track)
-                if (prevTrack == track) return;
-                console.info("track changed", track?._id, prevTrack?._id);
-                if (track) {
-                    if (track._pos != null && this.list.value) {
-                        this.track.value = this.list.value.tracks[track._pos];
-                    } else if (this.track.value?.id === track._id) {
-                        // noop
-                    } else {
-                        console.warn("unknown track from queue", {current: this.track.value, api: track});
-                    }
+constructor(readonly app: AppService) {
+    TrackPlayer.updateOptions({
+        capabilities: [
+            Capability.Pause,
+            Capability.Play,
+            Capability.Skip,
+            Capability.SkipToNext,
+            Capability.SkipToPrevious,
+        ]
+    });
+    this.track.onChanged.add(() => {
+        console.info('player.track', this.track.value);
+    })
+    this.subscribtions = [
+        TrackPlayer.addEventListener(Event.PlaybackState, this.stateCallback),
+        TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async ({ track: prevTrack, nextTrack: track }) => {
+            prevTrack = prevTrack != null && await TrackPlayer.getTrack(prevTrack)
+            track = track != null && await TrackPlayer.getTrack(track)
+            if (prevTrack == track) return;
+            console.info("track changed", track?._id, prevTrack?._id);
+            if (track) {
+                if (track._pos != null && this.list.value) {
+                    this.track.value = this.list.value.tracks[track._pos];
+                } else if (this.track.value?.id === track._id) {
+                    // noop
                 } else {
-                    // this.track.value = null;
+                    console.warn("unknown track from queue", {current: this.track.value, api: track});
                 }
-            }),
-            TrackPlayer.addEventListener(Event.RemotePlay, () => {
-                this.play();
-            }),
-            TrackPlayer.addEventListener(Event.RemotePause, () => {
-                this.pause();
-            }),
-            TrackPlayer.addEventListener(Event.RemoteNext, () => {
-                this.next();
-            }),
-            TrackPlayer.addEventListener(Event.RemotePrevious, () => {
-                this.prev();
-            }),
-        ];
-    }
+            } else {
+                // this.track.value = null;
+            }
+        }),
+        TrackPlayer.addEventListener(Event.RemotePlay, () => {
+            this.play();
+        }),
+        TrackPlayer.addEventListener(Event.RemotePause, () => {
+            this.pause();
+        }),
+        TrackPlayer.addEventListener(Event.RemoteNext, () => {
+            this.next();
+        }),
+        TrackPlayer.addEventListener(Event.RemotePrevious, () => {
+            this.prev();
+        }),
+    ];
+}
 
     async init() {
         if (this.inited) return;

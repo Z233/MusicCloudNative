@@ -90,19 +90,22 @@ const PrimaryHeader = ({ screenState }: { screenState: ScreenState }) => {
         icon="menu"
         onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
       />
-      <View style={{
-        flexDirection: 'row'
-      }}>
-        <PrimaryIconButton
-          icon="search"
-          onPress={() => {
-            navigation.dispatch(
-              CommonActions.navigate({
-                name: 'Search',
-              }),
-            );
-          }}
-        />
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        {navigation.getState().routeNames[0] === 'Library' ? (
+          <PrimaryIconButton
+            icon="upload-file"
+            onPress={() => {
+              navigation.dispatch(
+                CommonActions.navigate({
+                  name: 'Search',
+                }),
+              );
+            }}
+          />
+        ) : null}
         <PrimaryIconButton
           icon="search"
           onPress={() => {
