@@ -61,9 +61,8 @@ const DrawerMenu = () => {
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center'
-        }}
-      >
+          alignItems: 'center',
+        }}>
         <Image
           style={{
             margin: 16,
@@ -72,7 +71,10 @@ const DrawerMenu = () => {
             borderRadius: 999,
             marginRight: 16,
           }}
-          source={{ uri: app.apiClient._api.baseUrl + 'users/' + user.id + '/avatar.jpg' }}
+          source={{
+            uri:
+              app.apiClient._api.baseUrl + 'users/' + user.id + '/avatar.jpg',
+          }}
         />
         <Text style={{ fontSize: 16 }}>{user.username}</Text>
       </View>
@@ -94,13 +96,19 @@ const DrawerMenu = () => {
             style={{
               padding: 8,
             }}>
-            <DrawerItem label={I`设置`} onPress={() => navigateTo("Settings")} />
-            <DrawerItem label={I`关于`} onPress={() => navigateTo("About")} />
-            <DrawerItem label={I`注销`} onPress={() => {
-              navigation.goBack();
-              app.apiClient.logout()
-            }} />
-
+            <DrawerItem
+              label={I`设置`}
+              onPress={() => navigateTo('Settings')}
+            />
+            <DrawerItem label={I`关于`} onPress={() => navigateTo('About')} />
+            <DrawerItem
+              label={I`注销`}
+              onPress={() => {
+                app.themeRef.value = '#ff6557';
+                navigation.goBack();
+                app.apiClient.logout();
+              }}
+            />
           </View>
         </View>
       </View>
